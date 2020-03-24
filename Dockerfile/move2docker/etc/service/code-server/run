@@ -1,0 +1,2 @@
+#!/bin/bash
+/etc/code-server-hub/.cshub/code-server --host 127.0.0.1 --port 16313 --auth none

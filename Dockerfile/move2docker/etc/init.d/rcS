@@ -1,0 +1,7 @@
+#!/bin/bash
+set +e
+/etc/init.d/cron start
+
+echo "rcS finished. Runing /etc/rc.local"
+parser=$(head -n 1 /etc/rc.local)
+eval ${parser:2} /etc/rc.local

@@ -1,0 +1,9 @@
+#!/bin/bash
+#Run at every boot time
+
+#Modify here if you want apache2 instead of nginx
+echo "PASSWORD=$PASSWORD"
+echo "SOCKPATH=$SOCKPATH"
+htpasswd -b -c /etc/nginx/.htpasswd root $PASSWORD
+sed -i "s|    listen.*;|    listen unix:$SOCKPATH;|" /etc/nginx/sites-available/default
+/etc/init.d/nginx start
