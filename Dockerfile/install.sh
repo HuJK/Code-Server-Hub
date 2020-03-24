@@ -9,10 +9,10 @@ add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
 apt-get -y install apt-utils runit locales openssh-server autossh cron vim git sudo rsync nginx-full socat apache2-utils wget curl
-apt-get -y install fish zsh tmux htop thefuck aria2 lsof tree ncdu \ 
-                   golang default-jdk python-pip python-setuptools python3 python3-pip python3-dev build-essential g++ gcc p7zip-full p7zip-rar \ 
-                   atop autoconf duplicity emacs gawk git-core gnupg2 lftp libsqlite3-dev libssl-dev libtool \ 
-                   mc mtr netcat nikto parallel pgadmin3 postgresql screen searchandrescue siege silversearcher-ag \ 
+apt-get -y install fish zsh tmux htop thefuck aria2 lsof tree ncdu \
+                   golang default-jdk python-pip python-setuptools python3 python3-pip python3-dev build-essential g++ gcc p7zip-full p7zip-rar \
+                   atop autoconf duplicity emacs gawk git-core gnupg2 lftp libsqlite3-dev libssl-dev libtool \
+                   mc mtr netcat nikto parallel pgadmin3 postgresql screen searchandrescue siege silversearcher-ag \
                    sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev
 pip3       install --upgrade tornado flask django torch torchvision jupyterlab jupyterhub jupyter_http_over_ws
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
