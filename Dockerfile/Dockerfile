@@ -1,7 +1,8 @@
 FROM tensorflow/tensorflow:latest-gpu-jupyter
 
-COPY install.sh  /tmp
+COPY install.sh install2.sh /tmp
 RUN  chmod 755 /tmp/install.sh ; /tmp/install.sh
+RUN  chmod 755 /tmp/install2.sh ; /tmp/install2.sh
 COPY move2docker /move2docker
 RUN  rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /move2docker/* / ; rm -r /move2docker
 
