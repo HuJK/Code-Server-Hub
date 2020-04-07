@@ -29,24 +29,15 @@ git clone https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 
 
 cd /etc/code-server-hub
-mv code /etc/nginx/sites-available/
-ln -s ../sites-available/code /etc/nginx/sites-enabled/
+mv code-hub-docker /etc/nginx/sites-available/
+ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
 
-echo "###doenload latest code-server###"
-curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
-| grep "browser_download_url.*linux-x86_64.tar.gz" \
-| cut -d : -f 2,3 \
-| tr -d \" \
-| wget -i - -O code-server.tar.gz
-
-echo "###unzip code-server.tar.gz###"
-
-tar xzvf code-server.tar.gz -C .cshub
-mv .cshub/*/* .cshub/
 set +e
 echo "###add nginx to shadow to make pam_module work###"
 usermod -aG shadow nginx
 usermod -aG shadow www-data
+usermod -aG docker nginx
+usermod -aG docker www-data
 set -e
 echo "###set permission###"
 chmod -R 755 /etc/code-server-hub/.cshub
