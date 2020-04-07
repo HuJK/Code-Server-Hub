@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 mkdir /etc/code-server-hub/.cshub
 cd /etc/code-server-hub
 echo "###doenload latest code-server###"
@@ -11,3 +12,8 @@ echo "###unzip code-server.tar.gz###"
 
 tar xzvf code-server.tar.gz -C .cshub
 mv .cshub/*/* .cshub/
+
+rm /tmp/install2.sh
+
+set +e
+exit 0

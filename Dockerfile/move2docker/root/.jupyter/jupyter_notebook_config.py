@@ -45,7 +45,7 @@
 #  Use '*' to allow any origin to access your server.
 #  
 #  Takes precedence over allow_origin_pat.
-#c.NotebookApp.allow_origin = ''
+c.NotebookApp.allow_origin = '*'
 
 ## Use a regular expression for the Access-Control-Allow-Origin header
 #  
@@ -320,7 +320,7 @@ c.NotebookApp.port = 16792
 #c.NotebookApp.ssl_options = {}
 
 ## Supply overrides for terminado. Currently only supports "shell_command".
-c.NotebookApp.terminado_settings = {'shell_command': 'zsh'}
+c.NotebookApp.terminado_settings = {'shell_command': ['zsh']}
 
 ## Set to False to disable terminals.
 #  

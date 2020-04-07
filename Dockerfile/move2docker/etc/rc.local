@@ -4,6 +4,7 @@
 #Modify here if you want apache2 instead of nginx
 echo "PASSWORD=$PASSWORD"
 echo "SOCKPATH=$SOCKPATH"
-htpasswd -b -c /etc/nginx/.htpasswd root $PASSWORD
+rm $SOCKPATH
+htpasswd -b -c /etc/nginx/.htpasswd $USERNAME $PASSWORD
 sed -i "s|    listen.*;|    listen unix:$SOCKPATH;|" /etc/nginx/sites-available/default
 /etc/init.d/nginx start
