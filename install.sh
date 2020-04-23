@@ -25,7 +25,7 @@ set -e
 
 echo "###doenload files###"
 cd /etc
-git clone https://github.com/HuJK/Code-Server-Hub.git code-server-hub
+git clone https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
 
 
 cd /etc/code-server-hub
@@ -43,6 +43,7 @@ echo "###set permission###"
 chmod -R 755 /etc/code-server-hub/.cshub
 chmod -R 755 /etc/code-server-hub/util
 chmod -R 773 /etc/code-server-hub/sock
+mkdir -p /etc/code-server-hub/envs
 chmod -R 770 /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/envs
 

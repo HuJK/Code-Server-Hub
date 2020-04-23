@@ -12,7 +12,7 @@ sock_fold = os.path.dirname(sock_path)
 
 
 def getDataFolder(username):
-    return ["/data"]
+    return ["/mnt"]
     
 def getDataParam(username):
     user_available_folder = getDataFolder(username)
