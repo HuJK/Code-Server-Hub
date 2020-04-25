@@ -248,13 +248,20 @@ server {
             end
         }
         content_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+
             if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
-				ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.cockpit_addr .. "/users#/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.cockpit_addr .. "/users#/" .. '" method="get"></form></body></html>')
+                                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.cockpit_addr .. "/users#/" .. remote_user .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.cockpit_addr .. "/users#/" .. remote_user .. '" method="get"></form></body></html>')
             else
                 ngx.status = 404
                 ngx.say("Unable to connect to " .. ngx.var.cockpit_addr_internal)
             end
         }
+
     }
     
 
