@@ -5,7 +5,7 @@ map $http_upgrade $connection_upgrade {
 
 server {
     set $server_files_location "/etc/code-server-hub";
-    set $server_service_name   "cshub";
+    set $server_service_name   "cshubD";
     set $server_service_name_full "Personal Docker";
     
     listen 8443 ssl;
