@@ -46,15 +46,16 @@ usermod -aG docker nginx
 usermod -aG docker www-data
 set -e
 echo "###set permission###"
+mkdir -p /etc/code-server-hub/.cshub
+mkdir -p /etc/code-server-hub/envs
 chmod -R 755 /etc/code-server-hub/.cshub
 chmod -R 755 /etc/code-server-hub/util
 chmod -R 773 /etc/code-server-hub/sock
-mkdir -p /etc/code-server-hub/envs
 chmod -R 770 /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/envs
 
 cd /etc/code-server-hub
-mkdir -p .cshub
+
 echo "###doenload latest code-server###"
 curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | grep "browser_download_url.*linux-x86_64.tar.gz" \
