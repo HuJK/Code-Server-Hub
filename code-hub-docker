@@ -8,8 +8,8 @@ server {
     set $server_service_name   "cshubD";
     set $server_service_name_full "Personal Docker";
     
-    listen 8443 ssl;
-    listen [::]:8443 ssl;
+    listen 2087 ssl;
+    listen [::]:2087 ssl;
     ssl_certificate     '/etc/code-server-hub/cert/ssl.pem';
     ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';
     server_name default_server;
