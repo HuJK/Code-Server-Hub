@@ -29,8 +29,8 @@ server {
 
     
     add_header Strict-Transport-Security max-age=15768000;
-    set $server_salt "1!2@3=我是鹽";
-    set $server_sal2 "1!2@3=我是糖";
+    set $server_salt "1!2@3%=我是鹽";
+    set $server_sal2 "3%2@1!=我是糖";
     # Managing literal requests to the front end
     location / {
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
