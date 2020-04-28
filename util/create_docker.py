@@ -16,11 +16,11 @@ sock_fold = os.path.dirname(sock_path)
 
 
 def getDataFolder(username):
-    return ["/data","/mnt",homedir]
+    return ["/data:/data" , "/mnt:/mnt" , homedir+":"+homedir , envs_path+":"+"/etc/code-server-hub/ENVSFILE"]
 
 def getDataParam(username):
     user_available_folder = getDataFolder(username)
-    return list(itertools.chain(*map(list,(zip(["-v"]*len(user_available_folder),["{origpath}:{origpath}".format(origpath=fpath,index=str(i),fname=list(filter(None,fpath.split("/")))[-1]) for i,fpath in enumerate(user_available_folder)])))))
+    return list(itertools.chain(*map(list,(zip(["-v"]*len(user_available_folder),[fpath for fpath in user_available_folder])))))
 
 def getGPUParam(username):
     return "all"
