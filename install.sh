@@ -29,8 +29,13 @@ git clone https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
 
 
 cd /etc/code-server-hub
-mv code-hub-docker /etc/nginx/sites-available/
 ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
+
+#Code server
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
+mv code-hub-docker /etc/nginx/sites-available/
+ln -s ../sites-available/code /etc/nginx/sites-enabled/
+
 
 set +e
 echo "###add nginx to shadow to make pam_module work###"
@@ -46,6 +51,21 @@ chmod -R 773 /etc/code-server-hub/sock
 mkdir -p /etc/code-server-hub/envs
 chmod -R 770 /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/envs
+
+cd /etc/code-server-hub
+mkdir -p .cshub
+echo "###doenload latest code-server###"
+curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
+| grep "browser_download_url.*linux-x86_64.tar.gz" \
+| cut -d : -f 2,3 \
+| tr -d \" \
+| wget -i - -O code-server.tar.gz
+echo "###unzip code-server.tar.gz###"
+
+tar xzvf code-server.tar.gz -C .cshub
+mv .cshub/*/* .cshub/
+
+
 
 set +e
 echo "###generate self signed cert###"
@@ -68,4 +88,9 @@ service nginx stop
 service nginx start
 service cockpit stop
 service cockpit start
+
+sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+docker pull whojk/code-server-hub-docker
+
+
 exit 0
