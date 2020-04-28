@@ -29,11 +29,12 @@ git clone https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
 
 
 cd /etc/code-server-hub
+mv code-hub-docker /etc/nginx/sites-available/
 ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
 
 #Code server
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
-mv code-hub-docker /etc/nginx/sites-available/
+mv code /etc/nginx/sites-available/
 ln -s ../sites-available/code /etc/nginx/sites-enabled/
 
 
