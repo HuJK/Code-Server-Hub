@@ -99,7 +99,7 @@ server {
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "-" .. server_sock_name .. ".sock"
-				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".sock"
+                server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
                 response = ngx.location.capture('/')
                 ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
                 if response.status >= 400 then
