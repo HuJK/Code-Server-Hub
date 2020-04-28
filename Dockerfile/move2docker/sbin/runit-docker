@@ -1,5 +1,5 @@
 #!/bin/sh
-
+source /etc/code-server-hub/ENVSFILE
 /etc/init.d/rcS
 
 export LD_PRELOAD=/lib/runit-docker.so

@@ -1,3 +1,4 @@
 #!/bin/bash
+source /etc/code-server-hub/ENVSFILE
 cd $HOMEDIR
 su $USERNAME -c "HOME=/root;jupyter lab"

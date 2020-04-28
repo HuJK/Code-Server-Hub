@@ -1,6 +1,6 @@
 #!/bin/bash
 set +e
-
+source /etc/code-server-hub/ENVSFILE
 set -x
 
 ROOTOWNER=$(stat -c '%U' /root)
@@ -10,6 +10,8 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     usermod -aG sudo $USERNAME
     chown $USERNAME /root
     chgrp $USERNAME /root
+    chmod 700 /root
+    chmod -R 700 /root/.oh-my-zsh
     chown -R $USERNAME /root
     chgrp -R $USERNAME /root
 fi

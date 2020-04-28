@@ -1,6 +1,6 @@
 #!/bin/bash
 #Run at every boot time
-
+source /etc/code-server-hub/ENVSFILE
 #Modify here if you want apache2 instead of nginx
 echo "PASSWORD=$PASSWORD"
 echo "SOCKPATH=$SOCKPATH"
