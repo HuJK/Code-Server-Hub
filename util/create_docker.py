@@ -40,7 +40,7 @@ except:
 
 subprocess.call(['docker', "stop" , "docker-"+username] )
 
-subprocess.call(["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--name" , "docker-"+username ,"--env-file" ,envs_path ,"--gpus", getGPUParam(username), "-v" , sock_fold+":"+sock_fold] + getDataParam(username) +[image_name])
+subprocess.call(["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--name" , "docker-"+username ,"--gpus", getGPUParam(username), "-v" , sock_fold+":"+sock_fold] + getDataParam(username) +[image_name])
 
 subprocess.call(['docker', "start" ,"docker-"+username ])
 
