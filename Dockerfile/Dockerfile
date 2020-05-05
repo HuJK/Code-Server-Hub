@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-gpu-jupyter
+FROM nvidia/cuda
 
 COPY install.sh /tmp/
 RUN  chmod 755 /tmp/install.sh ; /tmp/install.sh

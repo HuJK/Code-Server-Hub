@@ -14,7 +14,7 @@ apt-get -y install fish zsh tmux htop thefuck aria2 lsof tree ncdu \
                    atop autoconf duplicity emacs gawk git-core gnupg2 lftp libsqlite3-dev libssl-dev libtool \
                    mc mtr netcat parallel screen silversearcher-ag \
                    sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev
-pip3       install --upgrade tornado flask django torch torchaudio opencv-python librosa mxnet pandas scipy numpy sympy galgebra plotly nose pillow virtualenv matplotlib torchvision jupyterlab jupyterhub jupyter_http_over_ws
+pip3       install --upgrade tornado tqdm torch torchaudio tensorflow-gpu tensorboard tensorboardX opencv-python librosa mxnet pandas scipy numpy sympy galgebra plotly nose pillow virtualenv virtualenvwrapper matplotlib torchvision jupyterlab jupyterhub jupyter_http_over_ws
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get -y install nodejs
 npm install -g configurable-http-proxy
@@ -24,7 +24,7 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install
 sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
-
+mkdir ~/.virtualenvs
 rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
 
 echo "eval \"\$(thefuck --alias)\"" >> ~/.bashrc
