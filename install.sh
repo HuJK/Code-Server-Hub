@@ -29,8 +29,9 @@ git clone https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
 
 
 cd /etc/code-server-hub
-mv code-hub-docker /etc/nginx/sites-available/
+mv /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/
 ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
+#mv /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
 
 #Code server
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
