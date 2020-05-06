@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            font-family: Microsoft JhengHei;
+        }
+        body {
+            background: url('/.well-known/Polarlicht_2.jpg') no-repeat fixed;
+            background-position: center top;
+            background-size:cover;
+        } 
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: 10px;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        
+        .button:hover {
+            background-color: #3e8e41
+        }
+        
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h1 style="color:gray">Code Server</h1></center>
+    <center>
+        <input type="button" class="button" value="Main Panel" onclick="window.location.href='https://' + window.location.hostname + ':8443/200-panel.html'" style="width:300px;height:60px;font-size:20px;"> 
+        <hr style="visibility: hidden;" />
+        <input type="button" class="button" value="Docker Panel" onclick="window.location.href='https://' + window.location.hostname + ':2087/200-panel.html'" style="width:300px;height:60px;font-size:20px;"> 
+    </center>
+    <hr style="visibility: hidden;" />
+</body>
+
+</html>
+
