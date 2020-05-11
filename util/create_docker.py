@@ -16,7 +16,7 @@ sock_fold = os.path.dirname(sock_path)
 
 
 def getDataFolder(username):
-    return ["/data:/data" , "/mnt:/mnt" , homedir+":"+homedir , envs_path+":"+"/etc/code-server-hub/ENVSFILE"]
+    return ["/data:/data" , homedir+":"+homedir , envs_path+":"+"/etc/code-server-hub/ENVSFILE"]
 
 def getDataParam(username):
     user_available_folder = getDataFolder(username)
