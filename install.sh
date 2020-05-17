@@ -11,12 +11,31 @@ apt-get remove -y nginx
 apt-get autoremove -y
 set -e
 echo "###install dependanse phase###"
+
+
+
+# Docker
+apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+
+# Nvidia-Docker
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+
+sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+sudo systemctl restart docker
+
+
 apt-get install -y nginx-full
 apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit
 apt-get install -y libnginx-mod-http-auth-pam libnginx-mod-http-lua
-apt-get install -y tmux gdb git python python3 wget libncurses-dev nodejs 
-apt-get install -y python3-pip nodejs sudo gcc g++ build-essential certbot-dns-cloudflare
+apt-get install -y tmux gdb git python python3 wget libncurses-dev nodejs
+apt-get install -y python3-pip nodejs sudo gcc g++ build-essential
 apt-get install -y zsh fish tree ncdu aria2 p7zip-full python3-dev perl wget curl vim htop
+pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
 apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
