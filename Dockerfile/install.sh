@@ -18,7 +18,9 @@ pip3       install --upgrade tornado tqdm torch torchaudio tensorflow-gpu tensor
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get -y install nodejs
 npm install -g configurable-http-proxy
-
+jupyter labextension install jupyterlab_tensorboard
+pip3 install jupyter_tensorboard
+jupyter serverextension enable jupyter_tensorboard --sys-prefix
 apt-get -y autoremove ; apt-get autoclean
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install
 sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
