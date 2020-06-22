@@ -8,13 +8,10 @@ apt-get -y install software-properties-common
 add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
-apt-get -y install apt-utils runit locales openssh-server autossh cron vim git sudo rsync nginx-full socat apache2-utils wget curl
-apt-get -y install fish zsh tmux htop thefuck aria2 lsof tree ncdu \
-                   golang default-jdk python-pip python-setuptools python3 python3-pip python3-dev build-essential g++ gcc p7zip-full p7zip-rar \
-                   atop autoconf duplicity emacs gawk git-core gnupg2 lftp libsqlite3-dev libssl-dev libtool \
-                   mc mtr netcat parallel screen silversearcher-ag \
-                   sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev
-pip3       install --upgrade tornado tqdm torch torchaudio tensorflow-gpu tensorboard tensorboardX opencv-python librosa mxnet pandas scipy numpy sympy galgebra plotly nose pillow virtualenv virtualenvwrapper matplotlib torchvision jupyterlab jupyterhub jupyter_http_over_ws
+apt-get -y install apt-utils runit locales openssh-server autossh cron vim git sudo rsync nginx-full socat apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core 
+
+pip3       install --upgrade torch torchaudio tensorflow-gpu tensorboard tensorboardX scipy numpy virtualenv virtualenvwrapper matplotlib torchvision jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools
+
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get -y install nodejs
 npm install -g configurable-http-proxy
@@ -22,6 +19,8 @@ jupyter labextension install jupyterlab_tensorboard
 pip3 install jupyter_tensorboard
 jupyter serverextension enable jupyter_tensorboard --sys-prefix
 apt-get -y autoremove ; apt-get autoclean
+
+
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install
 sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -32,7 +31,6 @@ rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/local
 echo "eval \"\$(thefuck --alias)\"" >> ~/.bashrc
 echo "eval \"\$(thefuck --alias)\"" >> ~/.zshrc
 echo "thefuck --alias | source" >> /etc/fish/config.fish 
-
 
 set -x
 mkdir -p /etc/code-server-hub/.cshub
@@ -50,11 +48,6 @@ mv .cshub/*/* .cshub/
 rm -rf /root/.cache
 rm -rf /root/.npm/_cacache
 
-#delete self
-rm /tmp/install.sh
-
 set +e
-
-
 
 exit 0
