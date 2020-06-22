@@ -12,5 +12,8 @@ try:
     os.remove(sock_path)
 except:
     pass
-subprocess.call(['docker', "rm" , "docker-"+username] )
+outs, errs = subprocess.Popen(['docker', "stop" , "docker-"+username]).communicate()
+print(outs, errs)
+outs, errs = subprocess.Popen(['docker', "rm" , "docker-"+username]).communicate()
+print(outs, errs)
 

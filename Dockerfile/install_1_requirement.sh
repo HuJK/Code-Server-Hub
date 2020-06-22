@@ -28,11 +28,8 @@ git clone git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zs
 mkdir ~/.virtualenvs
 rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
 
-echo "eval \"\$(thefuck --alias)\"" >> ~/.bashrc
-echo "eval \"\$(thefuck --alias)\"" >> ~/.zshrc
 echo "thefuck --alias | source" >> /etc/fish/config.fish 
 
-set -x
 mkdir -p /etc/code-server-hub/.cshub
 cd /etc/code-server-hub
 echo "###doenload latest code-server###"
@@ -41,12 +38,14 @@ curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -i - -O code-server.tar.gz
-echo "###unzip code-server.tar.gz###"
 
+echo "###unzip code-server.tar.gz###"
 tar xzvf code-server.tar.gz -C .cshub
 mv .cshub/*/* .cshub/
 rm -rf /root/.cache
 rm -rf /root/.npm/_cacache
+
+ls /etc/code-server-hub/.cshub
 
 set +e
 
