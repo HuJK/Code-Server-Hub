@@ -2,22 +2,19 @@
 set -x
 set -e
 export DEBIAN_FRONTEND=noninteractive
-echo "Install & update"
+echo "Install requirement tools"
 apt-get -y update
 apt-get -y install software-properties-common
 add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
-apt-get -y install apt-utils runit locales openssh-server autossh cron vim git sudo rsync nginx-full socat apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux
 
-pip3       install --upgrade torch torchaudio tensorflow-gpu tensorboard tensorboardX scipy numpy virtualenv virtualenvwrapper matplotlib torchvision jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools
+pip3       install --upgrade  jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools
 
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get -y install nodejs
 npm install -g configurable-http-proxy
-jupyter labextension install jupyterlab_tensorboard
-pip3 install jupyter_tensorboard
-jupyter serverextension enable jupyter_tensorboard --sys-prefix
 apt-get -y autoremove ; apt-get autoclean
 
 
@@ -42,7 +39,5 @@ rm -rf /root/.cache
 rm -rf /root/.npm/_cacache
 
 ls /etc/code-server-hub/.cshub
-
-set +e
 
 exit 0
