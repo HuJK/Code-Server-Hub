@@ -13,6 +13,8 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     chmod 700 /root
     chmod -R 700 /root/.oh-my-zsh
     chown -R $USERNAME:$USERNAME /root
+    git config --global user.email "$USERNAME@example.com"
+    git config --global user.name $USERNAME
 fi
 
 /etc/init.d/cron start
