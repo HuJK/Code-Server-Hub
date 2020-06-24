@@ -45,7 +45,7 @@ set -e
 
 echo "###doenload files###"
 cd /etc
-git clone https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
+git clone --depth 1 https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
 
 
 cd /etc/code-server-hub
