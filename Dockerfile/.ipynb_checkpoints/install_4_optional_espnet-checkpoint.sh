@@ -7,7 +7,7 @@ echo "Install espnet"
 
 
 cd /usr/share
-git clone https://github.com/espnet/espnet espnet
+git clone  --depth 1 https://github.com/espnet/espnet espnet
 
 
 export CUDAROOT=/usr/local/cuda
