@@ -4,7 +4,7 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 echo "Install espnet"
 
-
+pip3 install -U PyYAML Cython
 
 cd /usr/share
 git clone  --depth 1 https://github.com/espnet/espnet espnet
@@ -39,8 +39,7 @@ make check_install
 rm /usr/local/bin/python
 rm /usr/bin/pip
 
-set +e
 
-
+pip3 install -U torch
 
 exit 0
