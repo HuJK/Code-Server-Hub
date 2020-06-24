@@ -18,6 +18,7 @@ echo "###install dependanse phase###"
 #apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 #sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+#apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Nvidia-Docker
@@ -34,7 +35,7 @@ apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit
 apt-get install -y libnginx-mod-http-auth-pam libnginx-mod-http-lua
 apt-get install -y tmux gdb git python python3 wget libncurses-dev nodejs
 apt-get install -y python3-pip nodejs sudo gcc g++ build-essential
-apt-get install -y zsh fish tree ncdu aria2 p7zip-full python3-dev perl wget curl vim htop
+apt-get install -y aria2 p7zip-full python3-dev perl wget curl vim htop
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
@@ -50,7 +51,8 @@ git clone https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
 cd /etc/code-server-hub
 ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
 ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
-#mv /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
+mv /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bak
+ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
 
 #Code server
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
