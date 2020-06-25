@@ -20,9 +20,6 @@ python3 setup.py install
 rm /usr/local/bin/python
 rm /usr/bin/pip
 
-#delete self
-rm /tmp/install3.sh
-
 set +e
 
 
