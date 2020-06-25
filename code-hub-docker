@@ -18,7 +18,7 @@ server {
     location /.well-known {
         alias /var/www/html/.well-known;
     }
-
+    client_max_body_size 0;
     
     # Set this and add to line 140 if you set cockpit under some subpath . ex: 14: set $cockpit_addr "/cockpit";140:location ~ "/(cockpit).*" {
     set $cockpit_addr "";
