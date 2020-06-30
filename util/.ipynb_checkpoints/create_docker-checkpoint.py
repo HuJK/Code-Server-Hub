@@ -14,7 +14,8 @@ sock_path = sys.argv[2]
 envs_path = sys.argv[3]
 sock_fold = os.path.dirname(sock_path)
 
-os.makedirs(sock_fold,exist_ok=True)
+os.makedirs(os.path.dirname(sock_path),mode=0o733,exist_ok=True)
+os.makedirs(os.path.dirname(envs_path),mode=0o733,exist_ok=True)
 
 mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
 shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
@@ -37,6 +38,7 @@ with open(envs_path,"w") as envsF:
     envsF.write("USERGID=" + usergid + "\n")
     envsF.write("HOMEDIR=" + homedir + "\n")
     envsF.write("PASSWORD=" + input())
+    envsF.flush()
 
 try:
     os.remove(sock_path)

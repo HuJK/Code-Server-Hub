@@ -50,7 +50,7 @@ server {
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
                 server_auth      = remote_user .. ":" .. md5.sumhexa(ngx.var.server_salt .. remote_password)
-                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
                 server_sock_url  = "http://unix:" .. server_sock_path
                 ngx.var.server_sock_url = server_sock_url
@@ -94,7 +94,7 @@ server {
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
-                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
                 server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "/" .. remote_user .. ".envs"
                 response = ngx.location.capture('/')
@@ -151,7 +151,7 @@ server {
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
-                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
 				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
                 fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/delete_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
@@ -197,7 +197,7 @@ server {
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
-                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
 				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
                 fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/close_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
@@ -334,8 +334,8 @@ server {
                 tmp = ngx.decode_base64(tmp)
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
-                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
-                user_lgin_tokn_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "-" .. server_sock_name .. ".login"
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                user_lgin_tokn_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".login"
                 lginfile = io.open(user_lgin_tokn_path, "r")
                 if lginfile ~= nil then
                     login_status = "1"
