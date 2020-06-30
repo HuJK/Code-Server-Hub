@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 source /etc/code-server-hub/ENVSFILE
-/etc/init.d/rcS
+set +e
 export WORKON_HOME=~/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python3'
 export LD_PRELOAD=/lib/runit-docker.so
 export KALDI_DIR=/usr/share/kaldi-asr/tools
-set +e
 source /usr/local/bin/virtualenvwrapper.sh
 source /etc/profile
+/etc/init.d/rcS
 exec runsvdir /etc/service
