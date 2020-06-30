@@ -30,7 +30,8 @@ else
                 echo "Aborted";
                 exit;;
             [Nn]* ) 
-                echo "Skipped";;
+                echo "Skipped";
+                break;;
             * ) echo "Please answer yes or no or abort.";;
         esac
     done
@@ -60,7 +61,8 @@ else
                     echo "Aborted";
                     exit;;
                 [Nn]* ) 
-                    echo "Skipped";;
+                    echo "Skipped";
+                    break;;
                 * ) echo "Please answer yes or no or abort.";;
             esac
         done
