@@ -16,7 +16,7 @@ echo "###install dependanse phase###"
 if hash docker 2>/dev/null; then
     echo "Docker installed, skip docker auto install"
 else
-    echo "====================================="
+    echo "=========================================================================="
     while true; do
         read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" yn
         case $yn in
@@ -47,7 +47,7 @@ else
         echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
     } || { # catch
         # save log for exception 
-        echo "=====================================";
+        echo "=========================================================================="
         while true; do
             read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Abort)" yn
             case $yn in
@@ -73,10 +73,82 @@ fi
 
 
 
+
+
+set +e
+echo "###generate self signed cert###"
+echo "###You should buy or get a valid ssl certs           ###"
+echo "###Now I generate a self singed certs in cert folder ###"
+echo "###But you should replace it with valid a ssl certs  ###"
+echo '###Remember update your cert for cockpit too!        ###'
+echo '### cat ssl.pem ssl.key > /etc/cockpit/ws-certs.d/0-self-signed.cert###'
+apt-get install -y install openssl git ca-certificates
+
+
+echo "###doenload files###"
+cd /etc
+git clone --depth 1 https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
+
+
+#Code server
+cd /etc/code-server-hub
+ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
+ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
+mv /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bak
+ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
+
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
+ln -s /etc/code-server-hub/code /etc/nginx/sites-available/code
+ln -s ../sites-available/code /etc/nginx/sites-enabled/
+
+mkdir -p /etc/code-server-hub/cert
+chmod 600 /etc/code-server-hub/cert
+cd /etc/code-server-hub/cert
+openssl genrsa -out ssl.key 2048
+openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
+
+
+#Portainer
+while true; do
+    echo "=========================================================================="
+    read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
+    case $yn in
+        [Yy]* ) 
+            docker run -d -p 9000:9000 \
+                --name portainer --restart always \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -v portainer_data:/data \
+                -v /etc/letsencrypt:/etc/letsencrypt \
+                -v /etc/code-server-hub/cert/:/etc/code-server-hub/cert/ \
+                portainer/portainer \
+                --ssl \
+                --sslcert /etc/code-server-hub/cert/ssl.pem \
+                --sslkey  /etc/code-server-hub/cert/ssl.key;
+            echo "=========================================================================="
+            while true; do
+                read -p "Please visit https://$(wget -qO- https://ifconfig.me/):9000 to set your portainer password now. Finished?(Yes/No)" ynn
+                case $ynn in
+                    [Yy]* ) 
+                        break;;
+                    [Nn]* ) 
+                        echo "Please set password now, or your computer may take serious security risks";;
+                    * ) echo "Please answer yes or no.";;
+                esac
+            done
+            break;;
+        [Nn]* ) 
+            echo "Skipped";
+            break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+
+echo "Install dependances"
 apt-get install -y nginx-full
 apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit
 apt-get install -y libnginx-mod-http-auth-pam libnginx-mod-http-lua
-apt-get install -y tmux gdb git python python3 wget libncurses-dev nodejs
+apt-get install -y tmux gdb python python3 wget libncurses-dev nodejs
 apt-get install -y python3-pip nodejs sudo gcc g++ build-essential
 apt-get install -y aria2 p7zip-full python3-dev perl wget curl vim htop
 pip3 install certbot-dns-cloudflare
@@ -85,23 +157,6 @@ set +e # folling command only have one will success
 apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
 apt-get install -y cockpit cockpit-pcp                     #for ubuntu 19.04
 set -e
-
-echo "###doenload files###"
-cd /etc
-git clone --depth 1 https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
-
-
-cd /etc/code-server-hub
-ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
-ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
-mv /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bak
-ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
-
-#Code server
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
-ln -s /etc/code-server-hub/code /etc/nginx/sites-available/code
-ln -s ../sites-available/code /etc/nginx/sites-enabled/
-
 
 set +e
 echo "###add nginx to shadow to make pam_module work###"
@@ -134,19 +189,6 @@ mv .cshub/*/* .cshub/
 
 
 
-set +e
-echo "###generate self signed cert###"
-echo "###You should buy or get a valid ssl certs           ###"
-echo "###Now I generate a self singed certs in cert folder ###"
-echo "###But you should replace it with valid a ssl certs  ###"
-echo '###Remember update your cert for cockpit too!        ###'
-echo '### cat ssl.pem ssl.key > /etc/cockpit/ws-certs.d/0-self-signed.cert###'
-apt-get install -y install openssl
-mkdir /etc/code-server-hub/cert
-chmod 600 /etc/code-server-hub/cert
-cd /etc/code-server-hub/cert
-openssl genrsa -out ssl.key 2048
-openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
@@ -156,17 +198,9 @@ service nginx start
 service cockpit stop
 service cockpit start
 
+
 sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+
 docker pull whojk/code-server-hub-docker
-docker run -d -p 9000:9000 \
-       --name portainer --restart always \
-       -v /var/run/docker.sock:/var/run/docker.sock \
-       -v portainer_data:/data \
-       -v /etc/letsencrypt:/etc/letsencrypt \
-       -v /etc/code-server-hub/cert/:/etc/code-server-hub/cert/ \
-       portainer/portainer \
-       --ssl \
-       --sslcert /etc/code-server-hub/cert/ssl.pem \
-       --sslkey  /etc/code-server-hub/cert/ssl.key
 
 exit 0
