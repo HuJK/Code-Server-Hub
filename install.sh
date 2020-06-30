@@ -16,8 +16,9 @@ echo "###install dependanse phase###"
 if hash docker 2>/dev/null; then
     echo "Docker installed, skip docker auto install"
 else
+    echo "====================================="
     while true; do
-        read -p "Docker not detected. Dou you want to install docker now?" yn
+        read -p "Docker not detected. Dou you want to install docker now? (Yes/No)" yn
         case $yn in
             [Yy]* ) 
                 apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
@@ -41,8 +42,9 @@ else
     if [ $? -eq 0 ]; then
         echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
     else
+        echo "====================================="
         while true; do
-            read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now?" yn
+            read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No)" yn
             case $yn in
                 [Yy]* ) 
                     # Nvidia-Docker
