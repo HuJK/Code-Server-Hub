@@ -38,6 +38,7 @@ with open(envs_path,"w") as envsF:
     envsF.write("USERGID=" + usergid + "\n")
     envsF.write("HOMEDIR=" + homedir + "\n")
     envsF.write("PASSWORD=" + input())
+    envsF.flush()
 
 try:
     os.remove(sock_path)
