@@ -96,7 +96,7 @@ server {
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
-                server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "/" .. remote_user .. ".envs"
+                server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
                 response = ngx.location.capture('/')
                 ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
                 if response.status >= 400 then
@@ -153,7 +153,7 @@ server {
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
-				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
+				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
                 fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/delete_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
                 fp:write(remote_password)
                 fp:close()
@@ -199,7 +199,7 @@ server {
                 server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
-				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
+				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
                 fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/close_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
                 fp:write(remote_password)
                 fp:close()
