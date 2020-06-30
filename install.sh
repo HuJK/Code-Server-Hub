@@ -14,6 +14,8 @@ echo "###install dependanse phase###"
 
 
 if hash docker 2>/dev/null; then
+    echo "Docker installed, skip docker auto install"
+else
     while true; do
         read -p "Docker not detected. Dou you want to install docker now?" yn
         case $yn in
@@ -22,19 +24,19 @@ if hash docker 2>/dev/null; then
                 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -;
                 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
                 apt-get update;
-                apt-get install -y docker-ce docker-ce-cli containerd.io;
+                apt-get install -y docker-ce docker-ce-cli containerd.io;;
             [Nn]* ) 
                 echo "Aborted";
                 exit;;
             * ) echo "Please answer yes or no.";;
         esac
     done
-else
-    echo "Docker installed, skip docker auto install"
 fi
 
 
 if hash nvidia-smi 2>/dev/null; then
+    echo "Nvidia driver not found, skip nvidia-docker autoinstall"
+else
     docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi
     if [ $? -eq 0 ]; then
         echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
@@ -48,7 +50,7 @@ if hash nvidia-smi 2>/dev/null; then
                     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
                     curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
                     sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
-                    systemctl restart docker;
+                    systemctl restart docker;;
                 [Nn]* ) 
                     echo "Aborted";
                     exit;;
@@ -56,8 +58,6 @@ if hash nvidia-smi 2>/dev/null; then
             esac
         done
     fi
-else
-    echo "Nvidia driver not found, skip nvidia-docker autoinstall"
 fi
 
 
