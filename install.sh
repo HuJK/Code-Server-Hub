@@ -18,7 +18,7 @@ if hash docker 2>/dev/null; then
 else
     echo "====================================="
     while true; do
-        read -p "Docker not detected. Dou you want to install docker now? (Yes/No)" yn
+        read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" yn
         case $yn in
             [Yy]* ) 
                 apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
@@ -26,10 +26,12 @@ else
                 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
                 apt-get update;
                 apt-get install -y docker-ce docker-ce-cli containerd.io;;
-            [Nn]* ) 
+            [Aa]* ) 
                 echo "Aborted";
                 exit;;
-            * ) echo "Please answer yes or no.";;
+            [Nn]* ) 
+                echo "Skipped";
+            * ) echo "Please answer yes or no or skip.";;
         esac
     done
 fi
@@ -44,7 +46,7 @@ else
     else
         echo "====================================="
         while true; do
-            read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No)" yn
+            read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Skip)" yn
             case $yn in
                 [Yy]* ) 
                     # Nvidia-Docker
@@ -53,10 +55,12 @@ else
                     curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
                     sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
                     systemctl restart docker;;
-                [Nn]* ) 
+                [Aa]* ) 
                     echo "Aborted";
                     exit;;
-                * ) echo "Please answer yes or no.";;
+                [Nn]* ) 
+                    echo "Skipped";
+                * ) echo "Please answer yes or no or skip.";;
             esac
         done
     fi
