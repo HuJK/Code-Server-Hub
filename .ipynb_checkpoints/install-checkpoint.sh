@@ -13,55 +13,21 @@ set -e
 echo "###install dependanse phase###"
 
 
-if hash docker 2>/dev/null; then
-    while true; do
-        read -p "Docker not detected. Dou you want to install docker now?" yn
-        case $yn in
-            [Yy]* ) 
-                apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
-                curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -;
-                sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
-                apt-get update;
-                apt-get install -y docker-ce docker-ce-cli containerd.io;
-            [Nn]* ) 
-                echo "Aborted";
-                exit;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
-else
-    echo "Docker installed, skip docker auto install"
-fi
+#uncommit it if ypu need
+# Docker
+#apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+#apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
+# Nvidia-Docker
+#distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+#curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+#curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+#sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
 
-if hash nvidia-smi 2>/dev/null; then
-    docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi
-    if [ $? -eq 0 ]; then
-        echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
-    else
-        while true; do
-            read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now?" yn
-            case $yn in
-                [Yy]* ) 
-                    # Nvidia-Docker
-                    distribution=$(. /etc/os-release;echo $ID$VERSION_ID);
-                    curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
-                    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
-                    sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
-                    systemctl restart docker;
-                [Nn]* ) 
-                    echo "Aborted";
-                    exit;;
-                * ) echo "Please answer yes or no.";;
-            esac
-        done
-    fi
-else
-    echo "Nvidia driver not found, skip nvidia-docker autoinstall"
-fi
-
-
-
+systemctl restart docker
 
 
 apt-get install -y nginx-full
