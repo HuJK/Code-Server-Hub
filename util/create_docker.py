@@ -14,8 +14,8 @@ sock_path = sys.argv[2]
 envs_path = sys.argv[3]
 sock_fold = os.path.dirname(sock_path)
 
-os.makedirs(os.path.dirname(sock_path),exist_ok=True)
-os.makedirs(os.path.dirname(envs_path),exist_ok=True)
+os.makedirs(os.path.dirname(sock_path),mode=0o700,exist_ok=True)
+os.makedirs(os.path.dirname(envs_path),mode=0o700,exist_ok=True)
 
 mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
 shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
