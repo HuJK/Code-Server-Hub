@@ -31,7 +31,7 @@ else
                 exit;;
             [Nn]* ) 
                 echo "Skipped";;
-            * ) echo "Please answer yes or no or skip.";;
+            * ) echo "Please answer yes or no or abort.";;
         esac
     done
 fi
@@ -40,31 +40,34 @@ fi
 if hash nvidia-smi 2>/dev/null; then
     echo "Nvidia driver not found, skip nvidia-docker autoinstall"
 else
-    docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi
-    if [ $? -eq 0 ]; then
-        echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
-    else
-        echo "====================================="
-        while true; do
-            read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Skip)" yn
-            case $yn in
-                [Yy]* ) 
-                    # Nvidia-Docker
-                    distribution=$(. /etc/os-release;echo $ID$VERSION_ID);
-                    curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
-                    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
-                    sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
-                    systemctl restart docker;;
-                [Aa]* ) 
-                    echo "Aborted";
-                    exit;;
-                [Nn]* ) 
-                    echo "Skipped";;
-                * ) echo "Please answer yes or no or skip.";;
-            esac
-        done
-    fi
-fi
+
+
+{ # try
+    docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
+    echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
+} || { # catch
+    # save log for exception 
+
+    echo "====================================="
+    while true; do
+        read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Abort)" yn
+        case $yn in
+            [Yy]* ) 
+                # Nvidia-Docker
+                distribution=$(. /etc/os-release;echo $ID$VERSION_ID);
+                curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
+                curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
+                sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
+                systemctl restart docker;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
+            [Nn]* ) 
+                echo "Skipped";;
+            * ) echo "Please answer yes or no or abort.";;
+        esac
+    done
+}
 
 
 
