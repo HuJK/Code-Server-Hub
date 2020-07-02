@@ -14,8 +14,8 @@ sock_path = sys.argv[2]
 envs_path = sys.argv[3]
 sock_fold = os.path.dirname(sock_path)
 
-os.makedirs(os.path.dirname(sock_path),mode=0o733,exist_ok=True)
-os.makedirs(os.path.dirname(envs_path),mode=0o733,exist_ok=True)
+os.makedirs(os.path.dirname(sock_path),mode=0o333,exist_ok=True)
+os.makedirs(os.path.dirname(envs_path),mode=0o333,exist_ok=True)
 
 mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
 shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
@@ -47,7 +47,7 @@ except:
 
 
 has_gpu = []
-outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.1-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 if len(outs) > 0:
     has_gpu = ["--gpus", getGPUParam(username)]
 print(has_gpu)
