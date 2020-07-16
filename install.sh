@@ -40,8 +40,6 @@ fi
 
 
 if hash nvidia-smi 2>/dev/null; then
-    echo "Nvidia driver not found, skip nvidia-docker autoinstall"
-else
     { # try
         docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
         echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
@@ -69,6 +67,8 @@ else
             esac
         done
     }
+else
+    echo "Nvidia driver not found, skip nvidia-docker autoinstall"
 fi
 
 
