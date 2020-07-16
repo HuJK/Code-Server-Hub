@@ -14,7 +14,7 @@ server {
     ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';
     server_name default_server;
     location /.well-known/Meteor.jpg {
-        return 307 https://picsum.photos/1920/1080
+        return 307 https://picsum.photos/1920/1080;
     }
     # Managing requests to verify letsencrypt host
     location /.well-known {
