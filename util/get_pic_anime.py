@@ -65,5 +65,5 @@ try_get_pic()
 json.dump(vars,open(temp_folder / "vers.json","w"))
 
 for file in os.listdir(temp_folder):
-    if file != "vars.json" and file not in vars["prev_update"]:
+    if file != "vars.json" and file not in vars["pic_data"]:
         os.remove(temp_folder / file)
