@@ -13,7 +13,7 @@ os.makedirs(temp_folder, exist_ok = True)
 
 
 vars = {"prev_update":0 , "pic_data": {} }
-if os.path.isfile(temp_folder / "vers.json"):
+if os.path.isfile(temp_folder / "vars.json"):
     vars = json.load(open(temp_folder / "vers.json"))
 
 def get_recent_pic(pages,after="",ps={}):
@@ -62,7 +62,7 @@ def try_get_pic(try_t = 3):
             vars["prev_update"][c]["score"] = 0
             try_get_pic(try_t -1)
 try_get_pic()
-json.dump(vars,open(temp_folder / "vers.json","w"))
+json.dump(vars,open(temp_folder / "vars.json","w"))
 
 for file in os.listdir(temp_folder):
     if file != "vars.json" and file not in vars["pic_data"]:
