@@ -18,11 +18,11 @@ RUN  chmod 755 /tmp/install2.sh; /tmp/install2.sh; rm /tmp/install2.sh
 COPY move2docker /move2docker
 RUN  rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /move2docker/* / ;/tmp/install2.sh; rm -r /move2docker
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
-ENV NVIDIA_DRIVER_CAPABILITIES all
-ENV MKL_DEBUG_CPU_TYPE 5
-ENV CUDA_DEVICE_ORDER PCI_BUS_ID
+ENV CUDA_DEVICE_ORDER=PCI_BUS_ID \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    NVIDIA_DRIVER_CAPABILITIES=all \
+    MKL_DEBUG_CPU_TYPE=5
 
 ENTRYPOINT ["/sbin/runit-docker"]
 
