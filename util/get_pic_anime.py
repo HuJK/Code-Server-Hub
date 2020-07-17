@@ -8,7 +8,7 @@ import requests
 
 from pathlib import Path
 
-temp_folder = sys.argv[1]
+temp_folder = Path(sys.argv[1])
 os.makedirs(temp_folder, exist_ok = True)
 
 
