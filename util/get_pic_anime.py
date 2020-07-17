@@ -35,13 +35,6 @@ def get_recent_pic(pages,after="",ps={}):
             except:
                 pass
         return get_recent_pic(pages-1,a["postOrder"][-1] if len(a["postOrder"]) > 0 else None ,ps)
-if vars["prev_update"] < time.time()- 80000:
-    if len(vars["pic_data"].keys() > 10):
-        vars["pic_data"].pop(random.choice(vars["pic_data"].keys()))
-    vars["pic_data"] = {**vars["pic_data"], **get_recent_pic(20)}
-    vars["pic_data"] = [[k,v] for k,v in sorted(zip(vars["pic_data"].keys(),vars["pic_data"].values()),key = lambda d:-d[1]["score"])]
-    vars["pic_data"] = {k:v for k,v in vars["pic_data"][:100] }
-    vars["prev_update"] = time.time()
 
 
 def try_get_pic(try_t = 3):
@@ -64,6 +57,15 @@ def try_get_pic(try_t = 3):
             vars["prev_update"][c]["score"] = 0
             try_get_pic(try_t -1)
 try_get_pic()
+
+if vars["prev_update"] < time.time()- 80000:
+    if len(vars["pic_data"].keys() > 10):
+        vars["pic_data"].pop(random.choice(vars["pic_data"].keys()))
+    vars["pic_data"] = {**vars["pic_data"], **get_recent_pic(20)}
+    vars["pic_data"] = [[k,v] for k,v in sorted(zip(vars["pic_data"].keys(),vars["pic_data"].values()),key = lambda d:-d[1]["score"])]
+    vars["pic_data"] = {k:v for k,v in vars["pic_data"][:100] }
+    vars["prev_update"] = time.time()
+
 json.dump(vars,open(temp_folder / "vars.json","w"))
 
 for file in os.listdir(temp_folder):
