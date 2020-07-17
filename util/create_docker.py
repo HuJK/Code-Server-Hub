@@ -54,7 +54,7 @@ print(has_gpu)
 stopc = ['docker', "stop" , "docker-"+username] 
 subprocess.call(stopc)
 
-runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getDataParam(username) +[image_name]
+runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getDataParam(username) +[image_name]
 subprocess.call(runc)
 
 startc = ['docker', "start" ,"docker-"+username ]
