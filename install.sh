@@ -97,8 +97,7 @@ ln -s ../sites-available/code-hub-docker /etc/nginx/sites-enabled/
 mv /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bak
 ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
 
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code
-ln -s /etc/code-server-hub/code /etc/nginx/sites-available/code
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code -O /etc/nginx/sites-available/code
 ln -s ../sites-available/code /etc/nginx/sites-enabled/
 
 mkdir -p /etc/code-server-hub/cert
@@ -186,7 +185,7 @@ echo "###unzip code-server.tar.gz###"
 
 tar xzvf code-server.tar.gz -C .cshub
 mv .cshub/*/* .cshub/
-
+rm code-server.tar.gz
 
 
 
