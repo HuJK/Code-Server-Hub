@@ -2,7 +2,7 @@ import os
 import sys
 import itertools
 import subprocess
-
+from pathlib import Path
 
 image_name = "whojk/code-server-hub-docker"
 
@@ -23,7 +23,7 @@ shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
 
 
 def getDataParam(username):
-    user_available_folder ["/data:/data", "{h}:{h}".format(h=homedir) , "/etc/localtime:/etc/localtime:ro" ,envs_path+":"+"/etc/code-server-hub/ENVSFILE"]
+    user_available_folder = ["{p}:{p}".format(p=p) for p in ["/data",homedir]] + ["{p}:{p}:ro".format(p=p) for p in ["/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [envs_path+":/etc/code-server-hub/ENVSFILE:ro"]
     return list(itertools.chain(*map(list,(zip(["-v"]*len(user_available_folder),[fpath for fpath in user_available_folder])))))
 
 def getGPUParam(username):
