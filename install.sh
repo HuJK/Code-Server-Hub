@@ -168,10 +168,11 @@ echo "###set permission###"
 mkdir -p /etc/code-server-hub/.cshub
 mkdir -p /etc/code-server-hub/envs
 chmod -R 755 /etc/code-server-hub/.cshub
-chmod -R 755 /etc/code-server-hub/util
+chmod -R 775 /etc/code-server-hub/util
 chmod -R 773 /etc/code-server-hub/sock
 chmod -R 770 /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/envs
+chgrp shadow /etc/code-server-hub/util/anime_pic
 
 cd /etc/code-server-hub
 
