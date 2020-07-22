@@ -102,16 +102,19 @@ ln -s ../sites-available/code /etc/nginx/sites-enabled/
 
 
 if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
-    echo "=========================================================================="
-    read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No)" yn
-    case $yn in
-        [Yy]* ) 
-            sed -i.bak "/^[^#]*listen 80.*/a\  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key;'\n  listen 443 ssl;\n  listen [::]:443 ssl;" /etc/nginx/sites-available/default;;
-        [Nn]* ) 
-            echo "Skipped";
-            break;;
-        * ) echo "Please answer yes or no.";;
-    esac
+    while true; do
+        echo "=========================================================================="
+        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No)" yn
+        case $yn in
+            [Yy]* ) 
+                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
+                break;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
 fi
 
 mkdir -p /etc/code-server-hub/cert
