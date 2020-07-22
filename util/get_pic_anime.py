@@ -8,7 +8,7 @@ import requests
 
 from pathlib import Path
 
-temp_folder = Path(sys.argv[1]) if len(sys.argv > 1) else Path(".")
+temp_folder = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
 os.makedirs(temp_folder, exist_ok = True)
 
 
