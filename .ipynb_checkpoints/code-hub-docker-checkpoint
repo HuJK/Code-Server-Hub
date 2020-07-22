@@ -1,0 +1,378 @@
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    set $server_files_location "/etc/code-server-hub";
+    set $server_service_name   "cshubD";
+    set $server_service_name_full "Personal Container ";
+    
+    listen 2087 ssl;
+    listen [::]:2087 ssl;
+    ssl_certificate     '/etc/code-server-hub/cert/ssl.pem';
+    ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';
+    server_name default_server;
+    location /.well-known/Meteor.jpg {
+        content_by_lua_block {
+            local python_get_img = io.popen('python3 "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. ngx.var.server_files_location .. '/util/anime_pic"')
+            ngx.print(python_get_img:read("*all"))
+        }
+    }
+    # Managing requests to verify letsencrypt host
+    location /.well-known {
+        alias /var/www/html/.well-known;
+    }
+    client_max_body_size 0;
+    
+    # Set this and add to line 140 if you set cockpit under some subpath . ex: 14: set $cockpit_addr "/cockpit";140:location ~ "/(cockpit).*" {
+    set $cockpit_addr "";
+    set $jupyter_addr "";
+    set $cockpit_addr_internal "https://127.0.0.1:9090";
+    set $jupyter_addr_internal "https://127.0.0.1:8000";
+    
+    set $server_salt "1!2@3%=我是鹽";
+    set $server_sal2 "3%2@1!=我是糖";
+    # Managing literal requests to the front end
+    location / {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        set $server_auth_base64 "bm9sb2dpbjpOb3RTZXRZZXQ=";
+        set $server_sock_url   "Not_Set_Yet";
+        rewrite_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local md5 = require('md5')
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = remote_user .. ":" .. md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
+                server_sock_url  = "http://unix:" .. server_sock_path
+                ngx.var.server_sock_url = server_sock_url
+                ngx.var.server_auth_base64 = ngx.encode_base64( server_auth )
+                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/create_login.py","w")
+                fp:write(server_sock_path)
+                fp:close()
+            end
+        }
+        proxy_set_header Authorization "Basic ${server_auth_base64}";
+        proxy_pass $server_sock_url;
+        proxy_redirect http://$host/login    https://$http_host/302-code-server.html;
+        # websocket headers
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        # if proxy_pass to workspace failed, spawn workspace 
+        
+        error_page 502 =404 /502-server_conn_err.html;
+    }
+    
+    location = /502-server_conn_err.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+    return 404 '<!DOCTYPE html><html> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style>*{font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;}.MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black;} body{background: url("/.well-known/Meteor.jpg") no-repeat fixed; background-position: center top; background-size: cover;}.buttonRed{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.buttonRed:hover{background-color: #d12626}.buttonRed:active{background-color: #d12626; box-shadow: 0 5px #666; transform: translateY(4px);}.button{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.button:hover{background-color: #3e8e41}.button:active{background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px);}.buttonGray{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #525252; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.buttonGray:hover{background-color: #525252}</style> </head> <body> <center> <h1 style="color:white" class=MainTitle>${server_service_name_full}Control Panel</h1> </center> <center> <input type="button" class="button" value="Start Container" onclick="window.location.href=\'/200-server_spawn.html\'" style="width:200px;height:60px;font-size:20px;"> <input type="button" class="buttonRed" value="Factory Reset" onclick="window.location.href=\'/200-delete-confirm.html\'" style="width:200px;height:60px;font-size:20px;"> <input type="button" class="buttonRed" value="Log out" onclick="window.location.href=\'/200-logout.html\'" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;"/> <center> <input type="button" class="buttonGray" value="VS code" style="width:120px;height:60px;font-size:20px;" onclick="alert(\'Your container aren\\\'t start yet.\')" > <input type="button" class="buttonGray" value="Jupyter" style="width:120px;height:60px;font-size:20px;" onclick="alert(\'Your container aren\\\'t start yet.\')" > </body></html>';
+    } 
+
+    location = /200-server_spawn.html {
+        default_type 'text/html';
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        content_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local md5 = require 'md5'  
+            if ngx.var.http_authorization then
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
+                server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
+                response = ngx.location.capture('/')
+                ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
+                if response.status >= 400 then
+                    fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/create_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
+                    fp:write(server_auth)
+                    fp:close()
+                    ngx.say('<head><style>code {display: block; /* fixes a strange ie margin bug */font-family: Courier New;font-size: 11pt;overflow:auto;background: #f0f0f0 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAASwCAYAAAAt7rCDAAAABHNCSVQICAgIfAhkiAAAAQJJREFUeJzt0kEKhDAMBdA4zFmbM+W0upqFOhXrDILwsimFR5pfMrXW5jhZr7PwRlxVX8//jNHrGhExjXzdu9c5IiIz+7iqVmB7Hwp4OMa2nhhwN/PRGEMBh3Zjt6KfpzPztxW9MSAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzB8HS+J9kUTvzEDMwAAAABJRU5ErkJggg==) left top repeat-y;border: 10px solid white;padding: 10px 10px 10px 21px;max-height:1000px;line-height: 1.2em;}</style></head>')
+                    ngx.say('<body>')
+                    ngx.say("<center><h1>Starting workspace</h1></center>")
+                    ngx.say("<p>You can check " .. ngx.var.server_service_name_full .. " status by this command: <br><code>python3 " .. ngx.var.server_files_location .. "/util/create_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path .. "</code><br></p>")
+                    ngx.say("<p>You can check " .. ngx.var.server_service_name_full .. " status by this command: <br><code>docker exec -it docker-" .. remote_user .. " bash</code><br></p>")
+                    ngx.say("<hr />")
+                    ngx.say("<br>Please refresh this page after a few seconds.<br>")
+                    ngx.say('<script>window.onload = function() { setInterval(function(){ var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() { console.log(xhttp); if ((xhttp.readyState === 4 && xhttp.status === 0) || (xhttp.status < 400 && xhttp.status >= 200)) { window.location.replace("/200-panel.html"); } }; xhttp.open("GET", "/", true); xhttp.send();},1000);};</script>')
+                    ngx.say('</body>')
+                else
+                    ngx.redirect("/")
+                end
+            else
+                ngx.say("Need auth info!")
+            end
+        } 
+    }
+    
+    set $panelHTML '<!DOCTYPE html><html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style> * { font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif; } .MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black;} body {background: url("/.well-known/Meteor.jpg") no-repeat fixed;background-position: center top;background-size:cover;} .buttonRed { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonRed:hover { background-color: #d12626 } .buttonRed:active { background-color: #d12626; box-shadow: 0 5px #666; transform: translateY(4px); } .button { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .button:hover { background-color: #3e8e41 } .button:active { background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px); } .buttonGray { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #525252; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonGray:hover { background-color: #525252 } </style></head><body> <center> <h1 style="color:white" class=MainTitle>${server_service_name_full} Control Panel</h1></center> <center> <input type="button" class="buttonRed" value="Stop Container" onclick="window.location.href=\'/200-shutdown.html\'" style="width:200px;height:60px;font-size:20px;"> <input type="button" class="buttonGray" value="Factory Reset" onclick="alert(\'You can\\\'t reset your container while it\\\'s running.\\nPlease stop it first.\')" style="width:200px;height:60px;font-size:20px;" > <input type="button" class="buttonRed" value="Log out" onclick="window.location.href=\'/200-logout.html\'" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /> <center> <input type="button" class="button" value="VS code" onclick="window.open(\'/\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Jupyter" onclick="window.open(\'/jupyterlab/\')" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /></body></html>';
+    location = /200-panel.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        content_by_lua_block {
+
+            response = ngx.location.capture('/')
+            if response.status >= 400 then
+                ngx.redirect("/502-server_conn_err.html")
+            else
+                ngx.say(ngx.var.panelHTML)
+            end
+        }
+    }
+    
+    location = /200-delete.html {
+        auth_pam "Secure Area";
+        auth_pam_service_name "delete";
+        access_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local md5 = require 'md5'  
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
+				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
+                ngx.req.read_body()
+                local args = ngx.req.get_post_args()
+                if args["username"] == remote_user and args["password"] == remote_password then
+                    fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/delete_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
+                    fp:write(remote_password)
+                    fp:close()
+                    ngx.say('Success')
+                else
+                    ngx.status = 403
+                    ngx.say('Wrong credential')
+                end 
+            end
+        }
+    }
+    
+    location = /200-delete-confirm.html {
+        auth_pam "Secure Area";
+        auth_pam_service_name "delete";
+        access_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local md5 = require 'md5'  
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                ngx.say('<!DOCTYPE html><html> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style>*{font-family: MArial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;} .MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black;} body{background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/.well-known/Meteor.jpg") no-repeat fixed; background-position: center top; background-size: cover;}.buttonRed{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.button{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.buttonGray{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #525252; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.buttonGray:hover{background-color: #525252} .alert * {-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-ms-touch-action: none;}.alert *:focus {outline: 0}.alert {position: fixed;top: 0%;left: 50%;margin-left: -350px;margin-top: 80px;width: 700px;text-align: center;font-family: -apple-system, SF UI Text, Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 18px;line-height: 1.4;border-radius: 13px;overflow: hidden;z-index: 9999999999999999999999998;background-color: rgba(255, 255, 255, 0.9);}.alert .inner {padding: 15px;}.alert .title {font-weight: 500;font-size: 30px;color: red;}.alert .text {margin-top: 5px;font-size: 20px;}.alert .btnline{display: flex;justify-content: space-around;}.alert .boderline{border-top: #c4c4c4 1px solid ;}.alert .iosbutton {position: relative;height: 55px;line-height: 55px;font-size: 24px;color: #007aff;border-radius: 0 0 13px 13px;overflow: hidden;cursor: pointer;}.alert .iosbutton:after {content: ""position: absolute;left: 0;top: 0;height: 1px;width: 100%;display: block;z-index: 9999999999999999999999999;}input.dialog-input[type] { box-sizing: border-box; margin: 0; margin-top: 15px; border-radius: 4px; -webkit-appearance: none; -moz-appearance: none; appearance: none; width: 100%; display: block; font-family: inherit; box-shadow: none; font-size: 14px; height: 32px; background-color: #fff; border: 1px solid rgba(0,0,0,0.3)}.dialog-input-double input.dialog-input { border-radius: var(--f7-dialog-input-border-radius) var(--f7-dialog-input-border-radius) 0 0}.dialog-input-double+.dialog-input-double input.dialog-input { border-radius: 0 0 4px 4px} </style> </head> <body> <div><div class="alert"> <div class="inner"> <div class="title">Warning</div> <div class="text"> Are you sure you want to <span style="color:CRIMSON">factory reset</span> your container?<br>All data will be destroyed except <span style="color:green">/home/' .. remote_user .. ' /data</span>.<br>Input your credentials to confirm. </div> <div><input type="text" name="dialog-username" placeholder="Username" class="dialog-input" id="usernm"> <input id="pwdd" type="password" name="dialog-password" placeholder="Password" class="dialog-input"> </div> </div><div class="boderline"></div> <div class="btnline"> <div class="iosbutton" onclick="window.location.href=\'/\'">Cancel</div> <div class="iosbutton" onclick="var xhr = new XMLHttpRequest(); xhr.open(\'POST\', \'/200-delete.html\',true ) ; xhr.onload = function() { if (xhr.status === 200) {alert (xhr.responseText);window.location.href=\'/\'} else {alert (xhr.responseText)} }; xhr.send([encodeURIComponent(\'username\')+\'=\'+encodeURIComponent(document.getElementById(\'usernm\').value),encodeURIComponent(\'password\')+\'=\'+encodeURIComponent( document.getElementById(\'pwdd\').value)].join(\'&\'))">OK</div> </div></div></div> <center> <h1 style="color:white" class=MainTitle>' .. ngx.var.server_service_name_full .. 'Control Panel</h1> </center> <center> <input type="button" class="button" value="Start Container" style="width:200px;height:60px;font-size:20px;" disabled> <input type="button" class="buttonRed" value="Factory Reset" style="width:200px;height:60px;font-size:20px;" disabled> <input type="button" class="buttonRed" value="Log out" style="width:120px;height:60px;font-size:20px;" disabled> </center> <hr style="visibility: hidden;"/> <center> <input type="button" class="buttonGray" value="VS code" style="width:120px;height:60px;font-size:20px;" disabled> <input type="button" class="buttonGray" value="Jupyter" style="width:120px;height:60px;font-size:20px;" disabled> </body></html>')
+            end
+        }
+    }
+ 
+    location = /200-shutdown.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        access_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local md5 = require 'md5'  
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
+				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
+                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/close_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
+                fp:write(remote_password)
+                fp:close()
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Success.<br/>Redirect to / after 0.1 seconds.</p><form name="homepage" action="' .. "/" .. '" method="get"></form></body></html>')
+            end
+        }
+    }
+
+    location = /200-logout.html {
+        add_header Set-Cookie "cockpit=disabled; Path=/;  Secure; HttpOnly" ;
+        return 200 '<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Logout. Back to homepage after 0.1 seconds.</p><form name="homepage" action="/401-logout.html" method="get"></form></body></html>';
+    }
+
+    location ~ "^/(cockpit|system|storage|network|docker|users|apps|updates|dashboard).*" {
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_pass $cockpit_addr_internal;
+        proxy_set_header Host    $http_host ;
+        gzip off;
+    }
+    
+
+    location = /302-cockpit.html {
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        set $setcookie00 "nil";
+        set $SetCookie11 "nil";
+        access_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
+            response = ngx.location.capture(ngx.var.cockpit_addr .. '/cockpit/login')
+            if response.status < 400 then
+                ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
+                ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+            end
+        }
+        header_filter_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            if ngx.var.setcookie00 ~= "nil" then
+                ngx.header["set-cookie"] = url_tool.unserialize(ngx.var.setcookie00)
+            else
+                ngx.header["Set-Cookie"] = url_tool.unserialize(ngx.var.SetCookie11)
+            end
+        }
+        content_by_lua_block {
+            if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.cockpit_addr .. "/system" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.cockpit_addr .. "/system" .. '" method="get"></form></body></html>')
+            else
+                ngx.status = 404
+                ngx.say("Unable to connect to " .. ngx.var.cockpit_addr_internal)
+            end
+        }
+    }
+    
+    location = /302-account.html {
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        set $setcookie00 "nil";
+        set $SetCookie11 "nil";
+        access_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
+            response = ngx.location.capture(ngx.var.cockpit_addr .. '/cockpit/login')
+            if response.status < 400 then
+                ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
+                ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+            end
+        }
+        header_filter_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            if ngx.var.setcookie00 ~= "nil" then
+                ngx.header["set-cookie"] = url_tool.unserialize(ngx.var.setcookie00)
+            else
+                ngx.header["Set-Cookie"] = url_tool.unserialize(ngx.var.SetCookie11)
+            end
+        }
+        content_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+
+            if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
+                                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.cockpit_addr .. "/users#/" .. remote_user .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.cockpit_addr .. "/users#/" .. remote_user .. '" method="get"></form></body></html>')
+            else
+                ngx.status = 404
+                ngx.say("Unable to connect to " .. ngx.var.cockpit_addr_internal)
+            end
+        }
+
+    }
+    
+
+    location = /401-logout.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        access_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local md5 = require('md5')
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                user_lgin_tokn_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".login"
+                lginfile = io.open(user_lgin_tokn_path, "r")
+                if lginfile ~= nil then
+                    login_status = "1"
+                    lginfile:close()
+                    os.remove(user_lgin_tokn_path)
+                else
+                    login_status = "0"
+                end
+                if login_status == "0" then
+                    ngx.redirect("/")
+                end
+            end
+        }
+        try_files DUMMY @return401;
+        error_page 401 =200  @return200;
+    }
+    location @test {
+        return 200 "testttt";
+    }
+    location @return401 {
+        set $www_auth_str 'Basic Realm=uU86bq7aCRrTz0bT5fYbhKAX';
+        add_header 'WWW-Authenticate' $www_auth_str always;
+        return 401 '<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Logout. Back to homepage after 0.1 seconds.</p><form name="homepage" action="/" method="get"></form></body></html>';
+    }
+    location @return200 {
+        return 200 '<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Logout. Back to homepage after 0.1 seconds.</p><form name="homepage" action="/" method="get"></form></body></html>';
+    }
+}
