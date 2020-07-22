@@ -100,6 +100,20 @@ ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code -O /etc/nginx/sites-available/code
 ln -s ../sites-available/code /etc/nginx/sites-enabled/
 
+
+if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
+    echo "=========================================================================="
+    read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No)" yn
+    case $yn in
+        [Yy]* ) 
+            sed -i.bak "/^[^#]*listen 80.*/a\  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key;'\n  listen 443 ssl;\n  listen [::]:443 ssl;" /etc/nginx/sites-available/default;;
+        [Nn]* ) 
+            echo "Skipped";
+            break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+fi
+
 mkdir -p /etc/code-server-hub/cert
 chmod 600 /etc/code-server-hub/cert
 cd /etc/code-server-hub/cert
