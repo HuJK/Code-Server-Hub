@@ -11,7 +11,34 @@ apt-get remove -y nginx
 apt-get autoremove -y
 set -e
 echo "###install dependanse phase###"
-
+echo "Install dependances"
+apt-get install -y nginx-full
+apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit
+apt-get install -y libnginx-mod-http-auth-pam libnginx-mod-http-lua
+apt-get install -y tmux gdb python python3 wget libncurses-dev nodejs
+apt-get install -y python3-pip nodejs sudo gcc g++ build-essential
+apt-get install -y aria2 p7zip-full python3-dev perl wget curl vim htop
+pip3 install certbot-dns-cloudflare
+set +e # folling command only have one will success
+#cockpit for user management
+apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
+apt-get install -y cockpit cockpit-pcp                     #for ubuntu 19.04
+set -e
+if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
+    while true; do
+        echo "=========================================================================="
+        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No)" yn
+        case $yn in
+            [Yy]* ) 
+                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
+                break;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+fi
 
 if hash docker 2>/dev/null; then
     echo "Docker installed, skip docker auto install"
@@ -101,22 +128,6 @@ wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code -O /etc/
 ln -s ../sites-available/code /etc/nginx/sites-enabled/
 
 
-if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
-    while true; do
-        echo "=========================================================================="
-        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No)" yn
-        case $yn in
-            [Yy]* ) 
-                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
-                break;;
-            [Nn]* ) 
-                echo "Skipped";
-                break;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
-fi
-
 mkdir -p /etc/code-server-hub/cert
 chmod 600 /etc/code-server-hub/cert
 cd /etc/code-server-hub/cert
@@ -160,19 +171,6 @@ while true; do
 done
 
 
-echo "Install dependances"
-apt-get install -y nginx-full
-apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit
-apt-get install -y libnginx-mod-http-auth-pam libnginx-mod-http-lua
-apt-get install -y tmux gdb python python3 wget libncurses-dev nodejs
-apt-get install -y python3-pip nodejs sudo gcc g++ build-essential
-apt-get install -y aria2 p7zip-full python3-dev perl wget curl vim htop
-pip3 install certbot-dns-cloudflare
-set +e # folling command only have one will success
-#cockpit for user management
-apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
-apt-get install -y cockpit cockpit-pcp                     #for ubuntu 19.04
-set -e
 
 set +e
 echo "###add nginx to shadow to make pam_module work###"
