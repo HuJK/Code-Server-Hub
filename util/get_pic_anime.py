@@ -67,5 +67,5 @@ try_get_pic()
 json.dump(vars,open(temp_folder / ".vars.json","w"))
 
 for file in os.listdir(temp_folder):
-    if file[0] != "." and file.rsplit(".",count=1)[0] not in vars["pic_data"]:
+    if file[0] != "." and file.rsplit(".",1)[0] not in vars["pic_data"]:
         os.remove(temp_folder / file)
