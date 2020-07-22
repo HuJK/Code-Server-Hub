@@ -15,7 +15,7 @@ server {
     server_name default_server;
     location /.well-known/Meteor.jpg {
         content_by_lua_block {
-            local python_get_img = io.popen('python3 "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. ngx.var.server_files_location .. '/envs/anime_pic"')
+            local python_get_img = io.popen('python3 "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. ngx.var.server_files_location .. '/util/anime_pic"')
             ngx.print(python_get_img:read("*all"))
         }
     }
