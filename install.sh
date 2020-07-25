@@ -64,9 +64,9 @@ cd /etc/code-server-hub/cert
 openssl genrsa -out ssl.key 2048
 openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 
-
+set +e
 mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
-
+set -e
 
 if [ "$1" == "docker" ]; then
     #ask for install docker
@@ -145,7 +145,7 @@ if [ "$1" == "docker" ]; then
                     --sslkey  /etc/code-server-hub/cert/ssl.key;
                 echo "=========================================================================="
                 while true; do
-                    read -p "Please visit https://$(wget -qO- https://ifconfig.me/):9000 to set your portainer password now. Finished?(Yes/No)" ynn
+                    read -p "Please visit https://$(wget -qO- https://ifconfig.me/):9000 or https://[your server's ip]:9000 to set your portainer password now. Finished?(Yes/No)" ynn
                     case $ynn in
                         [Yy]* ) 
                             break;;
