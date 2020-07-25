@@ -49,6 +49,7 @@ curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | wget -i - -O code-server.tar.gz
 echo "###unzip code-server.tar.gz###"
 
+rm -r /etc/code-server-hub/.cshub/*
 tar xzvf code-server.tar.gz -C .cshub
 mv .cshub/*/* .cshub/
 rm code-server.tar.gz
