@@ -25,6 +25,9 @@ user|passwd
 ------|---------
 demo01|demo)!
 
+## Video introduction
+
+[YouTube](https://www.youtube.com/watch?v=d66OmV22UFI)
 
 ## Manual install 
 

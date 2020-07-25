@@ -6,7 +6,7 @@ apt-get update
 echo "###install dependanse phase###"
 echo "Install dependances"
 apt-get install -y nginx-extras ca-certificates
-apt-get install -y tmux wget libncurses-dev nodejs sudo curl vim htop openssl git
+apt-get install -y tmux libncurses-dev htop nodejs npm wget sudo curl vim openssl git
 apt-get install -y python3 python3-pip python3-dev p7zip-full 
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
@@ -17,16 +17,16 @@ set -e
 
 echo "###doenload files###"
 cd /etc
+
+#install Code server
+set +e
 git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
-
-
-#Code server
 cd /etc/code-server-hub
 ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
 ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
 ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/
 ln -s ../sites-available/code              /etc/nginx/sites-enabled/
-
+set -e
 
 echo "###add nginx to shadow to make pam_module work###"
 usermod -aG shadow www-data
