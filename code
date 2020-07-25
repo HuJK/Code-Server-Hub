@@ -1,0 +1,442 @@
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    set $server_files_location "/etc/code-server-hub";
+    set $server_service_name   "cshub";
+    set $server_service_name_full "Visual Studio Code Server";
+    
+    listen 8443 ssl;
+    listen [::]:8443 ssl;
+    ssl_certificate     '/etc/code-server-hub/cert/ssl.pem';
+    ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';
+    server_name default_server;
+    # Managing requests to verify letsencrypt host
+    location /.well-known/Meteor.jpg {
+        content_by_lua_block {
+            local python_get_img = io.popen('python3 "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. ngx.var.server_files_location .. '/util/anime_pic"')
+            ngx.print(python_get_img:read("*all"))
+        }
+    }
+    location /.well-known {
+        alias /var/www/html/.well-known;
+    }
+
+    client_max_body_size 0;
+    
+    # Set this and add to line 140 if you set cockpit under some subpath . ex: 14: set $cockpit_addr "/cockpit";140:location ~ "/(cockpit).*" {
+    set $cockpit_addr "";
+    set $jupyter_addr "";
+    set $cockpit_addr_internal "https://127.0.0.1:9090";
+    set $jupyter_addr_internal "https://127.0.0.1:8000";
+    
+    set $server_salt "1!2@3=我是鹽";
+    set $server_sal2 "1!2@3=我是糖";
+    # Managing literal requests to the front end
+    location / {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        set $server_auth_base64 "bm9sb2dpbjpOb3RTZXRZZXQ=";
+        set $server_sock_url   "Not_Set_Yet";
+        rewrite_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local md5 = require('md5')
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = remote_user .. ":" .. md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "-" .. server_sock_name .. ".sock"
+                server_sock_url  = "http://unix:" .. server_sock_path
+                ngx.var.server_sock_url = server_sock_url
+                ngx.var.server_auth_base64 = ngx.encode_base64( server_auth )
+                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/create_login.py","w")
+                fp:write(server_sock_path)
+                fp:close()
+            end
+        }
+        proxy_set_header Authorization "Basic ${server_auth_base64}";
+        proxy_pass $server_sock_url;
+        proxy_redirect ./login    ./302-code-server.html;
+        # websocket headers
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        # if proxy_pass to workspace failed, spawn workspace 
+        
+        error_page 502 =404 /502-server_conn_err.html;
+    }
+ 
+    location = /502-server_conn_err.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        return 404 '<!DOCTYPE html><html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style> *{font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;}.MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black; color:white; } body { background: url("/.well-known/Meteor.jpg") no-repeat fixed; background-position: center top; background-size: cover; } .buttonRed { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonRed:hover { background-color: #d12626 } .buttonRed:active { background-color: #d12626; box-shadow: 0 5px #666; transform: translateY(4px); } .button { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .button:hover { background-color: #3e8e41 } .button:active { background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px); } .buttonGray { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #525252; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonGray:hover { background-color: #525252 } </style></head><body> <center> <h1 class=MainTitle>${server_service_name_full} Control Panel</h1></center> <center> <input type="button" class="button" value="Start Server" onclick="window.location.href=\'/200-server_spawn.html\'" style="width:160px;height:60px;font-size:20px;"> <input type="button" class="buttonRed" value="Log out" onclick="window.location.href=\'/200-logout.html\'" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /> <center> <input type="button" class="buttonGray" value="VS code" style="width:120px;height:60px;font-size:20px;" disabled> <input type="button" class="button" value="Jupyter" onclick="window.open(\'/302-jupyterhub.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Cockpit" onclick="window.open(\'/302-cockpit.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Account" onclick="window.open(\'/302-account.html\')" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /></body></html>';
+    } 
+
+    location = /200-server_spawn.html {
+        default_type 'text/html';
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        content_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local md5 = require 'md5'  
+            if ngx.var.http_authorization then
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_auth      = remote_user .. ":" .. md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "-" .. server_sock_name .. ".sock"
+                response = ngx.location.capture('/')
+                ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
+                if response.status >= 400 then
+                    ndcmd = "$HOME/." .. ngx.var.server_service_name .. "/bin/code-server --socket " .. server_sock_path .. " --auth password "
+                    spcmd = "unset TMUX ;cp -prn " .. ngx.var.server_files_location .. "/." .. ngx.var.server_service_name .. " $HOME ;rm -f " .. server_sock_path .." 2>/dev/null ;tmux kill-session -t " .. ngx.var.server_service_name .. " ;tmux new -d -s " .. ngx.var.server_service_name .. "_setenv ;tmux set-environment -g PASSWORD " .. server_auth .. " ;tmux new -d -s " .. ngx.var.server_service_name .. " " .. ndcmd .. " ;tmux kill-session -t " .. ngx.var.server_service_name .. "_setenv ; tmux new -d -s chmod766 bash " .. ngx.var.server_files_location .. "/util/chmod766.sh " .. server_sock_path .. " "
+                    spcmd_by_su = "su -l " .. remote_user  .. " -s /bin/bash -c '" .. spcmd .. "'"
+                    fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
+                    fp:write(remote_password)
+                    fp:close()
+                    ngx.say('<head><style>code {display: block; /* fixes a strange ie margin bug */font-family: Courier New;font-size: 11pt;overflow:auto;background: #f0f0f0 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAASwCAYAAAAt7rCDAAAABHNCSVQICAgIfAhkiAAAAQJJREFUeJzt0kEKhDAMBdA4zFmbM+W0upqFOhXrDILwsimFR5pfMrXW5jhZr7PwRlxVX8//jNHrGhExjXzdu9c5IiIz+7iqVmB7Hwp4OMa2nhhwN/PRGEMBh3Zjt6KfpzPztxW9MSAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzB8HS+J9kUTvzEDMwAAAABJRU5ErkJggg==) left top repeat-y;border: 10px solid white;padding: 10px 10px 10px 21px;max-height:1000px;line-height: 1.2em;}</style></head>')
+                    ngx.say('<body>')
+                    ngx.say("<center><h1>Starting workspace</h1></center>")
+                    ngx.say("<p>If server not start, try to run this command in ssh console:<br>")
+                    ngx.say("<code>")
+                    ngx.say(spcmd:gsub(";", "\n"):gsub("&", "&amp;"):gsub("\"", "&quot;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub("\n", "<br>") .. "<br>")
+                    ngx.say("</code></p>")
+                    ngx.say("<p>If server still not start, Please run this command in ssh console, check if there has any error:<br>")
+                    ngx.say("<code>")
+                    ngx.say(("export PASSWORD=" .. server_auth .. ";" .. ndcmd):gsub(";", "\n"):gsub("\"", "&quot;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub("&", "&amp;"):gsub("\n", "<br>") .. "<br>")
+                    ngx.say("</code></p>")
+                    ngx.say("<p>You can check " .. ngx.var.server_service_name_full .. " workspace status by this command: <br><code>tmux a -t " .. ngx.var.server_service_name .. "</code><br></p>")
+                    ngx.say("<hr />")
+                    ngx.say("<br>Please refresh this page after a few seconds.<br>")
+                    ngx.say('<script>window.onload = function() { setInterval(function(){ var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() { console.log(xhttp); if ((xhttp.readyState === 4 && xhttp.status === 0) || (xhttp.status < 400 && xhttp.status >= 200)) { window.location.replace("/200-panel.html"); } }; xhttp.open("GET", "/", true); xhttp.send();},1000);};</script>')
+                    ngx.say('</body>')
+					ngx.say("<!--\n" .. spcmd_by_su .. "\n-->")
+                else
+                    ngx.redirect("/")
+                end
+            else
+                ngx.say("Need auth info!")
+            end
+        } 
+    }
+    
+    set $panelHTML  '<!DOCTYPE html><html><head>  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style> *{font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;}.MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black; color:white; }  body {background: url("/.well-known/Meteor.jpg") no-repeat fixed;background-position: center top;background-size:cover;} .buttonRed { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonRed:hover { background-color: #d12626 } .buttonRed:active { background-color: #d12626; box-shadow: 0 5px #666; transform: translateY(4px); } .button { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .button:hover { background-color: #3e8e41 } .button:active { background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px); } </style></head><body> <center> <h1 class=MainTitle>${server_service_name_full} Control Panel</h1></center> <center> <input type="button" class="buttonRed" value="Stop Server" onclick="window.location.href=\'/200-shutdown.html\'" style="width:160px;height:60px;font-size:20px;"> <input type="button" class="buttonRed" value="Log out" onclick="window.location.href=\'/200-logout.html\'" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /> <center> <input type="button" class="button" value="VS code" onclick="window.open(\'/\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Jupyter" onclick="window.open(\'/302-jupyterhub.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Cockpit" onclick="window.open(\'/302-cockpit.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Account" onclick="window.open(\'/302-account.html\')" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /></body></html>';
+    location = /200-panel.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        content_by_lua_block {
+
+            response = ngx.location.capture('/')
+            if response.status >= 400 then
+                ngx.redirect("/502-server_conn_err.html")
+            else
+                ngx.say(ngx.var.panelHTML)
+            end
+        }
+    }
+    
+    location = /200-shutdown.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        access_by_lua_block {
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                spcmd = "unset TMUX ;tmux send-keys -t " .. ngx.var.server_service_name .. " C-c ;sleep 1 ;tmux kill-session -t " .. ngx.var.server_service_name .. ""
+                spcmd_by_su = "su " .. remote_user  .. " -c '" .. spcmd .. "'"
+                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
+                fp:write(remote_password)
+                fp:close()
+                ngx.redirect("/")
+            end
+        }
+    }
+
+    location = /200-logout.html {
+        add_header Set-Cookie "cockpit=disabled; Path=/;  Secure; HttpOnly" ;
+        return 200 '<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Logout. Back to homepage after 0.1 seconds.</p><form name="homepage" action="/401-logout.html" method="get"></form></body></html>';
+    }
+
+    location ~ "^/(cockpit|system|storage|network|docker|users|apps|updates|dashboard).*" {
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_pass $cockpit_addr_internal;
+        proxy_set_header Host    $http_host ;
+        gzip off;
+    }
+    
+    location ~ "^/(user|hub)/.*" {
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_pass $jupyter_addr_internal;
+        proxy_set_header Host    $http_host ;
+        gzip off;
+    }
+
+    location = /302-code-server.html {
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        set $setcookie00 "nil";
+        set $SetCookie11 "nil";
+        access_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local md5 = require 'md5'
+            local url_tool = require 'url_tool'
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+            server_auth      = remote_user .. ":" .. md5.sumhexa(ngx.var.server_salt .. remote_password)
+            ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
+            response = ngx.location.capture('/login', { method = ngx.HTTP_POST, body = "password=" .. url_tool.urlEncode(server_auth)})
+            if response.status < 400 then
+                if url_tool.serialize(response.header["set-cookie"]) ~= nil then
+                    ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
+                end
+                if url_tool.serialize(response.header["Set-Cookie"]) ~= nil then
+                    ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+                end
+            end
+        }
+        header_filter_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            url_tool = require 'url_tool'
+            if ngx.var.setcookie00 ~= "nil" then
+                ngx.header["set-cookie"] = url_tool.unserialize(ngx.var.setcookie00)
+            elseif  ngx.var.setcookie11 ~= "nil" then
+                ngx.header["Set-Cookie"] = url_tool.unserialize(ngx.var.SetCookie11)
+            end
+        }
+        content_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. "/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. "/" .. '" method="get"></form></body></html>')
+            else
+                ngx.status = 404
+				ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie failed.<br/>Redirect to ' .. "/200-server_spawn.html" .. ' to try again after 0.1 seconds.</p><form name="homepage" action="' .. "/200-server_spawn.html" .. '" method="get"></form></body></html>')
+            end
+        }
+    }
+
+    location = /302-jupyterhub.html {
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        set $setcookie00 "nil";
+        set $SetCookie11 "nil";
+        access_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require 'url_tool'
+            ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
+            response = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login?next=', { method = ngx.HTTP_POST, body = "username=" .. url_tool.urlEncode(remote_user) .. "&password=" ..  url_tool.urlEncode(remote_password)})
+            if response.status < 400 then
+                ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
+                ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+            end
+        }
+        header_filter_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require 'url_tool'
+            if ngx.var.setcookie00 ~= "nil" then
+                ngx.header["set-cookie"] = url_tool.unserialize(ngx.var.setcookie00)
+            else
+                ngx.header["Set-Cookie"] = url_tool.unserialize(ngx.var.SetCookie11)
+            end
+        }
+        content_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
+				ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.jupyter_addr .. "/hub/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.jupyter_addr .. "/hub/" .. '" method="get"></form></body></html>')
+            else
+                ngx.status = 404
+                ngx.say("Unable to connect to " .. ngx.var.jupyter_addr_internal)
+            end
+        }
+    }
+
+    location = /302-cockpit.html {
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        set $setcookie00 "nil";
+        set $SetCookie11 "nil";
+        access_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
+            response = ngx.location.capture(ngx.var.cockpit_addr .. '/cockpit/login')
+            if response.status < 400 then
+                ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
+                ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+            end
+        }
+        header_filter_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            if ngx.var.setcookie00 ~= "nil" then
+                ngx.header["set-cookie"] = url_tool.unserialize(ngx.var.setcookie00)
+            else
+                ngx.header["Set-Cookie"] = url_tool.unserialize(ngx.var.SetCookie11)
+            end
+        }
+        content_by_lua_block {
+            if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.cockpit_addr .. "/system" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.cockpit_addr .. "/system" .. '" method="get"></form></body></html>')
+            else
+                ngx.status = 404
+                ngx.say("Unable to connect to " .. ngx.var.cockpit_addr_internal)
+            end
+        }
+    }
+    
+    location = /302-account.html {
+        add_header "Content-Type" "text/html" always;
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        set $setcookie00 "nil";
+        set $SetCookie11 "nil";
+        access_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
+            response = ngx.location.capture(ngx.var.cockpit_addr .. '/cockpit/login')
+            if response.status < 400 then
+                ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
+                ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+            end
+        }
+        header_filter_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require('url_tool')
+            if ngx.var.setcookie00 ~= "nil" then
+                ngx.header["set-cookie"] = url_tool.unserialize(ngx.var.setcookie00)
+            else
+                ngx.header["Set-Cookie"] = url_tool.unserialize(ngx.var.SetCookie11)
+            end
+        }
+        content_by_lua_block {
+            local tmp = ngx.var.http_authorization
+            tmp = tmp:sub(tmp:find(' ')+1)
+            tmp = ngx.decode_base64(tmp)
+            remote_user     = tmp:sub(0,tmp:find(":")-1)
+            remote_password = tmp:sub(tmp:find(':')+1)
+
+            if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
+                                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.cockpit_addr .. "/users#/" .. remote_user .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.cockpit_addr .. "/users#/" .. remote_user .. '" method="get"></form></body></html>')
+            else
+                ngx.status = 404
+                ngx.say("Unable to connect to " .. ngx.var.cockpit_addr_internal)
+            end
+        }
+
+    }
+    
+
+    location = /401-logout.html {
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
+        access_by_lua_block {
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            if ngx.var.http_authorization and ngx.var.remote_user then
+                local md5 = require('md5')
+                local tmp = ngx.var.http_authorization
+                tmp = tmp:sub(tmp:find(' ')+1)
+                tmp = ngx.decode_base64(tmp)
+                remote_user     = tmp:sub(0,tmp:find(":")-1)
+                remote_password = tmp:sub(tmp:find(':')+1)
+                server_sock_name = remote_user .. "_" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
+                user_lgin_tokn_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "-" .. server_sock_name .. ".login"
+                lginfile = io.open(user_lgin_tokn_path, "r")
+                if lginfile ~= nil then
+                    login_status = "1"
+                    lginfile:close()
+                    os.remove(user_lgin_tokn_path)
+                else
+                    login_status = "0"
+                end
+                if login_status == "0" then
+                    ngx.redirect("/")
+                end
+            end
+        }
+        try_files DUMMY @return401;
+        error_page 401 =200  @return200;
+    }
+    location @test {
+        return 200 "testttt";
+    }
+    location @return401 {
+        set $www_auth_str 'Basic Realm=uU86bq7aCRrTz0bT5fYbhKAX';
+        add_header 'WWW-Authenticate' $www_auth_str always;
+        return 401 '<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Logout. Back to homepage after 0.1 seconds.</p><form name="homepage" action="/" method="get"></form></body></html>';
+    }
+    location @return200 {
+        return 200 '<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Logout. Back to homepage after 0.1 seconds.</p><form name="homepage" action="/" method="get"></form></body></html>';
+    }
+
+}

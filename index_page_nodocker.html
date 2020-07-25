@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        * {
+            font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;
+        }
+        .title{
+            text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+            1px 1px 0 #000,
+            2px 2px 2px black;
+        }
+        body {
+            background: url('https://picsum.photos/1920/1080') no-repeat fixed;
+            background-position: center top;
+            background-size:cover;
+        } 
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            font-size: 24px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: 10px;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        
+        .button:hover {
+            background-color: #3e8e41
+        }
+        
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h1 style="color:white" class=title>Code Server</h1></center>
+    <center>
+        <input type="button" class="button" value="Main Panel" onclick="window.location.href='https://' + window.location.hostname + ':8443/200-panel.html'" style="width:300px;height:60px;font-size:20px;">
+    </center>
+    <hr style="visibility: hidden;" />
+</body>
+
+</html>
+
