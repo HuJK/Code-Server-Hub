@@ -23,7 +23,7 @@ set +e
 git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 cd /etc/code-server-hub
 ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
-ln -s ../sites-available/code              /etc/nginx/sites-enabled/
+ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
 set -e
 
 echo "###add nginx to shadow to make pam_module work###"
@@ -164,7 +164,7 @@ if [ "$1" == "docker" ]; then
     cd /etc/code-server-hub
     ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
-    ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/
+    ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-docker
     docker pull whojk/code-server-hub-docker
 else
     ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
