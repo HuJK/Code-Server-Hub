@@ -17,7 +17,7 @@ After=syslog.target network.target
 User=root
 WorkingDirectory=/etc/code-server-hub/util/jupyterhub_workdir
 Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
-ExecStart=/usr/local/bin/jupyterhub -f /etc/jupyterhub/jupyterhub_config.py
+ExecStart=/usr/local/bin/jupyterhub -f jupyterhub_config.py
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
