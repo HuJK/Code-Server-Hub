@@ -5,8 +5,8 @@ apt-get update
 #apt-get upgrade -y
 echo "###install dependanse phase###"
 echo "Install dependances"
-apt-get install -y nginx-full libnginx-mod-http-lua
-apt-get install -y tmux wget libncurses-dev nodejs sudo curl vim htop openssl git ca-certificates
+apt-get install -y nginx-extras ca-certificates
+apt-get install -y tmux wget libncurses-dev nodejs sudo curl vim htop openssl git
 apt-get install -y python3 python3-pip python3-dev p7zip-full 
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
