@@ -3,31 +3,24 @@ set -e
 #echo "###update phase###"
 apt-get update
 #apt-get upgrade -y
-set +e
-# In my distro(debian 10), It seems nginx and nginx-full are not compatible. I have to remove nginx than I can install nginx-full.
-apt-get remove -y nginx
-# The install script will detect npm exist or not on the system. If exist, it will not use itself's npm
-# But in Ubuntu 19.04, npm from apt are not compatible with it. So I have to remove first, and install back later.
-apt-get autoremove -y
-set -e
 echo "###install dependanse phase###"
 echo "Install dependances"
 apt-get install -y nginx-full
-apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit
-apt-get install -y libnginx-mod-http-auth-pam libnginx-mod-http-lua
-apt-get install -y tmux gdb python python3 wget libncurses-dev nodejs
-apt-get install -y python3-pip nodejs sudo gcc g++ build-essential
-apt-get install -y aria2 p7zip-full python3-dev perl wget curl vim htop
+apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit libnginx-mod-http-auth-pam libnginx-mod-http-lua
+apt-get install -y tmux  wget libncurses-dev nodejs sudo curl vim htop aria2 openssl git ca-certificates
+apt-get install -y python3 python3-pip python3-dev p7zip-full 
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
 apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
-apt-get install -y cockpit cockpit-pcp                     #for ubuntu 19.04
+apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
 set -e
+
+#ask for enable ssl at nginx
 if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
     while true; do
         echo "=========================================================================="
-        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No)" yn
+        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
         case $yn in
             [Yy]* ) 
                 sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
@@ -35,11 +28,15 @@ if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
             [Nn]* ) 
                 echo "Skipped";
                 break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
             * ) echo "Please answer yes or no.";;
         esac
     done
 fi
 
+#ask for install docker
 if hash docker 2>/dev/null; then
     echo "Docker installed, skip docker auto install"
 else
@@ -54,18 +51,18 @@ else
                 apt-get update;
                 apt-get install -y docker-ce docker-ce-cli containerd.io;
                 break;;
-            [Aa]* ) 
-                echo "Aborted";
-                exit;;
             [Nn]* ) 
                 echo "Skipped";
                 break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
             * ) echo "Please answer yes or no or abort.";;
         esac
     done
 fi
 
-
+#ask for install nvidia-docker
 if hash nvidia-smi 2>/dev/null; then
     { # try
         docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
@@ -103,14 +100,6 @@ fi
 
 
 set +e
-echo "###generate self signed cert###"
-echo "###You should buy or get a valid ssl certs           ###"
-echo "###Now I generate a self singed certs in cert folder ###"
-echo "###But you should replace it with valid a ssl certs  ###"
-echo '###Remember update your cert for cockpit too!        ###'
-echo '### cat ssl.pem ssl.key > /etc/cockpit/ws-certs.d/0-self-signed.cert###'
-apt-get install -y install openssl git ca-certificates
-
 
 echo "###doenload files###"
 cd /etc
@@ -127,9 +116,12 @@ ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/code -O /etc/nginx/sites-available/code
 ln -s ../sites-available/code /etc/nginx/sites-enabled/
 
-
-mkdir -p /etc/code-server-hub/cert
-chmod 600 /etc/code-server-hub/cert
+echo "###generate self signed cert###"
+echo "###You should buy or get a valid ssl certs           ###"
+echo "###Now I generate a self singed certs in cert folder ###"
+echo "###But you should replace it with valid a ssl certs  ###"
+echo '###Remember update your cert for cockpit too!        ###'
+echo '### cat ssl.pem ssl.key > /etc/cockpit/ws-certs.d/0-self-signed.cert###'
 cd /etc/code-server-hub/cert
 openssl genrsa -out ssl.key 2048
 openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
@@ -171,14 +163,9 @@ while true; do
 done
 
 
-
-set +e
 echo "###add nginx to shadow to make pam_module work###"
-usermod -aG shadow nginx
 usermod -aG shadow www-data
-usermod -aG docker nginx
 usermod -aG docker www-data
-set -e
 echo "###set permission###"
 mkdir -p /etc/code-server-hub/.cshub
 mkdir -p /etc/code-server-hub/envs
@@ -186,6 +173,7 @@ chmod -R 755 /etc/code-server-hub/.cshub
 chmod -R 775 /etc/code-server-hub/util
 chmod -R 773 /etc/code-server-hub/sock
 chmod -R 770 /etc/code-server-hub/envs
+chmod -R 600 /etc/code-server-hub/cert
 chgrp shadow /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/util/anime_pic
 

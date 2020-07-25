@@ -8,7 +8,7 @@ import requests
 
 from pathlib import Path
 
-temp_folder = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(".")
+temp_folder = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("./anime_pic")
 os.makedirs(temp_folder, exist_ok = True)
 
 
@@ -19,7 +19,6 @@ if os.path.isfile(temp_folder / ".vars.json"):
 def get_recent_pic(pages,after="",ps={}):
     if pages == 0 or after == None:
         return ps
-        return [[ps[k][0],k,ps[k][1]] for k in ps.keys()]
     else:
         url = r'https://gateway.reddit.com/desktopapi/v1/subreddits/Animewallpaper/search?rtj=only&allow_over18=&include=prefsSubreddit&q=flair_name%3A%22Desktop%22&sort=new&t=all&type=link&include_over_18=&restrict_sr=1&b=true' + ("" if after == "" else "&after=" + after)
         r = requests.get(url, headers = {'User-agent': 'your bot 0.2'})
@@ -38,7 +37,7 @@ def get_recent_pic(pages,after="",ps={}):
 if vars["prev_update"] < time.time()- 80000:
     if len(vars["pic_data"].keys()) > 10:
         vars["pic_data"].pop(random.choice(list(vars["pic_data"].keys())))
-    vars["pic_data"] = {**vars["pic_data"], **get_recent_pic(20)}
+    vars["pic_data"] = {**vars["pic_data"], **get_recent_pic(10)}
     vars["pic_data"] = [[k,v] for k,v in sorted(zip(vars["pic_data"].keys(),vars["pic_data"].values()),key = lambda d:-d[1]["score"])]
     vars["pic_data"] = {k:v for k,v in vars["pic_data"][:128] }
     vars["prev_update"] = time.time()
@@ -46,8 +45,6 @@ if vars["prev_update"] < time.time()- 80000:
 
 def try_get_pic(try_t = 3):
     c = random.choices(list(vars["pic_data"].keys()), weights=map(lambda x:x["score"],list(vars["pic_data"].values())))[0]
-    if(try_t==0):
-        return
     if os.path.isfile(temp_folder / (c + ".png")):
         #print(str(temp_folder / c))
         sys.stdout.buffer.write(open(temp_folder / (c + ".png"),"rb").read())
@@ -55,14 +52,18 @@ def try_get_pic(try_t = 3):
     else:
         try:
             r = requests.get(vars["pic_data"][c]["url"])
-            if (r.status_code != 200):
-                raise Exception("Not 200")
+            r.raise_for_status()
             open(temp_folder / (c + ".png"),"wb").write(r.content)
             #print(str(temp_folder / c))
             sys.stdout.buffer.write(r.content)
+        except requests.HTTPError as e:
+            if try_t > 0:
+                vars["pic_data"][c]["score"] = 0
+                try_get_pic(try_t -1)
+            else:
+                raise e
         except Exception as e:
-            vars["prev_update"][c]["score"] = 0
-            try_get_pic(try_t -1)
+            raise e
 try_get_pic()
 json.dump(vars,open(temp_folder / ".vars.json","w"))
 
