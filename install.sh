@@ -5,9 +5,8 @@ apt-get update
 #apt-get upgrade -y
 echo "###install dependanse phase###"
 echo "Install dependances"
-apt-get install -y nginx-full
-apt-get install -y lua5.2 lua5.2-doc liblua5.2-dev luajit libnginx-mod-http-auth-pam libnginx-mod-http-lua
-apt-get install -y tmux  wget libncurses-dev nodejs sudo curl vim htop aria2 openssl git ca-certificates
+apt-get install -y nginx-full libnginx-mod-http-lua
+apt-get install -y tmux wget libncurses-dev nodejs sudo curl vim htop openssl git ca-certificates
 apt-get install -y python3 python3-pip python3-dev p7zip-full 
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
@@ -66,31 +65,12 @@ cd /etc/code-server-hub/cert
 openssl genrsa -out ssl.key 2048
 openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 
-#ask for enable ssl at nginx
-if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
-    while true; do
-        echo "=========================================================================="
-        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
-        case $yn in
-            [Yy]* ) 
-                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
-                break;;
-            [Nn]* ) 
-                echo "Skipped";
-                break;;
-            [Aa]* ) 
-                echo "Aborted";
-                exit;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
-fi
-
 
 mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
 
 while true; do
-    read -p "Do you want to install docker version of code-server? It will cost additional 15GB of your disk (Yes/No)" yn
+    echo "Do you want to install docker version of code-server?"
+    read -p "It will cost additional 15GB of your disk (Yes/No)" yn
     case $yn in
         [Yy]* ) 
             ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
@@ -196,6 +176,28 @@ while true; do
     esac
 done
 
+#ask for enable ssl at nginx
+if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
+    while true; do
+        echo "=========================================================================="
+        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
+        case $yn in
+            [Yy]* ) 
+                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
+                break;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+fi
+
+sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub-Docker/master/install2.sh)"
+
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
 systemctl enable cockpit.socket
@@ -203,8 +205,5 @@ service nginx stop
 service nginx start
 service cockpit stop
 service cockpit start
-
-
-sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
 
 exit 0
