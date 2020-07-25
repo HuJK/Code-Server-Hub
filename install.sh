@@ -17,7 +17,7 @@ set -e
 
 echo "###doenload files###"
 cd /etc
-git clone --depth 1 https://github.com/HuJK/Code-Server-Hub-Docker.git code-server-hub
+git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 
 
 #Code server
@@ -189,7 +189,7 @@ if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
     done
 fi
 
-sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub-Docker/master/install2.sh)"
+sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
 
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
