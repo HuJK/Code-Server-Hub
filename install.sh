@@ -22,9 +22,7 @@ cd /etc
 set +e
 git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 cd /etc/code-server-hub
-ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
 ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
-ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/
 ln -s ../sites-available/code              /etc/nginx/sites-enabled/
 set -e
 
@@ -70,7 +68,6 @@ mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html
 
 
 if [ "$1" == "docker" ]; then
-    ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     #ask for install docker
     if hash docker 2>/dev/null; then
         echo "Docker installed, skip docker auto install"
@@ -163,6 +160,11 @@ if [ "$1" == "docker" ]; then
             * ) echo "Please answer yes or no.";;
         esac
     done
+    #install code-hub-docker
+    cd /etc/code-server-hub
+    ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
+    ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
+    ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/
     docker pull whojk/code-server-hub-docker
 else
     ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
