@@ -37,7 +37,7 @@ def get_recent_pic(pages,after="",ps={}):
 if vars["prev_update"] < time.time()- 80000:
     if len(vars["pic_data"].keys()) > 10:
         vars["pic_data"].pop(random.choice(list(vars["pic_data"].keys())))
-    vars["pic_data"] = {**vars["pic_data"], **get_recent_pic(10)}
+    vars["pic_data"] = {**vars["pic_data"], **get_recent_pic(6)}
     vars["pic_data"] = [[k,v] for k,v in sorted(zip(vars["pic_data"].keys(),vars["pic_data"].values()),key = lambda d:-d[1]["score"])]
     vars["pic_data"] = {k:v for k,v in vars["pic_data"][:128] }
     vars["prev_update"] = time.time()
