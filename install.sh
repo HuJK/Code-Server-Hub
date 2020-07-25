@@ -69,7 +69,7 @@ openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
 
 
-if [ "$1" != "docker" ]; then
+if [ "$1" == "docker" ]; then
     ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     #ask for install docker
     if hash docker 2>/dev/null; then
