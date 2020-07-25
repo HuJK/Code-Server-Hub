@@ -68,113 +68,106 @@ openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 
 mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
 
-while true; do
-    echo "Do you want to install docker version of code-server?"
-    read -p "It will cost additional 15GB of your disk (Yes/No)" yn
-    case $yn in
-        [Yy]* ) 
-            ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
-            #ask for install docker
-            if hash docker 2>/dev/null; then
-                echo "Docker installed, skip docker auto install"
-            else
-                echo "=========================================================================="
-                while true; do
-                    read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" yn
-                    case $yn in
-                        [Yy]* ) 
-                            apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
-                            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -;
-                            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
-                            apt-get update;
-                            apt-get install -y docker-ce docker-ce-cli containerd.io;
-                            break;;
-                        [Nn]* ) 
-                            echo "Skipped";
-                            break;;
-                        [Aa]* ) 
-                            echo "Aborted";
-                            exit;;
-                        * ) echo "Please answer yes or no or abort.";;
-                    esac
-                done
-            fi
-            usermod -aG docker www-data
-            #ask for install nvidia-docker
-            if hash nvidia-smi 2>/dev/null; then
-                { # try
-                    docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
-                    echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
-                } || { # catch
-                    # save log for exception 
-                    echo "=========================================================================="
-                    while true; do
-                        read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Abort)" yn
-                        case $yn in
-                            [Yy]* ) 
-                                # Nvidia-Docker
-                                distribution=$(. /etc/os-release;echo $ID$VERSION_ID);
-                                curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
-                                curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
-                                sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
-                                systemctl restart docker;
-                                break;;
-                            [Aa]* ) 
-                                echo "Aborted";
-                                exit;;
-                            [Nn]* ) 
-                                echo "Skipped";
-                                break;;
-                            * ) echo "Please answer yes or no or abort.";;
-                        esac
-                    done
-                }
-            else
-                echo "Nvidia driver not found, skip nvidia-docker autoinstall"
-            fi
-            #Portainer
+
+if [ "$1" != "docker" ]; then
+    ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
+    #ask for install docker
+    if hash docker 2>/dev/null; then
+        echo "Docker installed, skip docker auto install"
+    else
+        echo "=========================================================================="
+        while true; do
+            read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" yn
+            case $yn in
+                [Yy]* ) 
+                    apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
+                    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -;
+                    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
+                    apt-get update;
+                    apt-get install -y docker-ce docker-ce-cli containerd.io;
+                    break;;
+                [Nn]* ) 
+                    echo "Skipped";
+                    break;;
+                [Aa]* ) 
+                    echo "Aborted";
+                    exit;;
+                * ) echo "Please answer yes or no or abort.";;
+            esac
+        done
+    fi
+    usermod -aG docker www-data
+    #ask for install nvidia-docker
+    if hash nvidia-smi 2>/dev/null; then
+        { # try
+            docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
+            echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
+        } || { # catch
+            # save log for exception 
+            echo "=========================================================================="
             while true; do
-                echo "=========================================================================="
-                read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
+                read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Abort)" yn
                 case $yn in
                     [Yy]* ) 
-                        docker run -d -p 9000:9000 \
-                            --name portainer --restart always \
-                            -v /var/run/docker.sock:/var/run/docker.sock \
-                            -v portainer_data:/data \
-                            -v /etc/letsencrypt:/etc/letsencrypt \
-                            -v /etc/code-server-hub/cert/:/etc/code-server-hub/cert/ \
-                            portainer/portainer \
-                            --ssl \
-                            --sslcert /etc/code-server-hub/cert/ssl.pem \
-                            --sslkey  /etc/code-server-hub/cert/ssl.key;
-                        echo "=========================================================================="
-                        while true; do
-                            read -p "Please visit https://$(wget -qO- https://ifconfig.me/):9000 to set your portainer password now. Finished?(Yes/No)" ynn
-                            case $ynn in
-                                [Yy]* ) 
-                                    break;;
-                                [Nn]* ) 
-                                    echo "Please set password now, or your computer may take serious security risks";;
-                                * ) echo "Please answer yes or no.";;
-                            esac
-                        done
+                        # Nvidia-Docker
+                        distribution=$(. /etc/os-release;echo $ID$VERSION_ID);
+                        curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
+                        curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
+                        sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit;
+                        systemctl restart docker;
                         break;;
+                    [Aa]* ) 
+                        echo "Aborted";
+                        exit;;
                     [Nn]* ) 
                         echo "Skipped";
                         break;;
-                    * ) echo "Please answer yes or no.";;
+                    * ) echo "Please answer yes or no or abort.";;
                 esac
             done
-            docker pull whojk/code-server-hub-docker
-            break;;
-        [Nn]* ) 
-            ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
-            echo "Skipped";
-            break;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
+        }
+    else
+        echo "Nvidia driver not found, skip nvidia-docker autoinstall"
+    fi
+    #Portainer
+    while true; do
+        echo "=========================================================================="
+        read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
+        case $yn in
+            [Yy]* ) 
+                docker run -d -p 9000:9000 \
+                    --name portainer --restart always \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    -v portainer_data:/data \
+                    -v /etc/letsencrypt:/etc/letsencrypt \
+                    -v /etc/code-server-hub/cert/:/etc/code-server-hub/cert/ \
+                    portainer/portainer \
+                    --ssl \
+                    --sslcert /etc/code-server-hub/cert/ssl.pem \
+                    --sslkey  /etc/code-server-hub/cert/ssl.key;
+                echo "=========================================================================="
+                while true; do
+                    read -p "Please visit https://$(wget -qO- https://ifconfig.me/):9000 to set your portainer password now. Finished?(Yes/No)" ynn
+                    case $ynn in
+                        [Yy]* ) 
+                            break;;
+                        [Nn]* ) 
+                            echo "Please set password now, or your computer may take serious security risks";;
+                        * ) echo "Please answer yes or no.";;
+                    esac
+                done
+                break;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+    docker pull whojk/code-server-hub-docker
+else
+    ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
+fi
+
 
 #ask for enable ssl at nginx
 if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
