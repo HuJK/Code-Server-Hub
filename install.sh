@@ -31,7 +31,6 @@ ln -s ../sites-available/code              /etc/nginx/sites-enabled/
 
 echo "###add nginx to shadow to make pam_module work###"
 usermod -aG shadow www-data
-usermod -aG docker www-data
 echo "###set permission###"
 mkdir -p /etc/code-server-hub/.cshub
 mkdir -p /etc/code-server-hub/envs
@@ -120,6 +119,7 @@ while true; do
                     esac
                 done
             fi
+            usermod -aG docker www-data
             #ask for install nvidia-docker
             if hash nvidia-smi 2>/dev/null; then
                 { # try
