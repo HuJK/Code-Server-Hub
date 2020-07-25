@@ -163,10 +163,12 @@ if [ "$1" == "docker" ]; then
     done
     #install code-hub-docker
     cd /etc/code-server-hub
+    set +e
     ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
     ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-docker
     docker pull whojk/code-server-hub-docker
+    set -e
 else
     ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
 fi
