@@ -4,7 +4,6 @@ import itertools
 import subprocess
 from pathlib import Path
 
-image_name = "whojk/code-server-hub-docker"
 
 username  = sys.argv[1]
 useruid = subprocess.Popen(["id", "-u", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
@@ -45,9 +44,12 @@ except:
 
 
 has_gpu = []
+image_name = "whojk/code-server-hub-docker:minimal"
+
 outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 if len(outs) > 0:
     has_gpu = ["--gpus", getGPUParam(username)]
+    image_name = "whojk/code-server-hub-docker"
 print(has_gpu)
 
 

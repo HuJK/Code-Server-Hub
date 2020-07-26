@@ -97,6 +97,7 @@ if [ "$1" == "docker" ]; then
     usermod -aG docker www-data
     #ask for install nvidia-docker
     if hash nvidia-smi 2>/dev/null; then
+        docker pull whojk/code-server-hub-docker
         { # try
             docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
             echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
@@ -126,6 +127,7 @@ if [ "$1" == "docker" ]; then
         }
     else
         echo "Nvidia driver not found, skip nvidia-docker autoinstall"
+        docker pull whojk/code-server-hub-docker:minimal
     fi
     #Portainer
     while true; do
@@ -167,7 +169,6 @@ if [ "$1" == "docker" ]; then
     ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
     ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-docker
-    docker pull whojk/code-server-hub-docker
     set -e
 else
     ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
