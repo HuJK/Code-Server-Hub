@@ -10,24 +10,34 @@ If you want add user, type ```sudo adduser``` in command line. Make sure you are
 ## What is this
 This is an nginx reverse proxy config which will try to authenticate user:password with linux pam module ,and try to execute command to spawn a code-server workspace by that user, and then proxy_pass to it.
 
-## Install Script for Ubuntu 18.04 & 20.04
+## Auto Install
 Run this in terminal
 
+### Normal version
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh
 ```
-
-And goto url : https://\[your_server_ip\]:8443
-
 Demo:
-[https://nlvm.whojk.com](https://nlvm.whojk.com:8443/)
+[https://nlvm.whojk.com](https://nlvm.whojk.com) 
+
+Because the demo server is hosted in a very cheap VPS(256MB ram, 3GB disk), the debugger may not work properly due to low memory.
 
 user|passwd
 ------|---------
 demo01|demo)!
 
-Because the demo server is hosted in a very cheap VPS(256MB ram, 3GB disk), the debugger may not work properly due to low memory.
+### Docker version + normal versoin
+
+Because I installed a lot of ML framework in the image, it will cost 15GB of your disk. Be sure you have enough disk space.
+```
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
+sudo bash install.sh docker
+```
+
+And goto url : https://\[your_server_ip\]
+
+
 
 ## Video introduction
 
