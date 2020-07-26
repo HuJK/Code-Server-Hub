@@ -52,7 +52,7 @@ set -e
 echo "###update phase###"
 apt-get update
 echo "###install dependanse phase###"
-apt-get install -y nginx-extras ca-certificates
+apt-get install -y nginx-extras ca-certificates socat
 apt-get install -y tmux libncurses-dev htop nodejs npm wget sudo curl vim openssl git
 apt-get install -y python3 python3-pip python3-dev p7zip-full 
 pip3 install certbot-dns-cloudflare
