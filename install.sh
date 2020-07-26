@@ -35,7 +35,7 @@ chmod -R 755 /etc/code-server-hub/.cshub
 chmod -R 775 /etc/code-server-hub/util
 chmod -R 773 /etc/code-server-hub/sock
 chmod -R 770 /etc/code-server-hub/envs
-chmod -R 600 /etc/code-server-hub/cert
+chmod -R 700 /etc/code-server-hub/cert
 chgrp shadow /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/util/anime_pic
 
