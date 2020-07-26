@@ -19,7 +19,7 @@ sudo bash install.sh
 And goto url : https://\[your_server_ip\]:8443
 
 Demo:
-[https://nlvm.whojk.com:8443/](https://nlvm.whojk.com:8443/)
+[https://nlvm.whojk.com](https://nlvm.whojk.com:8443/)
 
 user|passwd
 ------|---------
