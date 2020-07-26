@@ -99,7 +99,7 @@ if [ "$1" == "docker" ]; then
     if hash nvidia-smi 2>/dev/null; then
         docker pull whojk/code-server-hub-docker
         { # try
-            docker run --rm --gpus all nvidia/cuda nvidia-smi &&
+            docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
             echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
         } || { # catch
             # save log for exception 
