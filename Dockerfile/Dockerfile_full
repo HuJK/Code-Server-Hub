@@ -6,14 +6,14 @@ RUN  chmod 755 /tmp/install.sh ; /tmp/install.sh; rm /tmp/install.sh
 COPY install_2_optional_useful.sh /tmp/install2.sh 
 RUN  chmod 755 /tmp/install2.sh; /tmp/install2.sh; rm /tmp/install2.sh
 
-COPY install_3_optional_kaldi.sh /tmp/install3.sh 
-RUN  chmod 755 /tmp/install3.sh; /tmp/install3.sh; rm /tmp/install3.sh
+#COPY install_3_optional_kaldi.sh /tmp/install3.sh 
+#RUN  chmod 755 /tmp/install3.sh; /tmp/install3.sh; rm /tmp/install3.sh
 
-COPY install_4_optional_espnet.sh /tmp/install4.sh 
-RUN  chmod 755 /tmp/install4.sh; /tmp/install4.sh; rm /tmp/install4.sh
+#COPY install_4_optional_espnet.sh /tmp/install4.sh 
+#RUN  chmod 755 /tmp/install4.sh; /tmp/install4.sh; rm /tmp/install4.sh
 
-COPY install_5_optional_pykaldi.sh /tmp/install5.sh 
-RUN  chmod 755 /tmp/install5.sh; /tmp/install5.sh; rm /tmp/install5.sh
+#COPY install_5_optional_pykaldi.sh /tmp/install5.sh 
+#RUN  chmod 755 /tmp/install5.sh; /tmp/install5.sh; rm /tmp/install5.sh
 
 COPY move2docker /move2docker
 RUN  rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /move2docker/* / ;/tmp/install2.sh; rm -r /move2docker
