@@ -29,7 +29,6 @@ demo01|demo)!
 
 ### Docker version + normal versoin
 
-Because I installed a lot of ML framework in the image, it will cost 15GB of your disk. Be sure you have enough disk space.
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker
