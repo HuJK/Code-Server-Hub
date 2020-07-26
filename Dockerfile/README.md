@@ -11,7 +11,7 @@ docker build -t whojk/code-server-hub-docker .
 
 minimal version (1.5GB)
 ```bash
-docker build -t whojk/code-server-hub-docker:minimal  - < Dockerfile_minimal
+docker build -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_minimal .
 ```
 
 minimal version only contain minimal requirement for Code Server docker version, and standerd version contains some common ML framework.

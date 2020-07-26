@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.2-devel
+FROM nvidia/cuda
 
 COPY install_1_requirement.sh /tmp/install.sh
 RUN  chmod 755 /tmp/install.sh ; /tmp/install.sh; rm /tmp/install.sh
