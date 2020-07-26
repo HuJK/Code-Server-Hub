@@ -1,7 +1,9 @@
 # Code-Server-Hub
-Simple hub page for [code-server](https://github.com/cdr/code-server) . Each user has one work-space, authenticate with Linux PAM module.
+It's a webpage similar to jupyterhub, but it's for [code-server](https://github.com/cdr/code-server).
 
-Each user has one workspace, login with your **linux account** and password.
+You can login with your **linux account** and password,because it's authenticate with Linux PAM module. 
+
+Then it will automatically spawn a code-server instance in a tmux session at background for you.
 
 If you want add user, type ```sudo adduser``` in command line. Make sure you are a sudoer.
 
@@ -34,6 +36,7 @@ Because the demo server is hosted in a very cheap VPS(256MB ram, 3GB disk), the 
 ## Manual install 
 
 ### Preinstall (for Ubuntu. If you use different distro, please install equivalent package ): 
+
 ```bash
 set -e
 echo "###update phase###"
@@ -49,6 +52,9 @@ apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
 apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
 set -e
 ```
+If you want to install in CentOS, you'll need package ```nginx-module-auth-pam``` and ```nginx-module-lua``` , but it's only available in a paid repository. 
+
+Otherwise you have to compile nginx and module yourself.
 
 ### Install
 
