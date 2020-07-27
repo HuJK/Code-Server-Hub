@@ -15,6 +15,24 @@ apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
 apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
 set -e
 
+function get_cpu_architecture()
+{
+    local cpuarch=$(uname -m)
+    case $cpuarch in
+         x86_64)
+              echo "amd64";
+              ;;
+         aarch64)
+              echo "arm64";
+              ;;
+         *)
+              echo "Not supported cpu architecture: ${cpuarch}"  >&2
+              exit 1
+              ;;
+    esac
+}
+cpu_arch=$(get_cpu_architecture)
+
 echo "###doenload files###"
 cd /etc
 
@@ -43,7 +61,7 @@ cd /etc/code-server-hub
 
 echo "###doenload latest code-server###"
 curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
-| grep "browser_download_url.*linux-x86_64.tar.gz" \
+| grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -i - -O code-server.tar.gz
@@ -130,7 +148,8 @@ if [ "$1" == "docker" ]; then
         docker pull whojk/code-server-hub-docker:minimal
     fi
     #Portainer
-    while true; do
+    has_portainer=$(docker container ls -a | grep portainer)
+    while [ -z "$has_portainer" ]; do
         echo "=========================================================================="
         read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
         case $yn in

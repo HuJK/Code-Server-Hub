@@ -24,12 +24,29 @@ git clone --depth 1 git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/
 mkdir ~/.virtualenvs
 rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
 
+function get_cpu_architecture()
+{
+    local cpuarch=$(uname -m)
+    case $cpuarch in
+         x86_64)
+              echo "amd64";
+              ;;
+         aarch64)
+              echo "arm64";
+              ;;
+         *)
+              echo "Not supported cpu architecture: ${cpuarch}"  >&2
+              exit 1
+              ;;
+    esac
+}
+cpu_arch=$(get_cpu_architecture)
 
 mkdir -p /etc/code-server-hub/.cshub
 cd /etc/code-server-hub
 echo "###doenload latest code-server###"
 curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
-| grep "browser_download_url.*linux-x86_64.tar.gz" \
+| grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -i - -O code-server.tar.gz
