@@ -148,7 +148,7 @@ if [ "$1" == "docker" ]; then
         docker pull whojk/code-server-hub-docker:minimal
     fi
     #Portainer
-    has_portainer=$(docker container ls -a | grep portainer)
+    has_portainer=$(docker container ls -a | grep portainer) || true
     while [ -z "$has_portainer" ]; do
         echo "=========================================================================="
         read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
