@@ -8,7 +8,7 @@ apt-get -y install software-properties-common
 add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
-apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev
 
 pip3       install --upgrade  jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools virtualenv virtualenvwrapper
 
