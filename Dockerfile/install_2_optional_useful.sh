@@ -6,7 +6,7 @@ echo "Install additional tools"
 
 apt-get -y update
 
-apt-get -y install fish htop aria2 lsof tree ncdu golang default-jdk atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr netcat parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat
+apt-get -y install fish htop aria2 lsof tree ncdu golang default-jdk atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr netcat parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat libopenblas-dev liblapack-dev gfortran
 apt-get -y autoremove ; apt-get autoclean
 
 pip3       install --upgrade tornado tqdm sympy galgebra pandas plotly nose pillow pyparsing ninja scikit-image scikit-learn scipy matplotlib              
