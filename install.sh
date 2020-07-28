@@ -147,6 +147,7 @@ if [ "$1" == "docker" ]; then
         echo "Nvidia driver not found, skip nvidia-docker autoinstall"
         if [ "$1" == "standard" ]; then
             docker pull whojk/code-server-hub-docker:standard
+            sed -i.bak "/^image_name_cpu = .*/cimage_name_cpu = 'whojk/code-server-hub-docker:standard'" /etc/code-server-hub/util/create_docker.py
         else
             docker pull whojk/code-server-hub-docker:minimal
         fi
