@@ -20,8 +20,4 @@ python3 setup.py install
 rm /usr/local/bin/python
 rm /usr/bin/pip
 
-set +e
-
-
-
 exit 0

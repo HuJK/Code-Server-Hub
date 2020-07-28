@@ -28,5 +28,3 @@ int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
   // Forward the call the the real sigaction.
   return real_sigaction(signum, act, oldact);
 }
-
-// vim: ts=2 sw=2 et

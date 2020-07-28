@@ -48,6 +48,4 @@ cd /usr/share/kaldi-asr/src
 make depend -j $(nproc)
 make -j $(nproc)
 
-set +e
-
 exit 0
