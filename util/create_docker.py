@@ -4,7 +4,7 @@ import itertools
 import subprocess
 from pathlib import Path
 
-image_name_cpu = 'whojk/code-server-hub-docker:standard'
+image_name_cpu = "whojk/code-server-hub-docker:minimal"
 image_name_gpu = "whojk/code-server-hub-docker:basicML"
 
 username  = sys.argv[1]
