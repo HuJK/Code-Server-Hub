@@ -4,7 +4,7 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 echo "Install espnet"
 
-pip3 install -U PyYAML Cython cupy==7.4.0
+pip3 install -U PyYAML Cython cupy==6.0.0
 
 cd /usr/share
 git clone  --depth 1 https://github.com/espnet/espnet espnet
@@ -30,9 +30,8 @@ ln -s pip3 /usr/bin/pip
 cd /usr/share/espnet/tools
 alias pip=pip3
 sed -i.bak "/^PYTHON_VERSION := .*/cPYTHON_VERSION := 3.6.9" Makefile
-sed -i.bak "/^CHAINER_VERSION := .*/cCHAINER_VERSION := 7.4.0" Makefile
 sed -i.bak "/^TH_VERSION := .*/cTH_VERSION := 1.5.1" Makefile
-sed 's/6\.0\.0/7.4.0/g' check_install.py
+sed -i.bak 's/-cuda\$(strip \$(subst \.,,\$(CUDA_VERSION)))//g' Makefile
 rm -rf venv; mkdir -p venv/bin; touch venv/bin/activate  # Create an empty file
 make KALDI=/usr/share/kaldi-asr PYTHON=dummy
 cd /usr/share/espnet/tools
