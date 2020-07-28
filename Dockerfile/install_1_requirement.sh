@@ -8,13 +8,13 @@ apt-get -y install software-properties-common
 add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
-apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev build-essential numpy
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev build-essential
 
 gcc -shared -std=c99 -Wall -O2 -fPIC -D_POSIX_SOURCE -D_GNU_SOURCE  -Wl,--no-as-needed -ldl -o /lib/runit-docker.so /tmp/runit-docker.c
 
 
 python3 -m pip install --upgrade pip
-pip3       install --upgrade  jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools virtualenv virtualenvwrapper
+pip3       install --upgrade  jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools virtualenv virtualenvwrapper numpy
 
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get -y install nodejs
