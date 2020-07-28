@@ -1,12 +1,23 @@
 FROM nvidia/cuda:10.2-cudnn7-devel
 
 COPY *.c /tmp/
-COPY *.sh /tmp/
-RUN   bash /tmp/install_1_requirement.sh
-RUN   bash /tmp/install_2_optional_useful.sh
-RUN   bash /tmp/install_3_optional_basicML.sh
+
+COPY           install_1_requirement.sh /tmp/
+RUN  bash /tmp/install_1_requirement.sh
+
+COPY           install_2_optional_useful.sh /tmp/
+RUN  bash /tmp/install_2_optional_useful.sh
+
+COPY            install_3_optional_basicML.sh /tmp/
+RUN  bash /tmp/install_3_optional_basicML.sh
+
+#COPY           install_4_optional_kaldi.sh /tmp/
 #RUN  bash /tmp/install_4_optional_kaldi.sh
+
+#COPY           install_5_optional_espnet.sh /tmp/
 #RUN  bash /tmp/install_5_optional_espnet.sh
+
+#COPY           install_6_optional_pykaldi.sh /tmp/
 #RUN  bash /tmp/install_6_optional_pykaldi.sh
 
 COPY move2docker /tmp/move2docker
