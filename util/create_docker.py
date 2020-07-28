@@ -49,7 +49,7 @@ image_name = "whojk/code-server-hub-docker:minimal"
 outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 if len(outs) > 0:
     has_gpu = ["--gpus", getGPUParam(username)]
-    image_name = "whojk/code-server-hub-docker"
+    image_name = "whojk/code-server-hub-docker:basicML"
 print(has_gpu)
 
 
