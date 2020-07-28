@@ -115,7 +115,7 @@ if [ "$1" == "docker" ]; then
     usermod -aG docker www-data
     #ask for install nvidia-docker
     if hash nvidia-smi 2>/dev/null; then
-        docker pull whojk/code-server-hub-docker
+        docker pull whojk/code-server-hub-docker:basicML
         { # try
             docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi &&
             echo "Nvidia docker installed, skip  nvidia-docker autoinstall"
@@ -145,7 +145,11 @@ if [ "$1" == "docker" ]; then
         }
     else
         echo "Nvidia driver not found, skip nvidia-docker autoinstall"
-        docker pull whojk/code-server-hub-docker:minimal
+        if [ "$1" == "standard" ]; then
+            docker pull whojk/code-server-hub-docker:standard
+        else
+            docker pull whojk/code-server-hub-docker:minimal
+        fi
     fi
     #Portainer
     has_portainer=$(docker container ls -a | grep portainer) || true
