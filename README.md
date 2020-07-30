@@ -31,7 +31,7 @@ demo01|demo)!
 
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh docker
+sudo bash install.sh docker [standard]
 ```
 
 And goto url : https://\[your_server_ip\]
