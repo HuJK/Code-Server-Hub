@@ -23,7 +23,7 @@ You can build it by your self.
 
 
 ## Usage
-When you start container, the script will check whether you can run nvidia-docker by following code:
+When you start container, [this script](https://github.com/HuJK/Code-Server-Hub/blob/master/util/create_docker.py) will check whether you can run nvidia-docker by following code:
 
 ```python
 image_name_cpu = "whojk/code-server-hub-docker:minimal"
