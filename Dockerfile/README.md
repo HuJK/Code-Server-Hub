@@ -24,7 +24,17 @@ You can build it by your self.
 
 ## Usage
 When you start container, the script will check whether you can run nvidia-docker by following code:
-https://github.com/HuJK/Code-Server-Hub/blob/f60d025752bafa863cc98c36eb2158bdc3b4701f/util/create_docker.py#L7-L8
-https://github.com/HuJK/Code-Server-Hub/blob/f60d025752bafa863cc98c36eb2158bdc3b4701f/util/create_docker.py#L51-L54
 
+```python
+image_name_cpu = "whojk/code-server-hub-docker:minimal"
+image_name_gpu = "whojk/code-server-hub-docker:basicML"
+```
+```python3
+has_gpu = []
+image_name = image_name_cpu
+outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+if len(outs) > 0:
+    has_gpu = ["--gpus", getGPUParam(username)]
+    image_name = image_name_gpu
+```
 and run corresponding image.
