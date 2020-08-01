@@ -15,7 +15,7 @@ Run this in terminal
 
 ### Normal version
 
-Install Code-Server-Hub only(300MB)
+Install Code-Server-Hub only(100MB~3GB, depends on how many dependences already installed before install this.)
 
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
@@ -34,13 +34,13 @@ demo01|demo)!
 
 Install Code-Server-Hub and Code-Server-Hub-Docker
 
-minimal version (1.5GB)
+minimal version (4.5GB)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker
 ```
 
-standard version (4GB)
+standard version (7GB)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker standard
