@@ -32,7 +32,7 @@ demo01|demo)!
 minimal version
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh docker [standard]
+sudo bash install.sh docker
 ```
 
 standard version
