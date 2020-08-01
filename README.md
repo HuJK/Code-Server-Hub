@@ -14,6 +14,9 @@ This is a nginx reverse proxy config which will try to authenticate user:passwor
 Run this in terminal
 
 ### Normal version
+
+Install Code-Server-Hub only(300MB)
+
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh
@@ -29,13 +32,15 @@ demo01|demo)!
 
 ### Docker version + normal versoin
 
-minimal version
+Install Code-Server-Hub and Code-Server-Hub-Docker
+
+minimal version (1.5GB)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker
 ```
 
-standard version
+standard version (4GB)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker standard
