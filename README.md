@@ -15,7 +15,7 @@ Run this in terminal
 
 ### Normal version
 
-Install Code-Server-Hub only(100MB~3GB, depends on how many dependences already installed before install this.)
+Install Code-Server-Hub only(300MB + dependences)
 
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
@@ -34,13 +34,13 @@ demo01|demo)!
 
 Install Code-Server-Hub and Code-Server-Hub-Docker
 
-minimal version (4.5GB)
+minimal version (1.5GB + dependences)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker
 ```
 
-standard version (7GB)
+standard version (4GB + dependences)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh docker standard
@@ -49,6 +49,13 @@ sudo bash install.sh docker standard
 Then goto url : https://\[your_server_ip\]
 
 
+dependences=
+```
+nginx-extras ca-certificates socat tmux libncurses-dev htop nodejs npm wget sudo curl vim openssl git python3 python3-pip python3-dev p7zip-full cockpit cockpit-pcp docker-ce  docker-ce-cli containerd.io
+certbot-dns-cloudflare  jupyterlab jupyterhub
+configurable-http-proxy
+portainer
+```
 
 ## Video introduction
 
