@@ -1,0 +1,61 @@
+User belongs to experiment group 'ShowPlayIcon - start'
+User belongs to experiment group 'ShowExtensionSurveyPrompt - control'
+User belongs to experiment group 'DebugAdapterFactory - experiment'
+User belongs to experiment group 'PtvsdWheels37 - experiment'
+User belongs to experiment group 'UseTerminalToGetActivatedEnvVars - control'
+User belongs to experiment group 'LocalZMQKernel - experiment'
+User belongs to experiment group 'CollectLSRequestTiming - control'
+User belongs to experiment group 'CollectNodeLSRequestTiming - experiment'
+User belongs to experiment group 'EnableIPyWidgets - experiment'
+User belongs to experiment group 'RunByLine - experiment'
+User belongs to experiment group 'CustomEditorSupport - control'
+> conda --version
+> pyenv root
+> python3.7 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3.6 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python2 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> conda info --json
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+Starting Jedi Python language engine.
+Python interpreter path: /usr/bin/python3
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py jupyter kernelspec --version
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py jupyter kernelspec --version
+> conda --version
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.prefix)"
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.prefix)"
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py site --user-site
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py site --user-site
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/completion.py
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/completion.py
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py pylint --disable=all --enable=F,unreachable,duplicate-key,unnecessary-semicolon,global-variable-not-assigned,unused-variable,unused-wildcard-import,binary-op-exception,bad-format-string,anomalous-backslash-in-string,bad-open-mode,E0001,E0011,E0012,E0100,E0101,E0102,E0103,E0104,E0105,E0107,E0108,E0110,E0111,E0112,E0113,E0114,E0115,E0116,E0117,E0118,E0202,E0203,E0211,E0213,E0236,E0237,E0238,E0239,E0240,E0241,E0301,E0302,E0303,E0401,E0402,E0601,E0602,E0603,E0604,E0611,E0632,E0633,E0701,E0702,E0703,E0704,E0710,E0711,E0712,E1003,E1101,E1102,E1111,E1120,E1121,E1123,E1124,E1125,E1126,E1127,E1128,E1129,E1130,E1131,E1132,E1133,E1134,E1135,E1136,E1137,E1138,E1139,E1200,E1201,E1205,E1206,E1300,E1301,E1302,E1303,E1304,E1305,E1306,E1310,E1700,E1701 --msg-template='{line},{column},{category},{symbol}:{msg}' --reports=n --output-format=text ~/vscode/test01.py
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py pylint --disable=all --enable=F,unreachable,duplicate-key,unnecessary-semicolon,global-variable-not-assigned,unused-variable,unused-wildcard-import,binary-op-exception,bad-format-string,anomalous-backslash-in-string,bad-open-mode,E0001,E0011,E0012,E0100,E0101,E0102,E0103,E0104,E0105,E0107,E0108,E0110,E0111,E0112,E0113,E0114,E0115,E0116,E0117,E0118,E0202,E0203,E0211,E0213,E0236,E0237,E0238,E0239,E0240,E0241,E0301,E0302,E0303,E0401,E0402,E0601,E0602,E0603,E0604,E0611,E0632,E0633,E0701,E0702,E0703,E0704,E0710,E0711,E0712,E1003,E1101,E1102,E1111,E1120,E1121,E1123,E1124,E1125,E1126,E1127,E1128,E1129,E1130,E1131,E1132,E1133,E1134,E1135,E1136,E1137,E1138,E1139,E1200,E1201,E1205,E1206,E1300,E1301,E1302,E1303,E1304,E1305,E1306,E1310,E1700,E1701 --msg-template='{line},{column},{category},{symbol}:{msg}' --reports=n --output-format=text ~/vscode/test01.py
+cwd: ~/vscode
+##########Linting Output - pylint##########
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py pylint --disable=all --enable=F,unreachable,duplicate-key,unnecessary-semicolon,global-variable-not-assigned,unused-variable,unused-wildcard-import,binary-op-exception,bad-format-string,anomalous-backslash-in-string,bad-open-mode,E0001,E0011,E0012,E0100,E0101,E0102,E0103,E0104,E0105,E0107,E0108,E0110,E0111,E0112,E0113,E0114,E0115,E0116,E0117,E0118,E0202,E0203,E0211,E0213,E0236,E0237,E0238,E0239,E0240,E0241,E0301,E0302,E0303,E0401,E0402,E0601,E0602,E0603,E0604,E0611,E0632,E0633,E0701,E0702,E0703,E0704,E0710,E0711,E0712,E1003,E1101,E1102,E1111,E1120,E1121,E1123,E1124,E1125,E1126,E1127,E1128,E1129,E1130,E1131,E1132,E1133,E1134,E1135,E1136,E1137,E1138,E1139,E1200,E1201,E1205,E1206,E1300,E1301,E1302,E1303,E1304,E1305,E1306,E1310,E1700,E1701 --msg-template='{line},{column},{category},{symbol}:{msg}' --reports=n --output-format=text ~/vscode/test01.py
+cwd: ~/vscode
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py pylint --disable=all --enable=F,unreachable,duplicate-key,unnecessary-semicolon,global-variable-not-assigned,unused-variable,unused-wildcard-import,binary-op-exception,bad-format-string,anomalous-backslash-in-string,bad-open-mode,E0001,E0011,E0012,E0100,E0101,E0102,E0103,E0104,E0105,E0107,E0108,E0110,E0111,E0112,E0113,E0114,E0115,E0116,E0117,E0118,E0202,E0203,E0211,E0213,E0236,E0237,E0238,E0239,E0240,E0241,E0301,E0302,E0303,E0401,E0402,E0601,E0602,E0603,E0604,E0611,E0632,E0633,E0701,E0702,E0703,E0704,E0710,E0711,E0712,E1003,E1101,E1102,E1111,E1120,E1121,E1123,E1124,E1125,E1126,E1127,E1128,E1129,E1130,E1131,E1132,E1133,E1134,E1135,E1136,E1137,E1138,E1139,E1200,E1201,E1205,E1206,E1300,E1301,E1302,E1303,E1304,E1305,E1306,E1310,E1700,E1701 --msg-template='{line},{column},{category},{symbol}:{msg}' --reports=n --output-format=text ~/vscode/test01.py
+cwd: ~/vscode
+##########Linting Output - pylint##########
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+

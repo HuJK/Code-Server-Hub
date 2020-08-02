@@ -1,0 +1,230 @@
+[2020-08-01 19:54:30.602] [exthost] [info] extension host started
+[2020-08-01 19:54:30.940] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-01 19:54:30.941] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-01 19:54:30.976] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-01 19:54:30.976] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-01 19:54:31.029] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-01 19:54:31.029] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-01 19:54:31.132] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-01 19:54:31.132] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-01 19:54:31.175] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-01 19:54:31.176] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-01 19:54:31.186] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-01 19:54:31.186] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-01 19:54:31.196] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-01 19:54:31.196] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-01 19:54:31.234] [exthost] [info] eager extensions activated
+[2020-08-01 19:55:41.103] [exthost] [info] ExtensionService#_doActivateExtension vscode.typescript-language-features {"startup":false,"extensionId":{"value":"vscode.typescript-language-features","_lower":"vscode.typescript-language-features"},"activationEvent":"onLanguage:javascript"}
+[2020-08-01 19:55:41.104] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/typescript-language-features/dist/extension
+[2020-08-01 19:55:47.317] [exthost] [info] ExtensionService#_doActivateExtension vscode.configuration-editing {"startup":false,"extensionId":{"value":"vscode.configuration-editing","_lower":"vscode.configuration-editing"},"activationEvent":"onLanguage:json"}
+[2020-08-01 19:55:47.318] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/configuration-editing/dist/extension
+[2020-08-01 19:55:47.353] [exthost] [info] ExtensionService#_doActivateExtension vscode.extension-editing {"startup":false,"extensionId":{"value":"vscode.extension-editing","_lower":"vscode.extension-editing"},"activationEvent":"onLanguage:json"}
+[2020-08-01 19:55:47.354] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/extension-editing/dist/extension
+[2020-08-01 19:55:47.474] [exthost] [info] ExtensionService#_doActivateExtension vscode.json-language-features {"startup":false,"extensionId":{"value":"vscode.json-language-features","_lower":"vscode.json-language-features"},"activationEvent":"onLanguage:json"}
+[2020-08-01 19:55:47.478] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/json-language-features/client/dist/jsonMain
+[2020-08-01 19:55:47.667] [exthost] [info] ExtensionService#_doActivateExtension ms-vscode.js-debug-nightly {"startup":false,"extensionId":{"value":"ms-vscode.js-debug-nightly","_lower":"ms-vscode.js-debug-nightly"},"activationEvent":"onLanguage:json"}
+[2020-08-01 19:55:47.668] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/ms-vscode.js-debug-nightly/src/extension.js
+[2020-08-01 19:55:48.385] [exthost] [info] ExtensionService#_doActivateExtension vscode.npm {"startup":false,"extensionId":{"value":"vscode.npm","_lower":"vscode.npm"},"activationEvent":"onLanguage:json"}
+[2020-08-01 19:55:48.385] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/npm/dist/main
+[2020-08-01 19:56:23.401] [exthost] [info] extension host started
+[2020-08-01 19:56:23.747] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-01 19:56:23.748] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-01 19:56:23.776] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-01 19:56:23.777] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-01 19:56:23.833] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-01 19:56:23.833] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-01 19:56:23.924] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-01 19:56:23.924] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-01 19:56:23.958] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-01 19:56:23.958] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-01 19:56:23.965] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-01 19:56:23.965] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-01 19:56:23.970] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-01 19:56:23.970] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-01 19:56:23.992] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-01 19:56:23.992] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-01 19:56:24.007] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-01 19:56:24.008] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-01 19:56:24.028] [exthost] [info] ExtensionService#_doActivateExtension ms-vscode.cpptools {"startup":true,"extensionId":{"value":"ms-vscode.cpptools","_lower":"ms-vscode.cpptools"},"activationEvent":"*"}
+[2020-08-01 19:56:24.028] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/ms-vscode.cpptools-0.29.0/dist/main
+[2020-08-01 19:56:24.202] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-01 19:56:24.202] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-01 19:56:24.224] [exthost] [info] eager extensions activated
+[2020-08-01 19:56:29.641] [exthost] [info] ExtensionService#_doActivateExtension vscode.configuration-editing {"startup":false,"extensionId":{"value":"vscode.configuration-editing","_lower":"vscode.configuration-editing"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-01 19:56:29.641] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/configuration-editing/dist/extension
+[2020-08-01 19:56:29.668] [exthost] [info] ExtensionService#_doActivateExtension vscode.json-language-features {"startup":false,"extensionId":{"value":"vscode.json-language-features","_lower":"vscode.json-language-features"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-01 19:56:29.668] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/json-language-features/client/dist/jsonMain
+[2020-08-01 19:56:29.725] [exthost] [info] ExtensionService#_doActivateExtension vscode.typescript-language-features {"startup":false,"extensionId":{"value":"vscode.typescript-language-features","_lower":"vscode.typescript-language-features"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-01 19:56:29.725] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/typescript-language-features/dist/extension
+[2020-08-01 19:56:58.233] [exthost] [info] extension host started
+[2020-08-01 19:56:58.636] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-01 19:56:58.642] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-01 19:56:58.675] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-01 19:56:58.678] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-01 19:56:58.786] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-01 19:56:58.787] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-01 19:56:59.044] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-01 19:56:59.051] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-01 19:56:59.095] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-01 19:56:59.099] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-01 19:56:59.123] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-01 19:56:59.123] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-01 19:56:59.126] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-01 19:56:59.128] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-01 19:56:59.180] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-01 19:56:59.187] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-01 19:56:59.231] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-01 19:56:59.234] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-01 19:56:59.258] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-01 19:56:59.260] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-01 19:56:59.373] [exthost] [info] eager extensions activated
+[2020-08-01 19:57:46.087] [exthost] [info] extension host started
+[2020-08-01 19:57:46.460] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-01 19:57:46.461] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-01 19:57:46.470] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-01 19:57:46.471] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-01 19:57:46.507] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-01 19:57:46.507] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-01 19:57:46.583] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-01 19:57:46.583] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-01 19:57:46.609] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-01 19:57:46.609] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-01 19:57:46.616] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-01 19:57:46.616] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-01 19:57:46.619] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-01 19:57:46.619] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-01 19:57:46.641] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-01 19:57:46.641] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-01 19:57:46.658] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-01 19:57:46.658] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-01 19:57:46.678] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-01 19:57:46.678] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-01 19:57:46.702] [exthost] [info] eager extensions activated
+[2020-08-01 19:58:14.688] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"extensionId":{"value":"ms-python.python","_lower":"ms-python.python"},"activationEvent":"onLanguage:jupyter"}
+[2020-08-01 19:58:14.689] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/ms-python.python-2020.6.91350/out/client/extension
+[2020-08-01 19:58:37.577] [exthost] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"extensionId":{"value":"vscode.python","_lower":"vscode.python"},"activationEvent":"onLanguage:python"}
+[2020-08-01 19:58:37.580] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/python/dist/pythonMain
+[2020-08-01 19:59:14.651] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-server-ready {"startup":false,"extensionId":{"value":"vscode.debug-server-ready","_lower":"vscode.debug-server-ready"},"activationEvent":"onDebugResolve"}
+[2020-08-01 19:59:14.651] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-server-ready/dist/extension
+[2020-08-01 20:00:52.364] [exthost] [info] extension host started
+[2020-08-01 20:00:52.686] [exthost] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"extensionId":{"value":"vscode.python","_lower":"vscode.python"},"activationEvent":"onLanguage:python"}
+[2020-08-01 20:00:52.687] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/python/dist/pythonMain
+[2020-08-01 20:00:52.703] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"extensionId":{"value":"ms-python.python","_lower":"ms-python.python"},"activationEvent":"onLanguage:python"}
+[2020-08-01 20:00:52.703] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/ms-python.python-2020.5.86806/out/client/extension
+[2020-08-01 20:00:53.256] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-01 20:00:53.256] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-01 20:00:53.294] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-01 20:00:53.294] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-01 20:00:53.351] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-01 20:00:53.351] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-01 20:00:53.536] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-01 20:00:53.536] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-01 20:00:53.586] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-01 20:00:53.586] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-01 20:00:53.594] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-01 20:00:53.594] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-01 20:00:53.599] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-01 20:00:53.599] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-01 20:00:53.637] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-01 20:00:53.637] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-01 20:00:53.698] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-01 20:00:53.698] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-01 20:00:53.768] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-01 20:00:53.769] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-01 20:00:54.875] [exthost] [info] Extension 'ms-python.python' uses a document selector without scheme. Learn more about this: https://go.microsoft.com/fwlink/?linkid=872305
+[2020-08-01 20:00:55.490] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-server-ready {"startup":false,"extensionId":{"value":"vscode.debug-server-ready","_lower":"vscode.debug-server-ready"},"activationEvent":"onDebugResolve"}
+[2020-08-01 20:00:55.490] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-server-ready/dist/extension
+[2020-08-01 20:00:56.638] [exthost] [info] eager extensions activated
+[2020-08-01 20:01:16.761] [exthost] [info] ExtensionService#_doActivateExtension vscode.configuration-editing {"startup":false,"extensionId":{"value":"vscode.configuration-editing","_lower":"vscode.configuration-editing"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-01 20:01:16.761] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/configuration-editing/dist/extension
+[2020-08-01 20:01:16.826] [exthost] [info] ExtensionService#_doActivateExtension vscode.json-language-features {"startup":false,"extensionId":{"value":"vscode.json-language-features","_lower":"vscode.json-language-features"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-01 20:01:16.826] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/json-language-features/client/dist/jsonMain
+[2020-08-01 20:01:16.962] [exthost] [info] ExtensionService#_doActivateExtension vscode.typescript-language-features {"startup":false,"extensionId":{"value":"vscode.typescript-language-features","_lower":"vscode.typescript-language-features"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-01 20:01:16.962] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/typescript-language-features/dist/extension
+[2020-08-02 11:41:47.448] [exthost] [info] extension host started
+[2020-08-02 11:41:47.785] [exthost] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"extensionId":{"value":"vscode.python","_lower":"vscode.python"},"activationEvent":"onLanguage:python"}
+[2020-08-02 11:41:47.786] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/python/dist/pythonMain
+[2020-08-02 11:41:47.792] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"extensionId":{"value":"ms-python.python","_lower":"ms-python.python"},"activationEvent":"onLanguage:python"}
+[2020-08-02 11:41:47.792] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/ms-python.python-2020.5.86806/out/client/extension
+[2020-08-02 11:41:48.437] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-02 11:41:48.437] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-02 11:41:48.478] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-02 11:41:48.478] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-02 11:41:48.631] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-02 11:41:48.635] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-02 11:41:48.819] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-02 11:41:48.819] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-02 11:41:48.861] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-02 11:41:48.861] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-02 11:41:48.895] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-02 11:41:48.897] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-02 11:41:48.906] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-02 11:41:48.906] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-02 11:41:48.967] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-02 11:41:48.969] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-02 11:41:49.015] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-02 11:41:49.015] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-02 11:41:49.114] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-02 11:41:49.114] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-02 11:41:50.968] [exthost] [info] Extension 'ms-python.python' uses a document selector without scheme. Learn more about this: https://go.microsoft.com/fwlink/?linkid=872305
+[2020-08-02 11:41:52.831] [exthost] [info] eager extensions activated
+[2020-08-02 11:42:01.300] [exthost] [info] ExtensionService#_doActivateExtension vscode.typescript-language-features {"startup":false,"extensionId":{"value":"vscode.typescript-language-features","_lower":"vscode.typescript-language-features"},"activationEvent":"onLanguage:javascript"}
+[2020-08-02 11:42:01.306] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/typescript-language-features/dist/extension
+[2020-08-02 11:42:04.068] [exthost] [info] ExtensionService#_doActivateExtension vscode.configuration-editing {"startup":false,"extensionId":{"value":"vscode.configuration-editing","_lower":"vscode.configuration-editing"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-02 11:42:04.068] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/configuration-editing/dist/extension
+[2020-08-02 11:42:04.097] [exthost] [info] ExtensionService#_doActivateExtension vscode.json-language-features {"startup":false,"extensionId":{"value":"vscode.json-language-features","_lower":"vscode.json-language-features"},"activationEvent":"onLanguage:jsonc"}
+[2020-08-02 11:42:04.098] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/json-language-features/client/dist/jsonMain
+[2020-08-02 11:43:00.658] [exthost] [info] extension host started
+[2020-08-02 11:43:00.945] [exthost] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"extensionId":{"value":"vscode.python","_lower":"vscode.python"},"activationEvent":"onLanguage:python"}
+[2020-08-02 11:43:00.946] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/python/dist/pythonMain
+[2020-08-02 11:43:00.952] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"extensionId":{"value":"ms-python.python","_lower":"ms-python.python"},"activationEvent":"onLanguage:python"}
+[2020-08-02 11:43:00.953] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/ms-python.python-2020.5.86806/out/client/extension
+[2020-08-02 11:43:01.526] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-02 11:43:01.526] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-02 11:43:01.565] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-02 11:43:01.566] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-02 11:43:01.645] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-02 11:43:01.645] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-02 11:43:01.798] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-02 11:43:01.799] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-02 11:43:01.856] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-02 11:43:01.857] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-02 11:43:01.864] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-02 11:43:01.865] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-02 11:43:01.870] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-02 11:43:01.871] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-02 11:43:01.911] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-02 11:43:01.912] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-02 11:43:01.957] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-02 11:43:01.958] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-02 11:43:02.007] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-02 11:43:02.007] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-02 11:43:04.055] [exthost] [info] eager extensions activated
+[2020-08-02 11:43:04.906] [exthost] [info] Extension 'ms-python.python' uses a document selector without scheme. Learn more about this: https://go.microsoft.com/fwlink/?linkid=872305
+[2020-08-02 11:43:22.176] [exthost] [info] extension host started
+[2020-08-02 11:43:22.544] [exthost] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"extensionId":{"value":"vscode.python","_lower":"vscode.python"},"activationEvent":"onLanguage:python"}
+[2020-08-02 11:43:22.545] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/python/dist/pythonMain
+[2020-08-02 11:43:22.551] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"extensionId":{"value":"ms-python.python","_lower":"ms-python.python"},"activationEvent":"onLanguage:python"}
+[2020-08-02 11:43:22.551] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/ms-python.python-2020.5.86806/out/client/extension
+[2020-08-02 11:43:23.031] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2020-08-02 11:43:23.031] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/debug-auto-launch/dist/extension
+[2020-08-02 11:43:23.049] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2020-08-02 11:43:23.049] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/emmet/dist/extension
+[2020-08-02 11:43:23.133] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.git","_lower":"vscode.git"},"activationEvent":"*"}
+[2020-08-02 11:43:23.134] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/git/dist/main
+[2020-08-02 11:43:23.245] [exthost] [info] ExtensionService#_doActivateExtension vscode.github-authentication {"startup":true,"extensionId":{"value":"vscode.github-authentication","_lower":"vscode.github-authentication"},"activationEvent":"*"}
+[2020-08-02 11:43:23.245] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/github-authentication/dist/extension.js
+[2020-08-02 11:43:23.276] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2020-08-02 11:43:23.276] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/merge-conflict/dist/extension
+[2020-08-02 11:43:23.286] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2020-08-02 11:43:23.286] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/search-result/dist/extension.js
+[2020-08-02 11:43:23.288] [exthost] [info] ExtensionService#_doActivateExtension vscode.vscode-account {"startup":true,"extensionId":{"value":"vscode.vscode-account","_lower":"vscode.vscode-account"},"activationEvent":"*"}
+[2020-08-02 11:43:23.289] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.cshub/lib/vscode/extensions/vscode-account/dist/extension.js
+[2020-08-02 11:43:23.316] [exthost] [info] ExtensionService#_doActivateExtension CoenraadS.bracket-pair-colorizer {"startup":true,"extensionId":{"value":"CoenraadS.bracket-pair-colorizer","_lower":"coenraads.bracket-pair-colorizer"},"activationEvent":"*"}
+[2020-08-02 11:43:23.316] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20/out/src/extension
+[2020-08-02 11:43:23.353] [exthost] [info] ExtensionService#_doActivateExtension Equinusocio.vsc-material-theme {"startup":true,"extensionId":{"value":"Equinusocio.vsc-material-theme","_lower":"equinusocio.vsc-material-theme"},"activationEvent":"*"}
+[2020-08-02 11:43:23.353] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0/out/src/material.theme.config
+[2020-08-02 11:43:23.386] [exthost] [info] ExtensionService#_doActivateExtension PKief.material-icon-theme {"startup":true,"extensionId":{"value":"PKief.material-icon-theme","_lower":"pkief.material-icon-theme"},"activationEvent":"*"}
+[2020-08-02 11:43:23.386] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1/dist/extension
+[2020-08-02 11:43:24.405] [exthost] [info] Extension 'ms-python.python' uses a document selector without scheme. Learn more about this: https://go.microsoft.com/fwlink/?linkid=872305
+[2020-08-02 11:43:26.126] [exthost] [info] eager extensions activated

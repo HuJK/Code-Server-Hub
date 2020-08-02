@@ -1,0 +1,26 @@
+User belongs to experiment group 'ShowPlayIcon - start'
+User belongs to experiment group 'ShowExtensionSurveyPrompt - control'
+User belongs to experiment group 'DebugAdapterFactory - experiment'
+User belongs to experiment group 'PtvsdWheels37 - experiment'
+User belongs to experiment group 'UseTerminalToGetActivatedEnvVars - control'
+User belongs to experiment group 'LocalZMQKernel - experiment'
+User belongs to experiment group 'CollectLSRequestTiming - control'
+User belongs to experiment group 'CollectNodeLSRequestTiming - experiment'
+User belongs to experiment group 'EnableIPyWidgets - experiment'
+User belongs to experiment group 'RunByLine - experiment'
+User belongs to experiment group 'CustomEditorSupport - control'
+> conda --version
+> pyenv root
+> python3.7 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3.6 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python2 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> conda info --json
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py jupyter kernelspec --version
+> /usr/bin/python3 ~/.local/share/code-server/extensions/ms-python.python-2020.5.86806/pythonFiles/pyvsc-run-isolated.py jupyter kernelspec --version

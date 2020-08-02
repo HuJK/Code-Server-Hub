@@ -1,0 +1,75 @@
+[2020-08-01 19:53:09.499] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:54:20.751] [remoteagent] [error] /home/hujk/.local/share/code-server/extensions {"errno":-2,"code":"ENOENT","syscall":"scandir","path":"/home/hujk/.local/share/code-server/extensions"}
+[2020-08-01 19:54:23.476] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:54:23.476] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:54:25.582] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:54:25.582] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:55:06.352] [remoteagent] [info] Installing extension: ms-python.python
+[2020-08-01 19:55:13.118] [remoteagent] [info] Downloaded extension: ms-python.python /tmp/42efa647-aae3-4d38-875b-089fc095ec80
+[2020-08-01 19:55:17.714] [remoteagent] [info] Installing extension: ms-vscode.cpptools
+[2020-08-01 19:55:19.265] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.ms-python.python-2020.6.91350: ms-python.python
+[2020-08-01 19:55:19.298] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/ms-python.python-2020.6.91350
+[2020-08-01 19:55:19.326] [remoteagent] [info] Installation completed. ms-python.python
+[2020-08-01 19:55:19.370] [remoteagent] [info] Extensions installed successfully: ms-python.python
+[2020-08-01 19:55:20.856] [remoteagent] [info] Downloaded extension: ms-vscode.cpptools /tmp/7fa26d75-e251-494d-b96b-a2f5fbcd865e
+[2020-08-01 19:55:21.817] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.ms-vscode.cpptools-0.29.0: ms-vscode.cpptools
+[2020-08-01 19:55:21.817] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/ms-vscode.cpptools-0.29.0
+[2020-08-01 19:55:21.824] [remoteagent] [info] Installation completed. ms-vscode.cpptools
+[2020-08-01 19:55:21.845] [remoteagent] [info] Extensions installed successfully: ms-vscode.cpptools
+[2020-08-01 19:55:28.263] [remoteagent] [info] Installing extension: ms-vscode.node-debug2
+[2020-08-01 19:55:28.967] [remoteagent] [info] Downloaded extension: ms-vscode.node-debug2 /tmp/d2f60e28-4dd9-4942-ae27-19b3d430d954
+[2020-08-01 19:55:29.396] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.ms-vscode.node-debug2-1.42.1: ms-vscode.node-debug2
+[2020-08-01 19:55:29.396] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-01 19:55:29.398] [remoteagent] [info] Installation completed. ms-vscode.node-debug2
+[2020-08-01 19:55:29.405] [remoteagent] [info] Extensions installed successfully: ms-vscode.node-debug2
+[2020-08-01 19:55:40.185] [remoteagent] [info] Installing extension: equinusocio.vsc-material-theme
+[2020-08-01 19:55:40.857] [remoteagent] [info] Downloaded extension: equinusocio.vsc-material-theme /tmp/83539539-6cca-4e49-84ca-9d5091186ffa
+[2020-08-01 19:55:40.927] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.equinusocio.vsc-material-theme-30.0.0: equinusocio.vsc-material-theme
+[2020-08-01 19:55:40.927] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0
+[2020-08-01 19:55:40.928] [remoteagent] [info] Installation completed. equinusocio.vsc-material-theme
+[2020-08-01 19:55:40.933] [remoteagent] [info] Extensions installed successfully: equinusocio.vsc-material-theme
+[2020-08-01 19:55:46.500] [remoteagent] [info] Installing extension: pkief.material-icon-theme
+[2020-08-01 19:55:46.941] [remoteagent] [info] Downloaded extension: pkief.material-icon-theme /tmp/7e33a926-3812-48c8-91a1-277cccaedc1b
+[2020-08-01 19:55:47.757] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.pkief.material-icon-theme-4.0.1: pkief.material-icon-theme
+[2020-08-01 19:55:47.758] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1
+[2020-08-01 19:55:47.765] [remoteagent] [info] Installation completed. pkief.material-icon-theme
+[2020-08-01 19:55:47.782] [remoteagent] [info] Extensions installed successfully: pkief.material-icon-theme
+[2020-08-01 19:56:07.388] [remoteagent] [info] Installing extension: coenraads.bracket-pair-colorizer
+[2020-08-01 19:56:08.250] [remoteagent] [info] Downloaded extension: coenraads.bracket-pair-colorizer /tmp/8b94f54b-a755-49f9-8ed9-96d934cfd997
+[2020-08-01 19:56:09.937] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.coenraads.bracket-pair-colorizer-1.0.20: coenraads.bracket-pair-colorizer
+[2020-08-01 19:56:09.937] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20
+[2020-08-01 19:56:09.939] [remoteagent] [info] Installation completed. coenraads.bracket-pair-colorizer
+[2020-08-01 19:56:09.949] [remoteagent] [info] Extensions installed successfully: coenraads.bracket-pair-colorizer
+[2020-08-01 19:56:15.652] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-01 19:56:17.490] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:56:17.490] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:56:18.328] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:56:18.328] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:56:50.784] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-01 19:56:52.458] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:56:52.458] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:56:53.354] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:56:53.354] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:57:38.894] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-01 19:57:40.686] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:57:40.687] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 19:57:41.882] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 19:57:41.882] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
+[2020-08-01 20:00:14.078] [remoteagent] [info] Installing extension: ms-python.python
+[2020-08-01 20:00:22.083] [remoteagent] [info] Downloaded extension: ms-python.python /tmp/3c24f18a-491a-4635-9156-b69f01396d5d
+[2020-08-01 20:00:28.104] [remoteagent] [info] Extracted extension to /home/hujk/.local/share/code-server/extensions/.ms-python.python-2020.5.86806: ms-python.python
+[2020-08-01 20:00:28.113] [remoteagent] [info] Renamed to /home/hujk/.local/share/code-server/extensions/ms-python.python-2020.5.86806
+[2020-08-01 20:00:28.138] [remoteagent] [info] Installation completed. ms-python.python
+[2020-08-01 20:00:28.177] [remoteagent] [info] Extensions installed successfully: ms-python.python
+[2020-08-01 20:00:44.905] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-01 20:00:46.662] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-01 20:00:46.662] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-02 11:41:38.561] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 11:41:40.413] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-02 11:41:40.413] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-02 11:42:51.611] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 11:42:53.394] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-02 11:42:53.394] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-02 11:43:14.979] [remoteagent] [warning] /home/hujk/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /home/hujk/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 11:43:16.618] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
+[2020-08-02 11:43:16.618] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'

@@ -1,0 +1,21 @@
+User belongs to experiment group 'ShowPlayIcon - start'
+User belongs to experiment group 'ShowExtensionSurveyPrompt - control'
+User belongs to experiment group 'DebugAdapterFactory - experiment'
+User belongs to experiment group 'PtvsdWheels37 - experiment'
+User belongs to experiment group 'UseTerminalToGetActivatedEnvVars - control'
+User belongs to experiment group 'LocalZMQKernel - experiment'
+User belongs to experiment group 'CollectLSRequestTiming - control'
+User belongs to experiment group 'CollectNodeLSRequestTiming - experiment'
+User belongs to experiment group 'EnableIPyWidgets - experiment'
+User belongs to experiment group 'RunByLine - experiment'
+User belongs to experiment group 'CustomEditorSupport - control'
+> python3.7 ~/.local/share/code-server/extensions/ms-python.python-2020.6.91350/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3.6 ~/.local/share/code-server/extensions/ms-python.python-2020.6.91350/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3 ~/.local/share/code-server/extensions/ms-python.python-2020.6.91350/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python2 ~/.local/share/code-server/extensions/ms-python.python-2020.6.91350/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.local/share/code-server/extensions/ms-python.python-2020.6.91350/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.local/share/code-server/extensions/ms-python.python-2020.6.91350/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> conda --version
+> conda info --json
+> pyenv root
+Python interpreter path: /usr/bin/python3
