@@ -5,8 +5,8 @@ export HOME=/root
 export TERM=linux
 
 echo "PORT=$PORT"
-sed -i "s/    listen[^:]*;/    listen $PORT;/" /etc/nginx/sites-available/code
-sed -i "s/    listen.*:.*;/    listen [::]:$PORT;/" /etc/nginx/sites-available/code
+sed -i "s/    listen[^:]*;/    listen $PORT;/" /etc/code-server-hub/code
+sed -i "s/    listen.*:.*;/    listen [::]:$PORT;/" /etc/code-server-hub/code
 cd /root
 export PATH=/usr/local/bin:$PATH
 tmux new -d -s jupyter jupyter lab

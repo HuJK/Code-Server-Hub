@@ -108,8 +108,7 @@ server {
                     ndcmd = "$HOME/." .. ngx.var.server_service_name .. "/bin/code-server --socket " .. server_sock_path .. " --auth password "
                     spcmd = "unset TMUX ;cp -prn " .. ngx.var.server_files_location .. "/." .. ngx.var.server_service_name .. " $HOME ;rm -f " .. server_sock_path .." 2>/dev/null ;tmux kill-session -t " .. ngx.var.server_service_name .. " ;tmux new -d -s " .. ngx.var.server_service_name .. "_setenv ;tmux set-environment -g PASSWORD " .. server_auth .. " ;tmux new -d -s " .. ngx.var.server_service_name .. " " .. ndcmd .. " ;tmux kill-session -t " .. ngx.var.server_service_name .. "_setenv ; tmux new -d -s chmod766 bash " .. ngx.var.server_files_location .. "/util/chmod766.sh " .. server_sock_path .. " "
                     spcmd_by_su = spcmd
-                    fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
-                    fp:write(remote_password)
+                    fp = io.popen( spcmd_by_su ,"w")
                     fp:close()
                     ngx.say('<head><style>code {display: block; /* fixes a strange ie margin bug */font-family: Courier New;font-size: 11pt;overflow:auto;background: #f0f0f0 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAASwCAYAAAAt7rCDAAAABHNCSVQICAgIfAhkiAAAAQJJREFUeJzt0kEKhDAMBdA4zFmbM+W0upqFOhXrDILwsimFR5pfMrXW5jhZr7PwRlxVX8//jNHrGhExjXzdu9c5IiIz+7iqVmB7Hwp4OMa2nhhwN/PRGEMBh3Zjt6KfpzPztxW9MSAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzB8HS+J9kUTvzEDMwAAAABJRU5ErkJggg==) left top repeat-y;border: 10px solid white;padding: 10px 10px 10px 21px;max-height:1000px;line-height: 1.2em;}</style></head>')
                     ngx.say('<body>')
@@ -164,8 +163,7 @@ server {
                 remote_password = tmp:sub(tmp:find(':')+1)
                 spcmd = "unset TMUX ;tmux send-keys -t " .. ngx.var.server_service_name .. " C-c ;sleep 1 ;tmux kill-session -t " .. ngx.var.server_service_name .. ""
                 spcmd_by_su = "su " .. remote_user  .. " -c '" .. spcmd .. "'"
-                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
-                fp:write(remote_password)
+                fp = io.popen( spcmd_by_su ,"w")
                 fp:close()
                 ngx.redirect("/")
             end
@@ -187,8 +185,8 @@ server {
         gzip off;
     }
     location ~ "^/jupyterlab/.*" {
-        auth_basic "WZ62Fu3Y9cA0QL1C";
-        auth_basic_user_file "/etc/nginx/.htpasswd";
+        auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
+        auth_pam_service_name "login";
         proxy_http_version 1.1;
         proxy_buffering off;
         proxy_set_header Upgrade $http_upgrade;
