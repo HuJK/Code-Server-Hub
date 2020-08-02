@@ -1,6 +1,6 @@
 FROM ubuntu
 RUN apt-get update; apt-get install -y wget
-RUN echo "root:Docker!!!" | chpasswd
+RUN echo "root:DockerATheroku!" | chpasswd
 
 ENV EDITOR vim
 ENV LANG en_US.UTF-8
