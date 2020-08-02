@@ -21,4 +21,3 @@ ExecStart=/usr/local/bin/jupyterhub -f jupyterhub_config.py
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
-systemctl enable --now jupyterhub
