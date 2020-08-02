@@ -22,9 +22,8 @@ wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh
 ```
 Demo:
-[https://nlvm.whojk.com](https://nlvm.whojk.com) 
+[https://cshub.whojk.com/200-panel.html](https://cshub.whojk.com/200-panel.html) 
 
-Because the demo server is hosted in a very cheap VPS(256MB ram, 3GB disk), the debugger may not work properly due to low memory.
 
 user|passwd
 ------|---------
