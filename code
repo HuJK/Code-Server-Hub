@@ -186,7 +186,17 @@ server {
         proxy_set_header Host    $http_host ;
         gzip off;
     }
-    
+    location ~ "^/jupyterlab/.*" {
+        auth_basic "WZ62Fu3Y9cA0QL1C";
+        auth_basic_user_file "/etc/nginx/.htpasswd";
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_pass http://127.0.0.1:16792;
+        proxy_set_header Host    $http_host ;
+        gzip off;
+    } 
     location ~ "^/(user|hub)/.*" {
         proxy_http_version 1.1;
         proxy_buffering off;
