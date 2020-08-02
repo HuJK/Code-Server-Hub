@@ -1,5 +1,5 @@
 #!/bin/bash
-pip3 install jupyterlab jupyterhub speedtest-cli
+pip3 install jupyterlab jupyterhub speedtest-cli pylint
 npm install -g configurable-http-proxy
 
 mkdir -p /etc/code-server-hub/util/jupyterhub_workdir

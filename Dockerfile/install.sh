@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e 
+set -e
 #echo "###update phase###"
 apt-get update
 #apt-get upgrade -y
