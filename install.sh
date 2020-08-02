@@ -32,7 +32,7 @@ cd /etc
 
 #install Code server
 set +e
-git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
+git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git -b heroku code-server-hub
 cd /etc/code-server-hub
 ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
 ln -s ../sites-available/code              /etc/nginx/sites-enabled/code

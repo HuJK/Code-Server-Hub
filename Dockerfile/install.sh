@@ -32,7 +32,7 @@ cd /etc
 
 #install Code server
 set +e
-git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
+git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git -b heroku code-server-hub
 cd /etc/code-server-hub
 ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
 ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
@@ -83,14 +83,6 @@ set -e
 
 ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
 
-sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
-
-echo "###restart nginx and cockpit###"
-systemctl enable nginx
-systemctl enable cockpit.socket
-service nginx stop
-service nginx start
-service cockpit stop
-service cockpit start
+bash /etc/code-server-hub/install2.sh
 
 exit 0
