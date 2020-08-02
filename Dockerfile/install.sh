@@ -83,6 +83,14 @@ set -e
 
 ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
 
-bash /etc/code-server-hub/install2.sh
+sudo sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+
+echo "###restart nginx and cockpit###"
+systemctl enable nginx
+systemctl enable cockpit.socket
+service nginx stop
+service nginx start
+service cockpit stop
+service cockpit start
 
 exit 0

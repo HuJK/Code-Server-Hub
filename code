@@ -107,7 +107,7 @@ server {
                 if response.status >= 400 then
                     ndcmd = "$HOME/." .. ngx.var.server_service_name .. "/bin/code-server --socket " .. server_sock_path .. " --auth password "
                     spcmd = "unset TMUX ;cp -prn " .. ngx.var.server_files_location .. "/." .. ngx.var.server_service_name .. " $HOME ;rm -f " .. server_sock_path .." 2>/dev/null ;tmux kill-session -t " .. ngx.var.server_service_name .. " ;tmux new -d -s " .. ngx.var.server_service_name .. "_setenv ;tmux set-environment -g PASSWORD " .. server_auth .. " ;tmux new -d -s " .. ngx.var.server_service_name .. " " .. ndcmd .. " ;tmux kill-session -t " .. ngx.var.server_service_name .. "_setenv ; tmux new -d -s chmod766 bash " .. ngx.var.server_files_location .. "/util/chmod766.sh " .. server_sock_path .. " "
-                    spcmd_by_su = "su -l " .. remote_user  .. " -s /bin/bash -c '" .. spcmd .. "'"
+                    spcmd_by_su = spcmd
                     fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
                     fp:write(remote_password)
                     fp:close()
