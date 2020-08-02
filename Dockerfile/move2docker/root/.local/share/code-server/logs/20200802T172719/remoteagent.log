@@ -86,3 +86,13 @@
 [2020-08-02 17:29:54.095] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
 [2020-08-02 17:29:54.361] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
 [2020-08-02 17:29:54.361] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:55:42.086] [remoteagent] [warning] /root/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 17:55:42.307] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:55:42.307] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:55:42.627] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:55:42.627] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:56:24.927] [remoteagent] [warning] /root/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 17:56:25.146] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:56:25.146] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:56:25.459] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:56:25.459] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
