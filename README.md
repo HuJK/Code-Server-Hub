@@ -22,13 +22,11 @@ wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh
 ```
 Demo:
-[https://nlvm.whojk.com](https://nlvm.whojk.com) 
-
-Because the demo server is hosted in a very cheap VPS(256MB ram, 3GB disk), the debugger may not work properly due to low memory.
+[https://cshub.whojk.com/200-panel.html](https://cshub.whojk.com/200-panel.html) 
 
 user|passwd
 ------|---------
-demo01|demo)!
+root|DockerATheroku!
 
 ### Docker version + normal versoin
 
@@ -56,6 +54,7 @@ certbot-dns-cloudflare  jupyterlab jupyterhub
 configurable-http-proxy
 portainer
 ```
+Roughly 3GB if you install from clean ubuntu. If it contains package that you already have, it will be smaller.
 
 ## Video introduction
 
