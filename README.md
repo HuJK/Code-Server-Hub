@@ -28,7 +28,7 @@ Because the demo server is hosted in a very cheap VPS(256MB ram, 3GB disk), the 
 
 user|passwd
 ------|---------
-demo01|demo)!
+root|DockerATheroku!
 
 ### Docker version + normal versoin
 
@@ -56,6 +56,7 @@ certbot-dns-cloudflare  jupyterlab jupyterhub
 configurable-http-proxy
 portainer
 ```
+Roughly 3GB for clean ubuntu. If you already installed some package mentioned above, it will be smaller.
 
 ## Video introduction
 
