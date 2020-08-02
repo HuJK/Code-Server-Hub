@@ -320,7 +320,7 @@ c.NotebookApp.port = 16792
 #c.NotebookApp.ssl_options = {}
 
 ## Supply overrides for terminado. Currently only supports "shell_command".
-c.NotebookApp.terminado_settings = {'shell_command': ['zsh']}
+c.NotebookApp.terminado_settings = {'shell_command': ['fish']}
 
 ## Set to False to disable terminals.
 #  

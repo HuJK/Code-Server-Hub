@@ -1,5 +1,4 @@
 {
-    "terminal.integrated.shell.linux": "/usr/bin/fish",
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "Material Theme Darker High Contrast"
+    "workbench.colorTheme": "Material Theme Palenight High Contrast"
 }

@@ -1,0 +1,88 @@
+[2020-08-02 17:27:19.611] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:27:21.235] [remoteagent] [error] /root/.local/share/code-server/extensions {"errno":-2,"code":"ENOENT","syscall":"scandir","path":"/root/.local/share/code-server/extensions"}
+[2020-08-02 17:27:21.376] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:27:21.376] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:27:21.663] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:27:21.663] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:27:27.970] [remoteagent] [info] Installing extension: ms-python.python
+[2020-08-02 17:27:28.669] [remoteagent] [info] Installing extension: ms-vscode.cpptools
+[2020-08-02 17:27:31.246] [remoteagent] [info] Downloaded extension: ms-vscode.cpptools /tmp/e4c9ed71-0271-422a-8cc6-096a7a6715ef
+[2020-08-02 17:27:31.421] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.ms-vscode.cpptools-0.29.0: ms-vscode.cpptools
+[2020-08-02 17:27:31.421] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/ms-vscode.cpptools-0.29.0
+[2020-08-02 17:27:31.424] [remoteagent] [info] Installation completed. ms-vscode.cpptools
+[2020-08-02 17:27:31.434] [remoteagent] [info] Extensions installed successfully: ms-vscode.cpptools
+[2020-08-02 17:27:31.764] [remoteagent] [info] Downloaded extension: ms-python.python /tmp/d16f1fc0-8b19-4b37-b98d-009653c310a8
+[2020-08-02 17:27:32.394] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.ms-python.python-2020.6.91350: ms-python.python
+[2020-08-02 17:27:32.394] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/ms-python.python-2020.6.91350
+[2020-08-02 17:27:32.397] [remoteagent] [info] Installation completed. ms-python.python
+[2020-08-02 17:27:32.419] [remoteagent] [info] Extensions installed successfully: ms-python.python
+[2020-08-02 17:27:33.068] [remoteagent] [info] Installing extension: ms-vscode.node-debug2
+[2020-08-02 17:27:33.720] [remoteagent] [info] Downloaded extension: ms-vscode.node-debug2 /tmp/ec50a596-acca-4022-be5b-f45e6fe97030
+[2020-08-02 17:27:33.790] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.ms-vscode.node-debug2-1.42.1: ms-vscode.node-debug2
+[2020-08-02 17:27:33.791] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 17:27:33.791] [remoteagent] [info] Installation completed. ms-vscode.node-debug2
+[2020-08-02 17:27:33.793] [remoteagent] [info] Extensions installed successfully: ms-vscode.node-debug2
+[2020-08-02 17:27:49.171] [remoteagent] [info] Installing extension: ms-python.python
+[2020-08-02 17:27:52.708] [remoteagent] [info] Downloaded extension: ms-python.python /tmp/10ad32cf-ea19-4cd2-a213-ba76b66f556d
+[2020-08-02 17:27:53.304] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.ms-python.python-2020.5.86806: ms-python.python
+[2020-08-02 17:27:53.305] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/ms-python.python-2020.5.86806
+[2020-08-02 17:27:53.307] [remoteagent] [info] Installation completed. ms-python.python
+[2020-08-02 17:27:53.323] [remoteagent] [info] Extensions installed successfully: ms-python.python
+[2020-08-02 17:27:58.525] [remoteagent] [info] Installing extension: mikael.angular-beastcode
+[2020-08-02 17:27:59.388] [remoteagent] [info] Downloaded extension: mikael.angular-beastcode /tmp/9b696167-e6c2-4b28-b6ad-afbb89d85735
+[2020-08-02 17:27:59.399] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.mikael.angular-beastcode-8.1.1: mikael.angular-beastcode
+[2020-08-02 17:27:59.399] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/mikael.angular-beastcode-8.1.1
+[2020-08-02 17:27:59.399] [remoteagent] [info] Installation completed. mikael.angular-beastcode
+[2020-08-02 17:27:59.401] [remoteagent] [info] Extensions installed successfully: mikael.angular-beastcode
+[2020-08-02 17:28:00.820] [remoteagent] [info] Uninstalling extension: mikael.angular-beastcode
+[2020-08-02 17:28:00.824] [remoteagent] [info] Successfully uninstalled extension: mikael.angular-beastcode
+[2020-08-02 17:28:03.257] [remoteagent] [info] Installing extension: pkief.material-icon-theme
+[2020-08-02 17:28:03.791] [remoteagent] [info] Installing extension: equinusocio.vsc-material-theme
+[2020-08-02 17:28:03.858] [remoteagent] [info] Downloaded extension: pkief.material-icon-theme /tmp/82456930-0108-4699-bdc4-a12ec2136981
+[2020-08-02 17:28:03.966] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.pkief.material-icon-theme-4.0.1: pkief.material-icon-theme
+[2020-08-02 17:28:03.966] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/pkief.material-icon-theme-4.0.1
+[2020-08-02 17:28:03.966] [remoteagent] [info] Installation completed. pkief.material-icon-theme
+[2020-08-02 17:28:03.968] [remoteagent] [info] Extensions installed successfully: pkief.material-icon-theme
+[2020-08-02 17:28:04.187] [remoteagent] [info] Downloaded extension: equinusocio.vsc-material-theme /tmp/90cea4db-d432-4d18-aa8d-4e0d338d6be8
+[2020-08-02 17:28:04.199] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.equinusocio.vsc-material-theme-30.0.0: equinusocio.vsc-material-theme
+[2020-08-02 17:28:04.199] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/equinusocio.vsc-material-theme-30.0.0
+[2020-08-02 17:28:04.199] [remoteagent] [info] Installation completed. equinusocio.vsc-material-theme
+[2020-08-02 17:28:04.201] [remoteagent] [info] Extensions installed successfully: equinusocio.vsc-material-theme
+[2020-08-02 17:28:12.542] [remoteagent] [info] Installing extension: coenraads.bracket-pair-colorizer
+[2020-08-02 17:28:13.200] [remoteagent] [info] Downloaded extension: coenraads.bracket-pair-colorizer /tmp/945ef1ed-d98c-46cf-b618-68471f090a10
+[2020-08-02 17:28:13.416] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.coenraads.bracket-pair-colorizer-1.0.20: coenraads.bracket-pair-colorizer
+[2020-08-02 17:28:13.416] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/coenraads.bracket-pair-colorizer-1.0.20
+[2020-08-02 17:28:13.417] [remoteagent] [info] Installation completed. coenraads.bracket-pair-colorizer
+[2020-08-02 17:28:13.419] [remoteagent] [info] Extensions installed successfully: coenraads.bracket-pair-colorizer
+[2020-08-02 17:28:22.252] [remoteagent] [info] Installing extension: oderwat.indent-rainbow
+[2020-08-02 17:28:23.024] [remoteagent] [info] Downloaded extension: oderwat.indent-rainbow /tmp/3f3aebec-43ec-47ef-8af5-55e479b8551b
+[2020-08-02 17:28:23.278] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.oderwat.indent-rainbow-7.4.0: oderwat.indent-rainbow
+[2020-08-02 17:28:23.278] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/oderwat.indent-rainbow-7.4.0
+[2020-08-02 17:28:23.278] [remoteagent] [info] Installation completed. oderwat.indent-rainbow
+[2020-08-02 17:28:23.280] [remoteagent] [info] Extensions installed successfully: oderwat.indent-rainbow
+[2020-08-02 17:28:54.087] [remoteagent] [info] Installing extension: timonwong.shellcheck
+[2020-08-02 17:28:54.992] [remoteagent] [info] Downloaded extension: timonwong.shellcheck /tmp/e1844dbd-016b-495c-9aad-1c8becbc6e5a
+[2020-08-02 17:28:54.999] [remoteagent] [info] Extracted extension to /root/.local/share/code-server/extensions/.timonwong.shellcheck-0.9.0: timonwong.shellcheck
+[2020-08-02 17:28:54.999] [remoteagent] [info] Renamed to /root/.local/share/code-server/extensions/timonwong.shellcheck-0.9.0
+[2020-08-02 17:28:54.999] [remoteagent] [info] Installation completed. timonwong.shellcheck
+[2020-08-02 17:28:55.000] [remoteagent] [info] Extensions installed successfully: timonwong.shellcheck
+[2020-08-02 17:29:07.472] [remoteagent] [warning] /root/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 17:29:07.504] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:29:07.504] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:29:07.842] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:29:07.842] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:29:40.229] [remoteagent] [info] Uninstalling extension: ms-vscode.node-debug2
+[2020-08-02 17:29:40.234] [remoteagent] [info] Successfully uninstalled extension: ms-vscode.node-debug2
+[2020-08-02 17:29:44.730] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:29:44.730] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:29:44.730] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:29:44.730] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:29:52.269] [remoteagent] [info] Installing extension: ms-vscode.node-debug2
+[2020-08-02 17:29:52.718] [remoteagent] [info] Downloaded extension: ms-vscode.node-debug2 /tmp/9218cd29-359c-4049-a0a8-f39ed6a5259e
+[2020-08-02 17:29:52.730] [remoteagent] [info] Removed the extension from uninstalled list: ms-vscode.node-debug2
+[2020-08-02 17:29:52.739] [remoteagent] [info] Extensions installed successfully: ms-vscode.node-debug2
+[2020-08-02 17:29:54.029] [remoteagent] [warning] /root/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
+[2020-08-02 17:29:54.095] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:29:54.095] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
+[2020-08-02 17:29:54.361] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'
+[2020-08-02 17:29:54.361] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/User/snippets'

@@ -1,6 +1,0 @@
-[2020-08-01 15:16:02.385] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
-[2020-08-01 15:16:19.083] [remoteagent] [error] /home/hujk/.local/share/code-server/extensions {"errno":-2,"code":"ENOENT","syscall":"scandir","path":"/home/hujk/.local/share/code-server/extensions"}
-[2020-08-01 15:16:21.113] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
-[2020-08-01 15:16:21.113] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/Machine'
-[2020-08-01 15:16:22.598] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
-[2020-08-01 15:16:22.598] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/hujk/.local/share/code-server/User/snippets'
