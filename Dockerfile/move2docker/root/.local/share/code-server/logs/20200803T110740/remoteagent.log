@@ -1,7 +1,0 @@
-[2020-08-03 11:07:40.452] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
-[2020-08-03 11:07:42.599] [remoteagent] [warning] /root/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
-[2020-08-03 11:07:43.145] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
-[2020-08-03 11:07:43.145] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
-[2020-08-03 12:09:03.928] [remoteagent] [warning] /root/.cshub/lib/vscode/extensions/ms-vscode.node-debug2 has been overridden /root/.local/share/code-server/extensions/ms-vscode.node-debug2-1.42.1
-[2020-08-03 12:09:04.736] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
-[2020-08-03 12:09:04.736] [remoteagent] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/root/.local/share/code-server/Machine'
