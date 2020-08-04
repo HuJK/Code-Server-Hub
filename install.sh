@@ -7,7 +7,7 @@ echo "###install dependanse phase###"
 echo "Install dependances"
 apt-get install -y nginx-extras ca-certificates socat
 apt-get install -y tmux libncurses-dev htop nodejs npm wget sudo curl vim openssl git
-apt-get install -y python3 python3-pip python3-dev p7zip-full 
+apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management

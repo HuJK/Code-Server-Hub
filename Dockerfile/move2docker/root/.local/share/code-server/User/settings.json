@@ -1,5 +1,5 @@
 {
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "Material Theme Palenight High Contrast",
-    "terminal.integrated.shell.linux": "/usr/bin/fish"
+    "terminal.integrated.shell.linux": "/usr/bin/zsh"
 }
