@@ -15,6 +15,8 @@ service nginx start
 
 wget -qO- http://ifconfig.me
 
+find /root | grep ".wh..wh..opq"  | xargs rm -rf
+
 #Debug use
 #while true
 #do

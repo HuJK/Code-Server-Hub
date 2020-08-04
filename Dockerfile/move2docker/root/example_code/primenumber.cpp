@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+// Because ptrace system call are not allowed in heroku, it's heroku limitation. So c++ debugging is not gonna work.
 int main()
 {
     int low, high, i, flag;
