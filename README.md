@@ -1,9 +1,8 @@
 # Code-Server-Hub
-It's a webpage similar to jupyterhub, but it's for [code-server](https://github.com/cdr/code-server).
+It's similar to jupyterhub, but it's for [code-server](https://github.com/cdr/code-server).
 
 You can login with your **linux account** and password,because it's authenticate with Linux PAM module. 
-
-Then it will automatically spawn a code-server instance in a tmux session at background for you.
+Then it will automatically spawn a code-server instance in a tmux session at background.
 
 If you want add user, type ```sudo adduser``` in command line. Make sure you are a sudoer.
 
