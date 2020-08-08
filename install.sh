@@ -184,7 +184,7 @@ if [ "$1" == "docker" ]; then
                 echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
                 n=0
                 until [ $n -ge 16 ]; do
-                    curl 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"${PASSWORD}"}' --insecure && break
+                    curl 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"'"${PASSWORD}"'"}' --insecure && break
                     n=$((n + 1))
                     echo "Retry ${n}/16"
                     sleep 1
@@ -268,7 +268,7 @@ service nginx stop
 service nginx start
 service cockpit stop
 service cockpit start
-if [ "$PASSWOED" != "" ]; then
+if [ "${PASSWORD}" != "" ]; then
     echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
 fi
