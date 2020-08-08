@@ -181,7 +181,7 @@ if [ "$1" == "docker" ]; then
                 echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
                 echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
                 echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
-                curl 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"${PASSWORD}"}' --insecure
+                curl --connect-timeout 5 --max-time 2 --retry 6 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"${PASSWORD}"}' --insecure
                 break;;
             [Nn]* ) 
                 echo "Skipped";
@@ -261,5 +261,8 @@ service nginx stop
 service nginx start
 service cockpit stop
 service cockpit start
-
+if [ "$PASSWOED" != "" ]; then
+    echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
+    echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
+fi
 exit 0
