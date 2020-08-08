@@ -7,11 +7,10 @@ echo "###install dependanse phase###"
 echo "Install dependances"
 apt-get install -y nginx-extras ca-certificates socat
 apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git
-wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
-#pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
+apt-get install -y npm
 apt-get install -y -t xenial-backports cockpit cockpit-pcp #for ubuntu 16.04
 apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
 apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
@@ -158,7 +157,13 @@ if [ "$1" == "docker" ]; then
     has_portainer=$(docker container ls -a | grep portainer) || true
     while [ -z "$has_portainer" ]; do
         echo "=========================================================================="
-        read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
+        if [ "$2" == "portainer" ]; then
+            yn="Yes"
+        elif [ "$2" == "noportainer" ]; then
+            yn="No"
+        else
+            read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
+        fi
         case $yn in
             [Yy]* ) 
                 docker run -d -p 9000:9000 \
@@ -205,7 +210,13 @@ fi
 if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
     while true; do
         echo "=========================================================================="
-        read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
+        if [ "$3" == "ssl" ]; then
+            yn="Yes"
+        elif [ "$3" == "nossl" ]; then
+            yn="No"
+        else
+            read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
+        fi
         case $yn in
             [Yy]* ) 
                 sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
@@ -244,6 +255,7 @@ fi
         esac
     done
 }
+pip3 install certbot-dns-cloudflare
 wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh | bash
 
 echo "###restart nginx and cockpit###"
