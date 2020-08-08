@@ -255,9 +255,10 @@ fi
         esac
     done
 }
+set +e
 pip3 install certbot-dns-cloudflare
 wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh | bash
-
+set -e
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
 systemctl enable cockpit.socket
