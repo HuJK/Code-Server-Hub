@@ -1,4 +1,30 @@
 #!/bin/bash
+
+{ # try
+    pip3 -V
+} || { # catch
+    # save log for exception 
+    echo "=========================================================================="
+    while true; do
+        read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" yn
+        case $yn in
+            [Yy]* ) 
+                # Nvidia-Docker
+                apt purge python3-pip
+                wget https://bootstrap.pypa.io/get-pip.py
+                python3 get-pip.py
+                break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            * ) echo "Please answer yes or no or abort.";;
+        esac
+    done
+}
+
 pip3 install --upgrade pip
 pip3 install jupyterlab jupyterhub
 npm install -g configurable-http-proxy
