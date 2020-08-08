@@ -10,7 +10,7 @@ apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
 { # try
-    pip3 -V && sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+    pip3 -V
 } || { # catch
     # save log for exception 
     echo "=========================================================================="
@@ -22,7 +22,6 @@ apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
                 apt purge python3-pip
                 wget https://bootstrap.pypa.io/get-pip.py
                 python3 get-pip.py
-                sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
                 break;;
             [Aa]* ) 
                 echo "Aborted";
@@ -247,7 +246,7 @@ if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
 fi
 
 
-
+sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
 
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
