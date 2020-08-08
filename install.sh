@@ -5,10 +5,35 @@ apt-get update
 #apt-get upgrade -y
 echo "###install dependanse phase###"
 echo "Install dependances"
-wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get install -y nginx-extras ca-certificates socat
-apt-get install -y tmux libncurses-dev htop nodejs npm wget sudo curl vim openssl git
-apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev
+apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git
+wget -qO- https://deb.nodesource.com/setup_12.x | bash
+apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
+{ # try
+    pip3 -V && sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+} || { # catch
+    # save log for exception 
+    echo "=========================================================================="
+    while true; do
+        read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" yn
+        case $yn in
+            [Yy]* ) 
+                # Nvidia-Docker
+                apt purge python3-pip
+                wget https://bootstrap.pypa.io/get-pip.py
+                python3 get-pip.py
+                sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+                break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            * ) echo "Please answer yes or no or abort.";;
+        esac
+    done
+}
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
@@ -222,31 +247,7 @@ if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
 fi
 
 
-{ # try
-    pip3 -V && sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
-} || { # catch
-    # save log for exception 
-    echo "=========================================================================="
-    while true; do
-        read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" yn
-        case $yn in
-            [Yy]* ) 
-                # Nvidia-Docker
-                apt purge python3-pip
-                wget https://bootstrap.pypa.io/get-pip.py
-                python3 get-pip.py
-                sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
-                break;;
-            [Aa]* ) 
-                echo "Aborted";
-                exit;;
-            [Nn]* ) 
-                echo "Skipped";
-                break;;
-            * ) echo "Please answer yes or no or abort.";;
-        esac
-    done
-}
+
 
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
