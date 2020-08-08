@@ -177,16 +177,11 @@ if [ "$1" == "docker" ]; then
                     --sslcert /etc/code-server-hub/cert/ssl.pem \
                     --sslkey  /etc/code-server-hub/cert/ssl.key;
                 echo "=========================================================================="
-                while true; do
-                    read -p "Please visit https://$(wget -qO- https://ifconfig.me/):9000 or https://[your server's ip]:9000 to set your portainer password now. Finished?(Yes/No)" ynn
-                    case $ynn in
-                        [Yy]* ) 
-                            break;;
-                        [Nn]* ) 
-                            echo "Please set password now, or your computer may take serious security risks";;
-                        * ) echo "Please answer yes or no.";;
-                    esac
-                done
+                PASSWORD=`date +%s|md5sum|base64|head -c 12`
+                echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
+                echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
+                echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
+                curl 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"${PASSWORD}"}' --insecure
                 break;;
             [Nn]* ) 
                 echo "Skipped";
