@@ -11,6 +11,7 @@ apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev
 pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
+apt-get install -y -t xenial-backports cockpit cockpit-pcp #for ubuntu 16.04
 apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
 apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
 set -e
