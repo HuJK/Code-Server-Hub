@@ -157,9 +157,9 @@ if [ "$1" == "docker" ]; then
     has_portainer=$(docker container ls -a | grep portainer) || true
     while [ -z "$has_portainer" ]; do
         echo "=========================================================================="
-        if [ "$2" == "portainer" ]; then
+        if [ "$3" == "portainer" ]; then
             yn="Yes"
-        elif [ "$2" == "noportainer" ]; then
+        elif [ "$3" == "noportainer" ]; then
             yn="No"
         else
             read -p "Do you want install portainer(a web based docker gui) now? (Yes/No)" yn
@@ -210,9 +210,9 @@ fi
 if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
     while true; do
         echo "=========================================================================="
-        if [ "$3" == "ssl" ]; then
+        if [ "$4" == "ssl" ]; then
             yn="Yes"
-        elif [ "$3" == "nossl" ]; then
+        elif [ "$4" == "nossl" ]; then
             yn="No"
         else
             read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
