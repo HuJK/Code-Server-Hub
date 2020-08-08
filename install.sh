@@ -179,7 +179,7 @@ if [ "$1" == "docker" ]; then
                     --sslkey  /etc/code-server-hub/cert/ssl.key;
                 echo "=========================================================================="
                 PASSWORD=`date +%s|md5sum|base64|head -c 12`
-                echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
+                echo "Your username:password for portainer is admin:${PASSWORD} Login at https://$(wget -qO- https://ifconfig.me/):9000"
                 echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
                 echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
                 n=0
@@ -269,7 +269,7 @@ service nginx start
 service cockpit stop
 service cockpit start
 if [ "${PASSWORD}" != "" ]; then
-    echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
+    echo "Your username:password for portainer is admin:${PASSWORD} Login at https://$(wget -qO- https://ifconfig.me/):9000"
     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
 fi
 exit 0
