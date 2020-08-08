@@ -155,6 +155,7 @@ if [ "$1" == "docker" ]; then
     fi
     #Portainer
     has_portainer=$(docker container ls -a | grep portainer) || true
+    PASSWORD=""
     while [ -z "$has_portainer" ]; do
         echo "=========================================================================="
         if [ "$3" == "portainer" ]; then
@@ -181,7 +182,13 @@ if [ "$1" == "docker" ]; then
                 echo "Your username:password for portainer is admin:${PASSWORD}. Login at https://$(wget -qO- https://ifconfig.me/):9000"
                 echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
                 echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
-                curl --connect-timeout 5 --max-time 2 --retry 6 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"${PASSWORD}"}' --insecure
+                n=0
+                until [ $n -ge 16 ]; do
+                    curl 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"${PASSWORD}"}' --insecure && break
+                    n=$((n + 1))
+                    echo "Retry ${n}/16"
+                    sleep 1
+                done
                 break;;
             [Nn]* ) 
                 echo "Skipped";
