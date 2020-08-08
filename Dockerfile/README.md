@@ -2,15 +2,27 @@
 
 These dockerfiles are for Code Server docker version.
 
+I use some feature from BuildKit, so prepare buildx first
+
+```bash
+# make your computer able to rum arm64 binary
+docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
+# enable expremental feature
+export DOCKER_CLI_EXPERIMENTAL=enabled
+export DOCKER_BUILDKIT=1
+docker buildx create --name mybuilder --driver docker-container
+docker buildx use mybuilder
+```
+
 ### CPU version (amd64/arm64)
 minimal version (1.5GB)
 ```bash
-docker build -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal .
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --push
 ```
 
 standerd version (4GB)
 ```bash
-docker build -t whojk/code-server-hub-docker:standerd -f ./Dockerfile_2_standard .
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --push
 ```
 
 ### GPU version (amd64)
