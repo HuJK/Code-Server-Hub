@@ -41,13 +41,13 @@ Install Code-Server-Hub and Code-Server-Hub-Docker
 minimal version (1.5GB + dependences)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh docker minimal
+sudo -H bash install.sh docker minimal
 ```
 
 standard version (4GB + dependences)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh docker standard
+sudo -H bash install.sh docker standard portainer ssl
 ```
 
 Then goto url : https://\[your_server_ip\]
