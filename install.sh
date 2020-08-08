@@ -18,8 +18,7 @@ apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
         read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" yn
         case $yn in
             [Yy]* ) 
-                # Nvidia-Docker
-                apt purge python3-pip
+                apt purge -y python3-pip
                 wget https://bootstrap.pypa.io/get-pip.py
                 python3 get-pip.py
                 break;;
