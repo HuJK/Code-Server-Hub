@@ -244,8 +244,30 @@ if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
     done
 fi
 
-
-sh -c "$(wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh)"
+{ # try
+    pip3 -V
+} || { # catch
+    # save log for exception 
+    echo "=========================================================================="
+    while true; do
+        read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" yn
+        case $yn in
+            [Yy]* ) 
+                apt purge -y python3-pip
+                wget https://bootstrap.pypa.io/get-pip.py
+                python3 get-pip.py
+                break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            * ) echo "Please answer yes or no or abort.";;
+        esac
+    done
+}
+wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install2.sh | bash
 
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
