@@ -9,30 +9,7 @@ apt-get install -y nginx-extras ca-certificates socat
 apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git
 wget -qO- https://deb.nodesource.com/setup_12.x | bash
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
-{ # try
-    pip3 -V
-} || { # catch
-    # save log for exception 
-    echo "=========================================================================="
-    while true; do
-        read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" yn
-        case $yn in
-            [Yy]* ) 
-                apt purge -y python3-pip
-                wget https://bootstrap.pypa.io/get-pip.py
-                python3 get-pip.py
-                break;;
-            [Aa]* ) 
-                echo "Aborted";
-                exit;;
-            [Nn]* ) 
-                echo "Skipped";
-                break;;
-            * ) echo "Please answer yes or no or abort.";;
-        esac
-    done
-}
-pip3 install certbot-dns-cloudflare
+#pip3 install certbot-dns-cloudflare
 set +e # folling command only have one will success
 #cockpit for user management
 apt-get install -y -t xenial-backports cockpit cockpit-pcp #for ubuntu 16.04
