@@ -12,7 +12,13 @@ This is a nginx reverse proxy config which will try to authenticate user:passwor
 ## Install Script (for Ubuntu 18.04 and 20.04)
 Run this in terminal
 
-### Normal version
+### Script usage
+```
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
+sudo bash install.sh [nodocker|docker] [minimal|standard] [portainer|noportainer] [ssl|nossl]
+```
+### Examples
+#### Normal version
 
 Install Code-Server-Hub only(300MB + dependences)
 
@@ -35,7 +41,7 @@ Install Code-Server-Hub and Code-Server-Hub-Docker
 minimal version (1.5GB + dependences)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh docker
+sudo bash install.sh docker minimal
 ```
 
 standard version (4GB + dependences)
