@@ -31,8 +31,8 @@ Demo:
 
 
 user|passwd
-------|---------
-root|DockerATheroku!
+----|---------------
+root|DockerAtHeroku
 
 ### Docker version + normal versoin
 
