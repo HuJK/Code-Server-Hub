@@ -27,7 +27,7 @@ wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 sudo bash install.sh
 ```
 Demo:
-[https://cshub.whojk.com/200-panel.html](https://cshub.whojk.com/200-panel.html) 
+[https://cshub.hujk.org/200-panel.html](https://cshub.hujk.org/200-panel.html) 
 
 
 user|passwd
