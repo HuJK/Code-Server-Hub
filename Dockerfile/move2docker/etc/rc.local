@@ -14,6 +14,7 @@ nginx -t
 service nginx start
 
 wget -qO- http://ifconfig.me
+curl -s "http://127.0.0.1:${PORT}/200-server_spawn.html" -H 'authorization: Basic cm9vdDpEb2NrZXJBdEhlcm9rdQ=='
 
 find /root | grep ".wh..wh..opq"  | xargs rm -rf
 
