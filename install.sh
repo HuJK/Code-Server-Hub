@@ -87,14 +87,18 @@ set +e
 mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
 set -e
 
-if [ "$1" == "docker" ]; then
+if [ "$1" == "docker" ] || [ "$1" == "autoInstallDocker" ]; then
     #ask for install docker
     if hash docker 2>/dev/null; then
         echo "Docker installed, skip docker auto install"
     else
         echo "=========================================================================="
         while true; do
-            read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" yn
+            if [ "$1" == "autoInstallDocker" ]; then
+                yn="Yes"
+            else
+                read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" yn
+            fi
             case $yn in
                 [Yy]* ) 
                     apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
