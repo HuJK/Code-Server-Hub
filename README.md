@@ -15,7 +15,7 @@ Run this in terminal
 ### Script usage
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh [nodocker|docker] [minimal|standard] [portainer|noportainer] [ssl|nossl]
+sudo bash install.sh [nodocker|docker|autoInstallDocker] [minimal|standard] [portainer|noportainer] [ssl|nossl]
 ```
 ### Examples
 #### Normal version
