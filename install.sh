@@ -8,7 +8,7 @@ JUPYTERHUB_PIP3="ASK"
 COCKPIT="ASK"
 DOCKER="ASK"
 DOCKER_NVIDIA="ASK"
-DOCKER_PORTAINER="ASD"
+DOCKER_PORTAINER="ASK"
 DOCKER_IMAGE="standard"
 
 
@@ -99,6 +99,37 @@ function get_cpu_architecture()
     esac
 }
 cpu_arch=$(get_cpu_architecture)
+
+if [ -f /etc/os-release ]; then
+    # freedesktop.org and systemd
+    . /etc/os-release
+    OS=$NAME
+    VER=$VERSION_ID
+elif type lsb_release >/dev/null 2>&1; then
+    # linuxbase.org
+    OS=$(lsb_release -si)
+    VER=$(lsb_release -sr)
+elif [ -f /etc/lsb-release ]; then
+    # For some versions of Debian/Ubuntu without lsb_release command
+    . /etc/lsb-release
+    OS=$DISTRIB_ID
+    VER=$DISTRIB_RELEASE
+elif [ -f /etc/debian_version ]; then
+    # Older Debian/Ubuntu/etc.
+    OS=Debian
+    VER=$(cat /etc/debian_version)
+elif [ -f /etc/SuSe-release ]; then
+    # Older SuSE/etc.
+    ...
+elif [ -f /etc/redhat-release ]; then
+    # Older Red Hat, CentOS, etc.
+    ...
+else
+    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+    OS=$(uname -s)
+    VER=$(uname -r)
+fi
+
 
 echo "###doenload files###"
 cd /etc
@@ -193,9 +224,11 @@ if [[ ! $COCKPIT =~ [yYnN].* ]]; then
     read -p "Do you want to install cockpit at 9090 now(yes/no)? " COCKPIT
 fi
 if [[ $COCKPIT =~ [yY].* ]]; then
+    set +e # folling command only have one will success
     apt-get install -y -t xenial-backports cockpit cockpit-pcp #for ubuntu 16.04
     apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
     apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
+    set -e
 fi
 
 #Jupyterhub
@@ -253,7 +286,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
                 [Yy]* ) 
                     apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
                     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -;
-                    sudo add-apt-repository "deb [arch=${cpu_arch}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
+                    sudo add-apt-repository "deb [arch=${cpu_arch}] https://download.docker.com/linux/$(echo $OS | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) stable";
                     apt-get update;
                     apt-get install -y docker-ce docker-ce-cli containerd.io;
                     break;;
