@@ -101,33 +101,7 @@ function get_cpu_architecture()
 cpu_arch=$(get_cpu_architecture)
 
 if [ -f /etc/os-release ]; then
-    # freedesktop.org and systemd
     . /etc/os-release
-    OS=$NAME
-    VER=$VERSION_ID
-elif type lsb_release >/dev/null 2>&1; then
-    # linuxbase.org
-    OS=$(lsb_release -si)
-    VER=$(lsb_release -sr)
-elif [ -f /etc/lsb-release ]; then
-    # For some versions of Debian/Ubuntu without lsb_release command
-    . /etc/lsb-release
-    OS=$DISTRIB_ID
-    VER=$DISTRIB_RELEASE
-elif [ -f /etc/debian_version ]; then
-    # Older Debian/Ubuntu/etc.
-    OS=Debian
-    VER=$(cat /etc/debian_version)
-elif [ -f /etc/SuSe-release ]; then
-    # Older SuSE/etc.
-    ...
-elif [ -f /etc/redhat-release ]; then
-    # Older Red Hat, CentOS, etc.
-    ...
-else
-    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
-    OS=$(uname -s)
-    VER=$(uname -r)
 fi
 
 
@@ -285,8 +259,8 @@ if [[ $DOCKER =~ [yY].* ]]; then
             case $DOCKER_INSTALL in
                 [Yy]* ) 
                     apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
-                    curl -fsSL "https://download.docker.com/linux/$(echo $OS | tr '[:upper:]' '[:lower:]')/gpg" | sudo apt-key add -;
-                    sudo add-apt-repository "deb [arch=${cpu_arch}] https://download.docker.com/linux/$(echo $OS | tr '[:upper:]' '[:lower:]') $(lsb_release -cs) stable";
+                    curl -fsSL "https://download.docker.com/linux/$ID/gpg" | sudo apt-key add -;
+                    sudo add-apt-repository "deb [arch=${cpu_arch}] https://download.docker.com/linux/$ID $(lsb_release -cs) stable";
                     apt-get update;
                     apt-get install -y docker-ce docker-ce-cli containerd.io;
                     break;;
@@ -330,11 +304,11 @@ if [[ $DOCKER =~ [yY].* ]]; then
                     echo "Your username:password for portainer is admin:${PASSWORD} Login at https://$(wget -qO- https://ifconfig.me/):9000"
                     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
                     echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
-                    n=0
+                    n=1
                     until [ $n -ge 16 ]; do
+                        echo "Trying to set password ${PASSWORD} for cockpit, attemp ${n}"
                         curl 'https://127.0.0.1:9000/api/users/admin/init' --data-binary '{"Username":"admin","Password":"'"${PASSWORD}"'"}' --insecure && break
                         n=$((n + 1))
-                        echo "Retry ${n}/16"
                         sleep 1
                     done
                     break;;
