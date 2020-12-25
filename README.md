@@ -9,45 +9,28 @@ If you want add user, type ```sudo adduser``` in command line. Make sure you are
 ## How this work
 This is a nginx reverse proxy config which will try to authenticate user:password with linux pam module ,and try to execute command to spawn a code-server workspace by that user, and then proxy_pass to it.
 
-## Install Script (for Ubuntu 18.04 and 20.04)
-Run this in terminal
+## Quick install (for Ubuntu 18.04 and 20.04 and Debian 10)
 
-### Script usage
+minimal install
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh [nodocker|docker|autoInstallDocker] [minimal|standard] [portainer|noportainer] [ssl|nossl]
+chmod 755 install.sh 
+sudo install.sh -jph=no -jphp3=no -c=no -d=no
 ```
-### Examples
-#### Normal version
 
-Install Code-Server-Hub only(300MB + dependences)
-
-```
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo bash install.sh
-```
 Demo:
 [https://cshub.hujk.org/200-panel.html](https://cshub.hujk.org/200-panel.html) 
-
 
 user|passwd
 ----|---------------
 root|DockerAtHeroku
 
-### Docker version + normal versoin
+### full experiement
 
-Install Code-Server-Hub and Code-Server-Hub-Docker
-
-minimal version (1.5GB + dependences)
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo -H bash install.sh docker minimal
-```
-
-standard version (4GB + dependences)
-```
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-sudo -H bash install.sh docker standard portainer ssl
+chmod 755 install.sh 
+sudo install.sh -jph=yes -jphp3=yes -c=yes -d=yes -dn=yes -dp=yes
 ```
 
 Then goto url : https://\[your_server_ip\]

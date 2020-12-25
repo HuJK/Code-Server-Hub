@@ -303,6 +303,8 @@ if [[ $DOCKER =~ [yY].* ]]; then
                     PASSWORD=`date +%s|md5sum|base64|head -c 12`
                     echo "Your username:password for portainer is admin:${PASSWORD} Login at https://$(wget -qO- https://ifconfig.me/):9000"
                     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
+                    mkdir -p ~/.ssh
+                    chmod 600 ~/.ssh
                     echo "admin:${PASSWORD}" > ~/.ssh/portainer_pwd.txt
                     n=1
                     until [ $n -ge 16 ]; do
