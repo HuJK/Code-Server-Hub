@@ -376,8 +376,6 @@ if [[ $DOCKER =~ [yY].* ]]; then
         ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
         set -e
     fi
-else
-
 fi
 
 
