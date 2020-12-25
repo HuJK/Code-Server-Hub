@@ -160,6 +160,7 @@ fi
 if [[ $HOMEPGE =~ [yY].* ]]; then
     set +e
     mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
+    ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     set -e
 fi
 
@@ -367,13 +368,16 @@ if [[ $DOCKER =~ [yY].* ]]; then
 
     #install code-hub-docker
     cd /etc/code-server-hub
-    set +e
-    ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
     ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
     ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-docker
-    set -e
+    if [[ $HOMEPGE =~ [yY].* ]] && [[ $DOCKER =~ [yY].* ]]; then
+        set +e
+        rm /var/www/html/index.nginx-debian.html
+        ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
+        set -e
+    fi
 else
-    ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
+
 fi
 
 
