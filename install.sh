@@ -11,8 +11,6 @@ DOCKER_NVIDIA="ASK"
 DOCKER_PORTAINER="ASK"
 DOCKER_IMAGE="standard"
 
-sleep 5
-
 for i in "$@"
 do
 case $i in
@@ -66,6 +64,8 @@ echo "Install docker               = ${DOCKER}"
 echo "Install nvidia-docker        = ${DOCKER_NVIDIA}"
 echo "Install portainer            = ${DOCKER_PORTAINER}"
 echo "Docker image for code-server = ${DOCKER_IMAGE}"
+
+sleep 5
 
 set -e
 #echo "###update phase###"
