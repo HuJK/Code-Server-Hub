@@ -23,7 +23,7 @@ sudo install.sh
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo install.sh -jph=no -pip3=no -c=no -d=no
+sudo install.sh -hp=no -hps=no -jph=no -pip3=no -c=no -d=no -de=no -dn=no -dp=no
 ```
 
 Demo:
@@ -33,12 +33,19 @@ user|passwd
 ----|---------------
 root|DockerAtHeroku
 
+#### normal install
+```
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
+chmod 755 install.sh 
+sudo install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=no -de=no -dn=no -dp=no
+```
+
 #### full experiement
 
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo install.sh -jph=yes -pip3=yes -c=yes -d=yes -dn=yes -dp=yes
+sudo install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 
 Then goto url : https://\[your_server_ip\]
