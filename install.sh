@@ -7,6 +7,7 @@ JUPYTERHUB="ASK"
 JUPYTERHUB_PIP3="ASK"
 COCKPIT="ASK"
 DOCKER="ASK"
+DOCKER_INSTALL="ASK"
 DOCKER_NVIDIA="ASK"
 DOCKER_PORTAINER="ASK"
 DOCKER_IMAGE="standard"
@@ -38,6 +39,10 @@ case $i in
     DOCKER="${i#*=}"
     shift # past argument=value
     ;;
+    -de=*|--docker-engine-install=*)
+    DOCKER_INSTALL="${i#*=}"
+    shift # past argument=value
+    ;;
     -dn=*|--docker-nvidia=*)
     DOCKER_NVIDIA="${i#*=}"
     shift # past argument=value
@@ -60,7 +65,8 @@ echo "Enable SSL for homepage      = ${HOMEPGE_SSL}"
 echo "Install jupyterhub           = ${JUPYTERHUB}"
 echo "Install pip3 for jupyterhub  = ${JUPYTERHUB_PIP3}"
 echo "Install cockpit              = ${COCKPIT}"
-echo "Install docker               = ${DOCKER}"
+echo "Install docker version       = ${DOCKER}"
+echo "Install docker               = ${DOCKER_INSTALL}"
 echo "Install nvidia-docker        = ${DOCKER_NVIDIA}"
 echo "Install portainer            = ${DOCKER_PORTAINER}"
 echo "Docker image for code-server = ${DOCKER_IMAGE}"
