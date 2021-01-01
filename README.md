@@ -19,7 +19,7 @@ sudo install.sh
 ```
 
 
-#### minimal install
+#### minimal
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
@@ -33,14 +33,14 @@ user|passwd
 ----|---------------
 root|DockerAtHeroku
 
-#### normal install
+#### normal
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
 sudo install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=no -de=no -dn=no -dp=no
 ```
 
-#### full experiement
+#### normal+docker (~5.2 GB)
 
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
