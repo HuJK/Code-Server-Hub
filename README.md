@@ -11,11 +11,19 @@ This is a nginx reverse proxy config which will try to authenticate user:passwor
 
 ## Quick install (for Ubuntu 18.04 and 20.04 and Debian 10)
 
+### interactive install
+```
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
+chmod 755 install.sh 
+sudo install.sh
+```
+
+
 #### minimal install
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo install.sh -jph=no -jphp3=no -c=no -d=no
+sudo install.sh -jph=no -pip3=no -c=no -d=no
 ```
 
 Demo:
@@ -24,14 +32,6 @@ Demo:
 user|passwd
 ----|---------------
 root|DockerAtHeroku
-
-### interactive install
-```
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-chmod 755 install.sh 
-sudo install.sh
-```
-
 
 #### full experiement
 
