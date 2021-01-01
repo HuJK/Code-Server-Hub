@@ -38,7 +38,7 @@ sudo install.sh
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo install.sh -jph=yes -jphp3=yes -c=yes -d=yes -dn=yes -dp=yes
+sudo install.sh -jph=yes -pip3=yes -c=yes -d=yes -dn=yes -dp=yes
 ```
 
 Then goto url : https://\[your_server_ip\]
