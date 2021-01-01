@@ -11,6 +11,7 @@ DOCKER_NVIDIA="ASK"
 DOCKER_PORTAINER="ASK"
 DOCKER_IMAGE="standard"
 
+sleep 5
 
 for i in "$@"
 do
