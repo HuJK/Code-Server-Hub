@@ -165,36 +165,30 @@ if [[ $HOMEPGE =~ [yY].* ]]; then
     set -e
 fi
 
-if [[ ! $HOMEPGE_SSL =~ [yYnN].* ]]; then
-    read -p "Do you want to install self singed ssl for homepage(yes/no)? " HOMEPGE_SSL
+
+#ask for enable ssl at nginx
+if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
+    while true; do
+        echo "=========================================================================="
+        if [[ ! $HOMEPGE_SSL =~ [yYnN].* ]]; then
+            read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" HOMEPGE_SSL
+        fi
+        
+        case $HOMEPGE_SSL in
+            [Yy]* ) 
+                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
+                break;;
+            [Nn]* ) 
+                echo "Skipped";
+                break;;
+            [Aa]* ) 
+                echo "Aborted";
+                exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
 fi
-if [[ $HOMEPGE_SSL =~ [yY].* ]]; then
-    #ask for enable ssl at nginx
-    if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
-        while true; do
-            echo "=========================================================================="
-            if [ "$4" == "ssl" ]; then
-                yn="Yes"
-            elif [ "$4" == "nossl" ]; then
-                yn="No"
-            else
-                read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" yn
-            fi
-            case $yn in
-                [Yy]* ) 
-                    sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
-                    break;;
-                [Nn]* ) 
-                    echo "Skipped";
-                    break;;
-                [Aa]* ) 
-                    echo "Aborted";
-                    exit;;
-                * ) echo "Please answer yes or no.";;
-            esac
-        done
-    fi
-fi
+
 # Cockpit
 if [[ ! $COCKPIT =~ [yYnN].* ]]; then
     read -p "Do you want to install cockpit at 9090 now(yes/no)? " COCKPIT
