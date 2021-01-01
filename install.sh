@@ -27,7 +27,7 @@ case $i in
     JUPYTERHUB="${i#*=}"
     shift # past argument=value
     ;;
-    -jphp3=*|--jupyterhub-pip3=*)
+    -pip3=*|--jupyterhub-pip3=*)
     JUPYTERHUB_PIP3="${i#*=}"
     shift # past argument=value
     ;;
