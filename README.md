@@ -50,16 +50,6 @@ sudo install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes 
 
 Then goto url : https://\[your_server_ip\]
 
-
-dependences=
-```
-nginx-extras ca-certificates socat tmux libncurses-dev htop nodejs npm wget sudo curl vim openssl git python3 python3-pip python3-dev p7zip-full cockpit cockpit-pcp docker-ce  docker-ce-cli containerd.io
-certbot-dns-cloudflare  jupyterlab jupyterhub
-configurable-http-proxy
-portainer
-```
-Roughly 3GB for clean ubuntu. If you already installed some package mentioned above, it will be smaller.
-
 ## Manual install
 
 dependences:
