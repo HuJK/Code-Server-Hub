@@ -17,7 +17,8 @@ if os.path.isfile(temp_folder / ".vars.json"):
     try:
         vars = json.load(open(temp_folder / ".vars.json"))
     except Exception as e:
-        pass
+        os.remove(temp_folder / ".vars.json")
+        vars = {"prev_update":0 , "pic_data": {} }
 
 def get_recent_pic(pages,after="",ps={}):
     if pages == 0 or after == None:
