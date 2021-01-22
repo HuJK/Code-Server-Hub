@@ -23,7 +23,7 @@ sudo install.sh
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=no -hps=no -jph=no -pip3=no -c=no -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -jph=no -pip3=no -c=no -rd=no -d=no -de=no -dn=no -dp=no
 ```
 
 Demo:
@@ -37,7 +37,7 @@ root|DockerAtHeroku
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -rd=yes -d=no -de=no -dn=no -dp=no
 ```
 
 #### normal+docker (~5.2 GB)
@@ -45,7 +45,14 @@ sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=no -de=no -dn=no -
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+```
+
+#### For our lab (~5.2 GB)
+```
+wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
+chmod 755 install.sh 
+sudo ./install.sh -hp=yes -hps=yes -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 
 Then goto url : https://\[your_server_ip\]
