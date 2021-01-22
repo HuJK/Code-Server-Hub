@@ -6,6 +6,7 @@ HOMEPGE_SSL="NO"
 JUPYTERHUB="ASK"
 JUPYTERHUB_PIP3="ASK"
 COCKPIT="ASK"
+ROOTLESS_DOCKER="ASK"
 DOCKER="ASK"
 DOCKER_INSTALL="ASK"
 DOCKER_NVIDIA="ASK"
@@ -33,6 +34,10 @@ case $i in
     ;;
     -c=*|--cockpit=*)
     COCKPIT="${i#*=}"
+    shift # past argument=value
+    ;;
+    -rd=*|--rootless-docker=*)
+    ROOTLESS_DOCKER="${i#*=}"
     shift # past argument=value
     ;;
     -d=*|--docker=*)
@@ -66,6 +71,7 @@ echo "Install jupyterhub           = ${JUPYTERHUB}"
 echo "Install pip3 for jupyterhub  = ${JUPYTERHUB_PIP3}"
 echo "Install cockpit              = ${COCKPIT}"
 echo "Install docker version       = ${DOCKER}"
+echo "Install rootless docker      = ${ROOTLESS_DOCKER}"
 echo "Install docker               = ${DOCKER_INSTALL}"
 echo "Install nvidia-docker        = ${DOCKER_NVIDIA}"
 echo "Install portainer            = ${DOCKER_PORTAINER}"
@@ -242,6 +248,18 @@ if [[ $JUPYTERHUB =~ [yY].* ]]; then
     pip3 install certbot-dns-cloudflare
     wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install_jupyterhub.sh | bash
     set -e
+fi
+
+
+#Rootless docker
+if [[ ! $DOCKER =~ [yYnN].* ]]; then
+    read -p "Do you want to install Rootless docker for all users(yes/no)? " ROOTLESS_DOCKER
+fi
+if [[ $ROOTLESS_DOCKER =~ [yY].* ]]; then
+    cd /etc
+    sudo git clone --depth 1 https://github.com/HuJK/rootless_docker.git
+    cd rootless_docker
+    sudo bash ./install-rootless-docker.sh
 fi
 
 #Jupyterhub
