@@ -18,7 +18,7 @@
     * 架好以後再用該指令把主系統的port forawding去容器裡面(172.22.17.3換成你的ip)
     * ```socat TCP-LISTEN:10080,fork TCP:172.22.17.3:80```
 * 跑docker
-    * 因為docker裡面不能跑docker(很麻煩)，所以每台server我都安裝了 rootless docker。
+    * 因為docker裡面不能跑docker(很麻煩)，所以每台server我都安裝了 [rootless docker](https://github.com/HuJK/rootless_docker)。
     * 如果有需求跑現成docker，直接在主系統用docker指令即可
 
 ### 差異
