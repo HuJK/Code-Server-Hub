@@ -173,7 +173,7 @@ fi
 if [[ $HOMEPGE =~ [yY].* ]]; then
     set +e
     mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
-    ln -s /etc/code-server-hub/index_page_nodocker.html /var/www/html/index.nginx-debian.html
+    ln -s /etc/code-server-hub/util/sites/index_page_nodocker.html /var/www/html/index.nginx-debian.html
     set -e
 fi
 
@@ -392,7 +392,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
     if [[ $HOMEPGE =~ [yY].* ]] && [[ $DOCKER =~ [yY].* ]]; then
         set +e
         rm /var/www/html/index.nginx-debian.html
-            ln -s /etc/code-server-hub/index_page.html /var/www/html/index.nginx-debian.html
+            ln -s /etc/code-server-hub/util/sites/index_page.html /var/www/html/index.nginx-debian.html
         set -e
     fi
 fi
