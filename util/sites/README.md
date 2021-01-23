@@ -103,3 +103,9 @@ Connrct to your code-server which running in the container
 Connrct to your jupyter which running in the container
 
 ![Container panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221258.png?raw=true)
+
+# Security Warning
+
+* Please mount ```/home``` and ```/data``` with paramater ```nosuid,nodev``` in real OS. 
+    * Because user has root permission in container which allows user to ```setuid``` a binary in container and ececute it in Real OS. 
+    * Only ```/home/{username}``` and ```/data``` are share between container and Real OS, so doing this will prevent users get root permission in RealOS.
