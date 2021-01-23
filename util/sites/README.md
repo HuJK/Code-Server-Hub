@@ -10,7 +10,7 @@ The main difference between RealOS and Container is everyone can use ```sudo``` 
 
 #### Things should be done in Container
 
-Most things can be down in the Container. Everyone have the ```sudo``` permission to install packages that you need.
+Most things can be done in the Container. Everyone have the ```sudo``` permission to install packages that you need.
 
 #### Things should be done in Real OS
 * port forwarding
