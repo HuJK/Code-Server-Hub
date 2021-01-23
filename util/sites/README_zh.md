@@ -1,6 +1,6 @@
 # How to use Code-Server-Hub
 
-[EN](https://github.com/HuJK/Code-Server-Hub/blob/master/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/README_zh.md)
+[EN](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
 
 這個專案是給lab的server寫的，為了讓每個人有自己的環境，可以安裝套件，不會搞砸整個server
 
