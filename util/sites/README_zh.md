@@ -2,11 +2,12 @@
 
 [EN](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
 
-This project is for our lab, to allow users have their own envirement to avoid users ruin whole server
+這個專案是給lab的server寫的，為了讓每個人有自己的環境，可以安裝套件，不會搞砸整個server
 
 # Usage
 
-The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
+主系統和容器的差異是，每個人都可以在容器裡面使用```sudo```指令，而且隨時可以重置環境，不怕搞砸
+
 
 ##### Shell in real OS
 
@@ -18,72 +19,67 @@ The main difference between RealOS and Container is everyone can use ```sudo``` 
 
 #### Login
 
-Whenever this dialog prompt, just login with your linux account
+用你的linux帳密登入就可以了
 
 ![Login](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210930.png)
 
 #### File shareing
 
-By default, ```/data``` and ```/home/{username}``` this two folder will mounted into the container so that users can share files though this two folder.
+預設情況下會把 ```/data``` and ```/home/{username}``` 這2個資料夾掛載進去容器裡面，來共享檔案
 
 ![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
 
 ## Real OS Panel
 
-* In this panel, all operations are running in the real OS, means all users are share one envirement.
-* If you are not a sudoer, you don't have root privilege.
-* If you login the server via SSH, your envirement are the same envirement as you login at this panel
+* 這個panel裡面的操作都在主系統之下，所有人都在同一個環境
+* 所以如果你不是sudoer，你就沒有root權限
+* 如果你用SSH登入，你shell的環境就是這個環境
 
 ![real os panel](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20211028.png?raw=true)
 
 #### Start Server
-It will start a vscode instance by your account at background
+這個鈕會在背景用你的身分開一個code-server
 
 ![real os panel Start](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20211245.png?raw=true)
-
+[]
 #### VS code
-Connrct to your code-server
+打開code-server
 
 ![real os panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20220836.png?raw=true)
 
 #### Jupyter
-Connect to a jupyterlab session
-
+打開jupyter lab
 ![real os panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221004.png?raw=true)
 
 #### Cockpit
-Connect to cockpit
+打開Cockpit
 
 #### Account
-Connect to account page in the cockpit
+打開Cockpit的帳號頁面
 
 ## Container panel
+這個panel裡面的操作都在容器裡面，不會影響主系統
 
-Whenever you run any program in this panel, all programs will running in a docker container.
-
-Everyone has sudo permission in their own container.
+每個人在容器裡都有```sudo```權限
 
 #### Start Container
-Just start your container.
-
-If not exist, it will create one
+啟動容器。若不存在就創建
 
 ![Container panel](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213516.png?raw=true)
 
 #### Factort reset
+刪除容器，下次啟動創建
 
-Delete your contaainer. It it will be created at next time you start the container
-
-```/data``` and ```/home/{username}``` folders are mounted externally, so they will not be deleted
+```/data``` and ```/home/{username}```這2個資料夾不影響，因為這2個資料夾是外部掛載的，不會跟著刪掉
 
 ![Container panel FS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213839.png?raw=true)
 
 #### VS code
-Connrct to your code-server which running in the container
+打開容器裡的code-server
 
 ![Container panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221123.png?raw=true)
 
 #### Jupyter
-Connrct to your jupyter which running in the container
+打開容器裡的jupyter lab (相信許多ML的人主要用這個)
 
 ![Container panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221258.png?raw=true)
