@@ -48,7 +48,7 @@
 ![real os panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20220836.png?raw=true)
 
 #### Jupyter
-打開jupyter lab(相信許多ML的人主要用這個)
+打開jupyter lab
 ![real os panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221004.png?raw=true)
 
 #### Cockpit
@@ -58,7 +58,6 @@
 打開Cockpit的帳號頁面
 
 ## Container panel
-
 這個panel裡面的操作都在容器裡面，不會影響主系統
 
 每個人在容器裡都有```sudo```權限
@@ -69,7 +68,6 @@
 ![Container panel](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213516.png?raw=true)
 
 #### Factort reset
-
 刪除容器，下次啟動創建
 
 ```/data``` and ```/home/{username}```這2個資料夾不影響，因為這2個資料夾是外部掛載的，不會跟著刪掉
@@ -77,9 +75,11 @@
 ![Container panel FS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213839.png?raw=true)
 
 #### VS code
+打開容器裡的code-server
 
 ![Container panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221123.png?raw=true)
 
 #### Jupyter
+打開容器裡的jupyter lab (相信許多ML的人主要用這個)
 
 ![Container panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221258.png?raw=true)
