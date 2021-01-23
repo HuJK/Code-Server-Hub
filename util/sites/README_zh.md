@@ -101,4 +101,4 @@
 # 安全性警告
 * 請在主系統把 ```/home``` and ```/data``` 用 ```nosuid,nodev``` 參數來掛載. 
     * 因為使用者在container裡面有root權限，可以```setuid```一個執行檔，然後在主系統執行，藉此獲取主系統的root權限. 
-    * 只有 ```/home/{username}``` 和 ```/data``` 是在容器內和主系統之間共享，所以在把這2個資料夾在主系統內掛載成```nosuid,nodev```，就可以防止沒權限的user取得主系統的root權限了.
+    * 只有 ```/home/{username}``` 和 ```/data``` 是在容器內和主系統之間共享，所以在主系統必須把這2個資料夾掛載成```nosuid,nodev```，可以防止沒權限的user取得主系統的root權限.
