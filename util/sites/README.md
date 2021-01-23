@@ -2,11 +2,11 @@
 
 [EN](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
 
-This project is for our lab to allow users have their own envirement
+This project is for our lab, to allow users have their own envirement to avoid users ruin whole server
 
 # Usage
 
-The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid Real OS environment corruption .
+The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
 
 ##### Shell in real OS
 
@@ -24,13 +24,13 @@ Whenever this dialog prompt, just login with your linux account
 
 #### File shareing
 
-By default, ```/data``` and ```/home/{username}``` this two folder will share between RealOS and Container
+By default, ```/data``` and ```/home/{username}``` this two folder will mounted into the container so that users can share files though this two folder.
 
 ![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
 
 ## Real OS Panel
 
-* In this panel, all programs are running in the real OS, means all users are share one envirement.
+* In this panel, all operations are running in the real OS, means all users are share one envirement.
 * If you are not a sudoer, you don't have root privilege.
 * If you login the server via SSH, your envirement are the same envirement as you login at this panel
 
@@ -79,9 +79,11 @@ Delete your contaainer. It it will be created at next time you start the contain
 ![Container panel FS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213839.png?raw=true)
 
 #### VS code
+Connrct to your code-server which running in the container
 
 ![Container panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221123.png?raw=true)
 
 #### Jupyter
+Connrct to your jupyter which running in the container
 
 ![Container panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221258.png?raw=true)
