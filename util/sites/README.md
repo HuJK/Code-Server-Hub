@@ -20,7 +20,7 @@ Most things can be done in the Container. Everyone have the ```sudo``` permissio
     * ```socat TCP-LISTEN:10080,fork TCP:172.22.17.3:8080```
 * run docker
     * Because we can't run docker in docker, so I installed [rootless docker](https://github.com/HuJK/rootless_docker) at every server.
-    * If you need to run docker, just run dicker command in RealOS.
+    * If you need to run docker, just run ```docker``` command in RealOS.
 
 ### Difference
 
