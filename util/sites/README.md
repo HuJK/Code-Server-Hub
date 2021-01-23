@@ -36,14 +36,17 @@ By default, ```/data``` and ```/home/{username}``` this two folder will share be
 
 #### Start Server
 It will start a vscode instance by your account at background
+
 ![real os panel Start](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20211245.png?raw=true)
 
 #### VS code
 Connrct to your code-server
+
 ![real os panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20220836.png?raw=true)
 
 #### Jupyter
 Connect to a jupyterlab session
+
 ![real os panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221004.png?raw=true)
 
 #### Cockpit
@@ -55,20 +58,28 @@ Connect to account page in the cockpit
 ## Container panel
 
 Whenever you run any program in this panel, all programs will running in a docker container.
+
 Everyone has sudo permission in their own container.
 
 #### Start Container
 Just start your container.
+
 If not exist, it will create one
+
 ![Container panel](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213516.png?raw=true)
 
 #### Factort reset
+
 Delete your contaainer. It it will be created at next time you start the container
-```/data``` and ```/home/{username}``` folders are mounted externally, will not be deleted
+
+```/data``` and ```/home/{username}``` folders are mounted externally, so they will not be deleted
+
 ![Container panel FS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20213839.png?raw=true)
 
 #### VS code
+
 ![Container panel VS](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221123.png?raw=true)
 
 #### Jupyter
+
 ![Container panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221258.png?raw=true)
