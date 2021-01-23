@@ -8,11 +8,11 @@ This project is for our lab, to allow users have their own envirement to avoid u
 
 The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
 
-#### Things should be down in Container
+#### Things should be done in Container
 
 Most things can be down in the Container. Everyone have the ```sudo``` permission to install packages that you need.
 
-#### Things should be down in Real OS
+#### Things should be done in Real OS
 * port forwarding
     * Because we can't connect listened port from external network.
     * If you want to host services in the container, please check IP of the container with ```ip addr``` command first.
