@@ -2,6 +2,15 @@
 
 This project is for our lab to allow users have their own envirement
 
+# Usage
+
+The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can reset at anytime to avoid system environment corrupt .
+
+![RealOS panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221705.png?raw=true)
+
+![Container panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221714.png?raw=true)
+
+
 #### Login
 
 Whenever this dialog prompt, just login with your linux account
@@ -43,6 +52,7 @@ Connect to account page in the cockpit
 ## Container panel
 
 Whenever you run any program in this panel, all programs will running in a docker container.
+Everyone has sudo permission in their own container.
 
 #### Start Container
 Just start your container.
@@ -59,8 +69,3 @@ Delete your contaainer. It it will be created at next time you start the contain
 
 #### Jupyter
 ![Container panel Jupyter](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221258.png?raw=true)
-
-# Usage
-The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can reset at anytime to avoid system environment corrupt .
-![RealOS panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221705.png?raw=true)
-![Container panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221714.png?raw=true)
