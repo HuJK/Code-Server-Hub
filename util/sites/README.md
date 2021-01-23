@@ -4,10 +4,13 @@ This project is for our lab to allow users have their own envirement
 
 # Usage
 
-The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can reset at anytime to avoid system environment corrupt .
+The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid Real OS environment corruption .
+
+##### Shell in real OS
 
 ![RealOS panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221705.png?raw=true)
 
+##### Shell in the container
 ![Container panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221714.png?raw=true)
 
 
