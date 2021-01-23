@@ -8,6 +8,22 @@ This project is for our lab, to allow users have their own envirement to avoid u
 
 The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
 
+#### Things should be down in Container
+
+Most things can be down in the Container. Everyone have the ```sudo``` permission to install packages that you need.
+
+#### Things should be down in Real OS
+* port forwarding
+    * Because we can't connect listened port from external network.
+    * If you want to host services in the container, please check IP of the container with ```ip addr``` command first.
+    * Then port forwarding port from RealOS to your container by execute this command(Replace ```172.22.17.3``` by your ip) in Real OS.
+    * ```socat TCP-LISTEN:10080,fork TCP:172.22.17.3:8080```
+* run docker
+    * Because we can't run docker in docker, so I installed rootless docker at every server.
+    * If you need to run docker, just run dicker command in RealOS.
+
+### Difference
+
 ##### Shell in real OS
 
 ![RealOS panel shell sudo](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/Screenshot%202021-01-23%20221705.png?raw=true)
