@@ -1,4 +1,4 @@
-# How to use Code-Server-Hub
+# Code-Server-Hub Documentation
 
 [EN](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
 
