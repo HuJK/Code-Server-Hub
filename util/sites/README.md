@@ -2,7 +2,7 @@
 
 [EN](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
 
-This project is for our lab, to allow users have their own envirement to avoid users ruin whole server
+This project is for our lab, to allow users have their own envirement to avoid users installed packages ruin the whole server
 
 # Usage
 
