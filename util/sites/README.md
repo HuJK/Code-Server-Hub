@@ -5,6 +5,9 @@
 This project is for our lab, to allow users have their own envirement to avoid users installed packages ruin the whole server
 
 # Usage
+In this page choose a panel to enter. Then click ```jupyter``` button to enter the interface.
+
+![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
 
 The main difference between RealOS and Container is everyone can use ```sudo``` command in their own container, each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
 
@@ -44,8 +47,6 @@ Whenever this dialog prompt, just login with your linux account
 #### File shareing
 
 By default, ```/data``` and ```/home/{username}``` this two folder will mounted into the container so that users can share files though this two folder.
-
-![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
 
 ## Real OS Panel
 
