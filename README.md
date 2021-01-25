@@ -63,12 +63,9 @@ sudo ./install.sh -hp=yes -hps=yes -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=
 Then goto url : https://\[your_server_ip\]
 
 ## Manual install
-
 dependences:
 
 * nginx with lua and auth-pam module
-* tmux
-* npm
 * wget curl
 * openssl
 * git
@@ -107,11 +104,6 @@ cd /etc
 git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 cd /etc/code-server-hub
 ```
-Link config file to nginx
-```
-ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
-ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
-```
 
 Add nginx to shadow to make pam_module work and set permission to allow nginx read/write to following folder
 ```
@@ -127,6 +119,24 @@ chmod -R 700 /etc/code-server-hub/cert
 chgrp shadow /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/util/anime_pic
 ```
+
+Generate self signed cert
+```
+echo "###generate self signed cert###"
+echo "###You should buy or get a valid ssl certs           ###"
+echo "###Now I generate a self singed certs in cert folder ###"
+echo "###But you should replace it with valid a ssl certs  ###"
+echo '###Remember update your cert for cockpit too!        ###'
+echo '### cat ssl.pem ssl.key > /etc/cockpit/ws-certs.d/0-self-signed.cert###'
+cd /etc/code-server-hub/cert
+openssl genrsa -out ssl.key 2048
+openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
+```
+
+### normal version
+dependences:
+* tmux
+* npm
 
 Doenload latest code-server
 ```
@@ -144,18 +154,33 @@ mv .cshub/*/* .cshub/
 rm code-server.tar.gz
 ```
 
-Generate self signed cert
+Link config file to nginx
 ```
-echo "###generate self signed cert###"
-echo "###You should buy or get a valid ssl certs           ###"
-echo "###Now I generate a self singed certs in cert folder ###"
-echo "###But you should replace it with valid a ssl certs  ###"
-echo '###Remember update your cert for cockpit too!        ###'
-echo '### cat ssl.pem ssl.key > /etc/cockpit/ws-certs.d/0-self-signed.cert###'
-cd /etc/code-server-hub/cert
-openssl genrsa -out ssl.key 2048
-openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
+cd /etc/code-server-hub
+ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
+ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
 ```
+
+Now, you can access ```https://[your_ip]:8443``` to access it.
+
+### Docker version
+dependences:
+* docker
+
+```
+docker pull whojk/code-server-hub-docker:minimal
+docker pull whojk/code-server-hub-docker:standard
+docker pull whojk/code-server-hub-docker:basicML
+```
+
+Link config file to nginx
+```
+cd /etc/code-server-hub
+ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
+ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-docker
+```
+
+Now, you can access ```https://[your_ip]:2087``` to access it.
 
 ## Video introduction
 
