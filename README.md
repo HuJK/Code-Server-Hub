@@ -6,6 +6,9 @@ Then it will automatically spawn a code-server instance in a tmux session at bac
 
 If you want add user, type ```sudo adduser``` in command line. Make sure you are a sudoer.
 
+## What is this?
+[https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md)
+
 ## How this work
 This is a nginx reverse proxy config which will try to authenticate user:password with linux pam module ,and try to execute command to spawn a code-server workspace by that user, and then proxy_pass to it.
 
