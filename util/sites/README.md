@@ -13,6 +13,9 @@ The main difference between RealOS and Container is everyone can use ```sudo``` 
 Most things can be done in the Container. Everyone have the ```sudo``` permission to install packages that you need.
 
 #### Things should be done in Real OS
+* Change password
+    * Change password in container is useless because hashed password will be passwd to container before start it each time
+    * You have to change your password in Real OS via ```passwd``` command or in cockpit account page.
 * port forwarding
     * Because we can't connect listened port from external network.
     * If you want to host services in the container, please check IP of the container with ```ip addr``` command first.
