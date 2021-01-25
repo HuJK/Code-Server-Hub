@@ -9,11 +9,11 @@ In this page choose a panel to enter. Then click ```jupyter``` button to enter t
 
 ![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
 
-The main difference between ```RealOS Panel``` and ```Container Panel``` is everyone can use ```sudo``` command in their container,RealOS can't. each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
+The main difference between ```RealOS Panel``` and ```Container Panel``` is everyone can use ```sudo``` command in container,while RealOS can't. each container are independent, and can be reset at anytime to avoid mess up whole Real OS environment .
 
 #### Things should be done in Container
 
-Most things can be done in the Container. Everyone have the ```sudo``` permission to install packages that you need.
+Most things can be done in the Container. Everyone have the ```sudo``` permission to install packages that who need.
 
 #### Things should be done in Real OS
 * Change password
