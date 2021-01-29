@@ -6,13 +6,22 @@ npm install -g configurable-http-proxy
 
 mkdir -p /etc/code-server-hub/util/jupyterhub_workdir
 cd /etc/code-server-hub/util/jupyterhub_workdir
-jupyterhub --generate-config
-sed -i "s/#c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
-sed -i "s/#c.JupyterHub.ssl_cert = ''/c.JupyterHub.ssl_cert = '\/etc\/code-server-hub\/cert\/ssl.pem'/g" jupyterhub_config.py
-sed -i "s/#c.JupyterHub.ssl_key = ''/c.JupyterHub.ssl_key = '\/etc\/code-server-hub\/cert\/ssl.key'/g" jupyterhub_config.py
-sed -i "s/# c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
-sed -i "s/# c.JupyterHub.ssl_cert = ''/c.JupyterHub.ssl_cert = '\/etc\/code-server-hub\/cert\/ssl.pem'/g" jupyterhub_config.py
-sed -i "s/# c.JupyterHub.ssl_key = ''/c.JupyterHub.ssl_key = '\/etc\/code-server-hub\/cert\/ssl.key'/g" jupyterhub_config.py
+# jupyterhub --generate-config
+# sed -i "s/#c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
+# sed -i "s/#c.JupyterHub.ssl_cert = ''/c.JupyterHub.ssl_cert = '\/etc\/code-server-hub\/cert\/ssl.pem'/g" jupyterhub_config.py
+# sed -i "s/#c.JupyterHub.ssl_key = ''/c.JupyterHub.ssl_key = '\/etc\/code-server-hub\/cert\/ssl.key'/g" jupyterhub_config.py
+# sed -i "s/# c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
+# sed -i "s/# c.JupyterHub.ssl_cert = ''/c.JupyterHub.ssl_cert = '\/etc\/code-server-hub\/cert\/ssl.pem'/g" jupyterhub_config.py
+# sed -i "s/# c.JupyterHub.ssl_key = ''/c.JupyterHub.ssl_key = '\/etc\/code-server-hub\/cert\/ssl.key'/g" jupyterhub_config.py
+# sed -i "s/# c.JupyterHub.port = ''/c.JupyterHub.port = 18517'/g" jupyterhub_config.py
+
+echo "c.JupyterHub.port = 18517
+c.JupyterHub.ssl_key = '/etc/code-server-hub/cert/ssl.key'
+c.JupyterHub.ssl_cert = '/etc/code-server-hub/cert/ssl.pem'
+c.Spawner.default_url = '/lab'
+" > jupyterhub_config.py
+
+
 echo "[Unit]
 Description=Jupyterhub
 After=syslog.target network.target
