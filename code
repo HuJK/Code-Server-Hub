@@ -30,7 +30,7 @@ server {
     set $cockpit_addr "";
     set $jupyter_addr "";
     set $cockpit_addr_internal "https://127.0.0.1:9090";
-    set $jupyter_addr_internal "https://127.0.0.1:8000";
+    set $jupyter_addr_internal "https://127.0.0.1:18517";
     
     set $server_salt "1!2@3=我是鹽";
     set $server_sal2 "1!2@3=我是糖";
