@@ -72,6 +72,7 @@ done
 
 echo "Install homepage             = ${HOMEPGE}"
 echo "Enable SSL for homepage      = ${HOMEPGE_SSL}"
+echo "Install libpam-pwquality     = ${LIBPWQUALITY}"
 echo "Install jupyterhub           = ${JUPYTERHUB}"
 echo "Install pip3 for jupyterhub  = ${JUPYTERHUB_PIP3}"
 echo "Install cockpit              = ${COCKPIT}"
