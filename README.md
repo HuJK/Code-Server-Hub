@@ -77,7 +77,6 @@ than access your ip with port 8443(normal version) and 2087(docker version) with
 
 ## Manual install
 dependences:
-
 * nginx with lua and auth-pam module
 * wget curl
 * openssl
@@ -146,7 +145,7 @@ openssl genrsa -out ssl.key 2048
 openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 ```
 
-### normal version
+### Install normal version
 dependences:
 * tmux
 * npm
@@ -180,10 +179,30 @@ Now, you can access ```https://[your_ip]:8443``` to access it.
 dependences:
 * docker
 
+Choose one image from following list
+
+|  image   |  description |
+|  ----  | ----  | 
+|  ```docker pull whojk/code-server-hub-docker:minimal```   | CPU only | 
+|  ```docker pull whojk/code-server-hub-docker:standard```  | CPU only | 
+|  ```docker pull whojk/code-server-hub-docker:basicML```   | GPU required | 
+
+If you want to build your own image, follow this link [https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile](https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile)
+
+Then  modify ```/etc/code-server-hub/util/create_docker.py```，locate line7 and line8, replace the name to your choose based on your hardware(CPU or GPU)
+```python
+image_name_cpu = "whojk/code-server-hub-docker:minimal"
+image_name_gpu = "whojk/code-server-hub-docker:basicML"
 ```
-docker pull whojk/code-server-hub-docker:minimal
-docker pull whojk/code-server-hub-docker:standard
-docker pull whojk/code-server-hub-docker:basicML
+
+Line 51 will check nvidia-docker works or not. If it works, it will use ```image_name_gpu```, otherwise use ```image_name_cpu```
+```python3
+has_gpu = []
+image_name = image_name_cpu
+outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+if len(outs) > 0:
+    has_gpu = ["--gpus", getGPUParam(username)]
+    image_name = image_name_gpu
 ```
 
 Link config file to nginx
@@ -194,8 +213,4 @@ ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-doc
 ```
 
 Now, you can access ```https://[your_ip]:2087``` to access it.
-
-## Video introduction
-
-Normal [YouTube](https://www.youtube.com/watch?v=d66OmV22UFI)
 
