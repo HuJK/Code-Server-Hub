@@ -2,14 +2,21 @@
 
 [EN](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
 
-這個專案是給lab的server寫的，為了讓每個人有自己的環境，可以安裝套件，不會搞砸整個server
+這個專案是給lab的server寫的，為了讓每個人擁有各自的環境，可以安裝套件，不會搞砸整個server
 
-# 用途
+# 用法
+訪問主頁
+
+![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
+
+這裡有2個按鈕，一個是主系統，一個是容器
+
+按進去以後選jupyter，按「+」符號，選terminal就有一個終端機環境可以用了。搞ML的對jupyter應該很熟悉，我就不贅述了
 
 主系統和容器的差異是，每個人都可以在容器裡面使用```sudo```指令，而且隨時可以重置環境，不怕搞砸
 
 #### 容器裡做的事
-大部分的事情都可以在容器裡完成，每人都有```sudo```權限，可以自行安裝需要的套件
+大部分的事情都可以在容器裡完成，容器內每人都有```sudo```權限，可以自行安裝需要的套件
 
 #### 主系統做的事
 * 改密碼
@@ -18,11 +25,11 @@
 * port forwarding
     * 因為容器裡面listen port外面連不上。
     * 如需在容器裡面架服務外面連，請先在容器裡面用 ```ip addr```查詢容器的ip
-    * 架好以後再用該指令把主系統的port forawding去容器裡面(172.22.17.3換成你的ip)
+    * 架好服務以後再用該指令把主系統的port forawding去容器裡面(172.22.17.3換成你的ip)
     * ```socat TCP-LISTEN:10080,fork TCP:172.22.17.3:80```
 * 跑docker
     * 因為docker裡面不能跑docker(很麻煩)，所以每台server我都安裝了 [rootless docker](https://github.com/HuJK/rootless_docker)。
-    * 如果有需求跑現成docker，直接在主系統用docker指令即可
+    * 如果有跑現成docker image的需求，直接在主系統用docker指令即可
 
 ### 差異
 
@@ -43,8 +50,6 @@
 #### 檔案共享
 
 預設情況下會把 ```/data``` and ```/home/{username}``` 這2個資料夾掛載進去容器裡面，來共享檔案
-
-![index](https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/util/sites/Screenshot%202021-01-23%20210843.png)
 
 ## Real OS Panel
 
