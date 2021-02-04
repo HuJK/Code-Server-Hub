@@ -16,9 +16,11 @@
 
 ## 腳本安裝
 
-其實這已經不是單純的安裝腳本了，這是我們實驗室訓練server的一鍵配置腳本了
+其實這已經不是單純的安裝腳本了，這是我們實驗室訓練server的一鍵配置腳本了。適用 Ubuntu 18.04/20.04，其他的應該也能用，我沒試過
 
-### 交互安裝
+安裝前請先手動安裝nvidia-driver，並保證```nvidia-smi```不報錯。要一鍵自動安裝nvidia驅動幾乎不可能...麻煩先手動安裝好驅動，再執行本腳本了
+
+### 交互安裝。安裝過程一步步問你yes/no
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
@@ -40,7 +42,7 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 | hp  | 替換掉nginx預設首頁 |80|
 | hps | 幫首頁啟用https             |443|
 | pq  | 安裝pwquality，強迫server底下所有人只能用強密碼。預設要求:大小寫+數字符號各1，長度>=8，不能包含username，啟用字典檢查 ||
-| st  | 安裝servstat後端。這是朋友寫的一個探針，用來方便lab同學查詢顯卡使用狀況，是誰在用              |9989|
+| st  | 安裝 [https://github.com/HuJK/servstat](servstat後端) 。這是朋友寫的一個探針，用來方便lab同學查詢顯卡使用狀況，是誰在用              |9989|
 | jph | 安裝jupyterhub，ML server必備|18517,8001|
 | pip3| 安裝python3-pip。已安裝會跳過 ||
 | c   | 安裝cockpit                  |9090|
