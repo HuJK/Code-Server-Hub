@@ -3,6 +3,7 @@
 
 HOMEPGE="NO"
 HOMEPGE_SSL="NO"
+LIBPWQUALITY="ASK"
 JUPYTERHUB="ASK"
 JUPYTERHUB_PIP3="ASK"
 COCKPIT="ASK"
@@ -22,6 +23,10 @@ case $i in
     ;;
     -hps=*|--homepage-ssl=*)
     HOMEPGE_SSL="${i#*=}"
+    shift # past argument=value
+    ;;
+    -pq=*|--pwquality=*)
+    LIBPWQUALITY="${i#*=}"
     shift # past argument=value
     ;;
     -jph=*|--jupyterhub=*)
@@ -199,6 +204,15 @@ if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
             * ) echo "Please answer yes or no.";;
         esac
     done
+fi
+
+# libpam-pwquality
+if [[ ! $LIBPWQUALITY =~ [yYnN].* ]]; then
+    read -p "Do you want to force users to use strong passwords with libpam-pwquality(yes/no)? " LIBPWQUALITY
+fi
+if [[ $LIBPWQUALITY =~ [yY].* ]]; then
+    apt-get install -y libpam-pwquality
+    cp /etc/code-server-hub/util/pwquality.conf /etc/security/pwquality.conf
 fi
 
 # Cockpit
