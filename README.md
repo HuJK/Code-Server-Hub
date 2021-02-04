@@ -26,7 +26,7 @@ chmod 755 install.sh
 sudo install.sh
 ```
 
-#### For our lab , enable all functions
+#### For our lab , enable all features
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
