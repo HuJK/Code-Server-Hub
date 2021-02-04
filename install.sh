@@ -4,6 +4,7 @@
 HOMEPGE="NO"
 HOMEPGE_SSL="NO"
 LIBPWQUALITY="ASK"
+SERVERSTAT="ASK"
 JUPYTERHUB="ASK"
 JUPYTERHUB_PIP3="ASK"
 COCKPIT="ASK"
@@ -27,6 +28,10 @@ case $i in
     ;;
     -pq=*|--pwquality=*)
     LIBPWQUALITY="${i#*=}"
+    shift # past argument=value
+    ;;
+    -st=*|--server-stat=*)
+    SERVERSTAT="${i#*=}"
     shift # past argument=value
     ;;
     -jph=*|--jupyterhub=*)
@@ -73,6 +78,7 @@ done
 echo "Install homepage             = ${HOMEPGE}"
 echo "Enable SSL for homepage      = ${HOMEPGE_SSL}"
 echo "Install libpam-pwquality     = ${LIBPWQUALITY}"
+echo "Install serverstat_backend   = ${SERVERSTAT}"
 echo "Install jupyterhub           = ${JUPYTERHUB}"
 echo "Install pip3 for jupyterhub  = ${JUPYTERHUB_PIP3}"
 echo "Install cockpit              = ${COCKPIT}"
@@ -265,6 +271,16 @@ if [[ $JUPYTERHUB =~ [yY].* ]]; then
     set -e
 fi
 
+# serverstat
+if [[ ! $SERVERSTAT =~ [yYnN].* ]]; then
+    read -p "Do you want to serverstat-backend(yes/no)? " SERVERSTAT
+fi
+if [[ $SERVERSTAT =~ [yY].* ]]; then
+    cd /etc
+    git clone https://github.com/HuJK/servstat.git servstat
+    cd servstat/backend
+    bash install.sh
+fi
 
 #Rootless docker
 if [[ ! $DOCKER =~ [yYnN].* ]]; then
