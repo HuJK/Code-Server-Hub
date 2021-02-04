@@ -4,7 +4,7 @@
 這個專案最初是想要類似jupyter hub一樣，直接在網頁登入jupyterlab，而不用每個人ssh進去開server
 不過我開的是code-server，僅此而已
 
-後來覺得好用，我又是學校lab的網管，我就幫lab的伺服器寫了一個一鍵安裝腳本，沒想到挺方便的，功能越加越多了
+但是後來覺得好用，我又是學校lab的網管，我就幫lab的伺服器寫了一個一鍵安裝腳本。沒想到挺方便的，功能越加越多了
 
 # 這個專案是什麼?
 [https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README_zh.md)
