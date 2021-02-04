@@ -78,10 +78,10 @@ sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -rd=ye
 
 然後用瀏覽器訪問server ip即可
 
-## 手動安裝
+## 手動安裝(請手動搞定依賴)
 依賴:
 
-* nginx with lua and auth-pam module
+* 有lua和auth-pam模組的nginx
 * wget curl
 * openssl
 * git
@@ -191,8 +191,16 @@ ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
  * ```docker pull whojk/code-server-hub-docker:standard```   (CPU用)
  * ```docker pull whojk/code-server-hub-docker:basicML```    (GPU專用)
  
- 自己build請參考[https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile](https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile)
+自己build請參考[https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile](https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile)
 
+然後修改```/etc/code-server-hub/util/create_docker.py```，找到第7行&第8行，把裡面的image名稱換成自己選的image名稱
+```python
+image_name_cpu = "whojk/code-server-hub-docker:minimal"
+image_name_gpu = "whojk/code-server-hub-docker:basicML"
+```
+
+
+第51行會檢查系統的nvidia-docker是否能運作，能運作就執行```image_name_gpu```，否則```image_name_cpu```
 
 把設定檔軟連結去nginx
 ```
