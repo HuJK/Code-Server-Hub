@@ -38,22 +38,22 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 
 |  參數   | 說明  | 佔用端口
 |  ----  | ----  | --- |
-|     | 安裝本專案 |8443|
+|     | 專案本體 |8443|
 | hp  | 替換掉nginx預設首頁 |80|
 | hps | 幫首頁啟用https             |443|
-| pq  | 安裝pwquality，強迫server底下所有人只能用強密碼。預設要求:大小寫+數字符號各1，長度>=8，不能包含username，啟用字典檢查 ||
-| st  | 安裝 [https://github.com/HuJK/servstat](servstat後端) 。這是朋友寫的一個探針，用來方便lab同學查詢顯卡使用狀況，是誰在用              |9989|
+| pq  | 安裝pwquality，強迫server底下所有人只能用強密碼<br/>預設要求:大小寫+數字符號各1，長度>=8，不能包含username，啟用字典檢查 ||
+| st  | 安裝 [servstat後端](https://github.com/HuJK/servstat)<br />這是朋友寫的一個探針，用來方便lab同學查詢顯卡使用狀況，是誰在用              |9989|
 | jph | 安裝jupyterhub，ML server必備|18517,8001|
 | pip3| 安裝python3-pip。已安裝會跳過 ||
-| c   | 安裝cockpit                  |9090|
-| rd  | 安裝rootless-docker          |2087|
+| c   | 安裝[cockpit](https://github.com/cockpit-project/cockpit)                  |9090|
+| rd  | 安裝[rootless-docker](https://github.com/HuJK/rootless_docker)          |2087|
 | d   | 安裝docker版code-server-hub  ||
-| de  | 安裝docker engine，已安裝跳過 ||
-| dn  | 安裝nvidia-docker，已安裝跳過 ||
-| dp  | 安裝portainer，已安裝跳過     |9000|
+| de  | 安裝docker engine，已安裝會跳過 ||
+| dn  | 安裝nvidia-docker，已安裝會跳過 ||
+| dp  | 安裝portainer，已安裝會跳過     |9000|
 
 
-## 如果你們是想要在自己VPS安裝使用，我推薦的安裝參數
+### 如果想要安裝在自己VPS用，我推薦的安裝參數
 #### 最小安裝
 ```
 sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=no -pip3=no -c=no -rd=no -d=no -de=no -dn=no -dp=no
