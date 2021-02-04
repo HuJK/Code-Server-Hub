@@ -1,10 +1,9 @@
+[EN](https://github.com/HuJK/Code-Server-Hub/blob/master/README.md) | [中文](https://github.com/HuJK/Code-Server-Hub/blob/master/README_zh.md)
+
 # Code-Server-Hub
-It's similar to jupyterhub, but it's for [code-server](https://github.com/cdr/code-server).
+I want to make code-server uses like jupyterhub, login at web browser without ssh into server and spawn a code-server instance
 
-You can login with your **linux account** and password,because it's authenticate with Linux PAM module. 
-Then it will automatically spawn a code-server instance in a tmux session at background.
-
-If you want add user, type ```sudo adduser``` in command line. Make sure you are a sudoer.
+And it's so convenient, and I am the MIS personnel of my lab. So I wrote a installation script. But with the time passed, I added more and more function in this script....
 
 # What is this?
 [https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md](https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md)
@@ -12,23 +11,49 @@ If you want add user, type ```sudo adduser``` in command line. Make sure you are
 ## How this work
 This is a nginx reverse proxy config which will try to authenticate user:password with linux pam module ,and try to execute command to spawn a code-server workspace by that user, and then proxy_pass to it.
 
-# Install guide
+# Installation guide
 
-## Quick install (for Ubuntu 18.04 and 20.04 and Debian 10)
+## Install with script(Ubuntu 18.04/20.04)
 
-### interactive install
+Actually this script is only a installation script, it's a one-click configuration script for training servers of our lab. 
+
+Please install nvidia-driver before use this script and make sure ```nvidia-smi``` works properly if you have GPUs.
+
+### interactive install , ask you (yes/no) in the installation process
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
 sudo install.sh
 ```
 
-
-#### minimal
+#### For our lab , enable all functions
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=no -hps=no -jph=no -pip3=no -c=no -rd=no -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+```
+##### Paramaters description
+
+|  paramater   | description  | port occupied|
+|  ----  | ----  | --- |
+|     | This project |8443|
+| hp  | Replace homepage of nginx |80|
+| hps | Enable https for homepage         |443|
+| pq  | Install pwquality,force users to use strong passwords with libpam-pwquality<br/>Password requirement:at least one lower-case, upper-case, digit, and non-alphanumeric  <br/>minlen =8，usercheck and dictcheck enabled ||
+| st  | Install [servstat backend](https://github.com/HuJK/servstat)<br />a web gui to check who is using the GPUs              |9989|
+| jph | Install jupyterhub|18517,8001|
+| pip3| Install python3-pip。it will be skipped if already installed. ||
+| c   | Install [cockpit](https://github.com/cockpit-project/cockpit)                  |9090|
+| rd  | Install [rootless-docker](https://github.com/HuJK/rootless_docker)          |2087|
+| d   | Install docker版code-server-hub  ||
+| de  | Install docker engine，it will be skipped if already installed. ||
+| dn  | Install nvidia-docker，it will be skipped if already installed. ||
+| dp  | Install portainer，it will be skipped if already installed.     |9000|
+
+### If you want to install at your own server, this is the paramater I suggest.
+#### Minimal installatoin
+```
+sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=no -pip3=no -c=no -rd=no -d=no -de=no -dn=no -dp=no
 ```
 
 Demo:
@@ -38,29 +63,17 @@ user|passwd
 ----|---------------
 root|DockerAtHeroku
 
-#### normal
+#### Your own server，Normal version
 ```
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-chmod 755 install.sh 
-sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -rd=yes -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=yes -pip3=yes -c=yes -rd=no -d=no -de=no -dn=no -dp=no
 ```
 
-#### normal+docker (~5.2 GB)
-
+#### Multi user server，normal version + docker version + pwquality
 ```
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-chmod 755 install.sh 
-sudo ./install.sh -hp=no -hps=no -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 
-#### For our lab (~5.2 GB)
-```
-wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
-chmod 755 install.sh 
-sudo ./install.sh -hp=yes -hps=yes -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
-```
-
-Then goto url : https://\[your_server_ip\]
+than access your ip with port 8443(normal version) and 2087(docker version) with web browser.
 
 ## Manual install
 dependences:
