@@ -36,7 +36,7 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 
 ### 參數說明:
 
-|  參數   | 說明  | 佔用端口
+|  參數   | 說明  | 佔用端口|
 |  ----  | ----  | --- |
 |     | 專案本體 |8443|
 | hp  | 替換掉nginx預設首頁 |80|
@@ -187,13 +187,15 @@ ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
 
 以下鏡像三選一
 
- * ```docker pull whojk/code-server-hub-docker:minimal```    (CPU用)
- * ```docker pull whojk/code-server-hub-docker:standard```   (CPU用)
- * ```docker pull whojk/code-server-hub-docker:basicML```    (GPU專用)
+|  鏡像   |  說明 |
+|  ----  | ----  | 
+|  ```docker pull whojk/code-server-hub-docker:minimal```   | CPU | 
+|  ```docker pull whojk/code-server-hub-docker:standard```  | CPU | 
+|  ```docker pull whojk/code-server-hub-docker:basicML```   | GPU | 
  
 自己build請參考[https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile](https://github.com/HuJK/Code-Server-Hub/tree/master/Dockerfile)
 
-然後修改```/etc/code-server-hub/util/create_docker.py```，找到第7行&第8行，把裡面的image名稱換成自己選的image名稱
+然後修改```/etc/code-server-hub/util/create_docker.py```，找到第7行&第8行，根據你電腦的硬體(CPU或GPU)，把裡面的image名稱換成自己選的image名稱
 ```python
 image_name_cpu = "whojk/code-server-hub-docker:minimal"
 image_name_gpu = "whojk/code-server-hub-docker:basicML"
@@ -201,6 +203,14 @@ image_name_gpu = "whojk/code-server-hub-docker:basicML"
 
 
 第51行會檢查系統的nvidia-docker是否能運作，能運作就執行```image_name_gpu```，否則```image_name_cpu```
+```python3
+has_gpu = []
+image_name = image_name_cpu
+outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+if len(outs) > 0:
+    has_gpu = ["--gpus", getGPUParam(username)]
+    image_name = image_name_gpu
+```
 
 把設定檔軟連結去nginx
 ```
