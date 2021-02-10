@@ -13,7 +13,7 @@ The main difference between ```RealOS Panel``` and ```Container Panel``` is ever
 
 #### Things should be done in Container
 
-Most things can be done in the Container. Everyone have the ```sudo``` permission to install packages that who need.
+* Most things can be done in the Container. Everyone have the ```sudo``` permission to install packages that they need.
 
 #### Things should be done in Real OS
 * Change password
