@@ -46,8 +46,8 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 | jph | 安裝jupyterhub，ML server必備|18517,8001|
 | pip3| 安裝python3-pip。已安裝會跳過 ||
 | c   | 安裝[cockpit](https://github.com/cockpit-project/cockpit)                  |9090|
-| rd  | 安裝[rootless-docker](https://github.com/HuJK/rootless_docker)          |2087|
-| d   | 安裝docker版code-server-hub  ||
+| rd  | 安裝[rootless-docker](https://github.com/HuJK/rootless_docker)          ||
+| d   | 安裝docker版code-server-hub  |2087|
 | de  | 安裝docker engine，已安裝會跳過 ||
 | dn  | 安裝nvidia-docker，已安裝會跳過 ||
 | dp  | 安裝portainer，已安裝會跳過     |9000|
