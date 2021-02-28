@@ -44,8 +44,8 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 | jph | Install jupyterhub|18517,8001|
 | pip3| Install python3-pip。it will be skipped if already installed. ||
 | c   | Install [cockpit](https://github.com/cockpit-project/cockpit)                  |9090|
-| rd  | Install [rootless-docker](https://github.com/HuJK/rootless_docker)          |2087|
-| d   | Install docker版code-server-hub  ||
+| rd  | Install [rootless-docker](https://github.com/HuJK/rootless_docker)          ||
+| d   | Install code-server-hub docker version |2087|
 | de  | Install docker engine，it will be skipped if already installed. ||
 | dn  | Install nvidia-docker，it will be skipped if already installed. ||
 | dp  | Install portainer，it will be skipped if already installed.     |9000|
