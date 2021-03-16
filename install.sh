@@ -300,6 +300,7 @@ fi
 if [[ $DOCKER =~ [yY].* ]]; then
     #ask for install docker
     mkdir -p /data/local
+    chmod 777 /data/local
     export FSTAB_SECURE='/data/local /data/local                                                none nosuid,nodev,bind'
     grep -qxF "${FSTAB_SECURE}" /etc/fstab || echo "${FSTAB_SECURE}" >> /etc/fstab
     if hash docker 2>/dev/null; then
