@@ -24,7 +24,7 @@ shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
 
 
 def getDataParam(username):
-    user_available_folder = ["{p}:{p}".format(p=p) for p in ["/data",homedir]] + ["{p}:{p}:ro".format(p=p) for p in ["/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [envs_path+":/etc/code-server-hub/ENVSFILE:ro"]
+    user_available_folder = ["{p}:{p}".format(p=p) for p in ["/data/local",homedir]] + ["{p}:{p}:ro".format(p=p) for p in ["/data","/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [envs_path+":/etc/code-server-hub/ENVSFILE:ro"]
     return list(itertools.chain(*map(list,(zip(["-v"]*len(user_available_folder),[fpath for fpath in user_available_folder])))))
 
 def getGPUParam(username):
