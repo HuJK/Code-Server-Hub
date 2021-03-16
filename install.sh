@@ -304,7 +304,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
     #ask for install docker
     mkdir -p /data/local
     chmod 777 /data/local
-    export FSTAB_SECURE='/data/local /data/local                                                none nosuid,nodev,bind'
+    export FSTAB_SECURE='/data/local /data/local                                                none nosuid,nodev,bind 0 0'
     grep -qxF "${FSTAB_SECURE}" /etc/fstab || echo "${FSTAB_SECURE}" >> /etc/fstab
     if hash docker 2>/dev/null; then
         echo "Docker installed, skip docker auto install"
