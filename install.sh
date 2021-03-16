@@ -299,6 +299,9 @@ if [[ ! $DOCKER =~ [yYnN].* ]]; then
 fi
 if [[ $DOCKER =~ [yY].* ]]; then
     #ask for install docker
+    mkdir -p /data
+    export FSTAB_SECURE='/data /data                                                            none nosuid,nodev,bind'
+    grep -qxF "${FSTAB_SECURE}" /etc/fstab || echo "${FSTAB_SECURE}" >> /etc/fstab
     if hash docker 2>/dev/null; then
         echo "Docker installed, skip docker auto install"
     else
