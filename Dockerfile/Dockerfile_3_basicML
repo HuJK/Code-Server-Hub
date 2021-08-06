@@ -1,4 +1,5 @@
-FROM nvidia/cuda:10.2-cudnn7-devel
+# syntax = docker/dockerfile:experimental
+FROM --platform=$TARGETPLATFORM  nvidia/cuda:11.4.1-cudnn8-devel-ubuntu20.04
 
 COPY *.c /tmp/
 
@@ -20,8 +21,7 @@ RUN  bash /tmp/install_3_optional_basicML.sh
 #COPY           install_6_optional_pykaldi.sh /tmp/
 #RUN  bash /tmp/install_6_optional_pykaldi.sh
 
-COPY move2docker /tmp/move2docker
-RUN  rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* / ;rm -r /tmp/*
+RUN --mount=type=bind,source=move2docker,target=/tmp/move2docker rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* /;
 
 ENV CUDA_DEVICE_ORDER=PCI_BUS_ID \
     LANG=en_US.UTF-8 \

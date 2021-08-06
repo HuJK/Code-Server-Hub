@@ -28,7 +28,7 @@ docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-
 ### GPU version (amd64)
 standerd version with essential machine learning packages (11GB)
 ```bash
-docker build -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML .
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
 ```
 
 You can build it by your self.

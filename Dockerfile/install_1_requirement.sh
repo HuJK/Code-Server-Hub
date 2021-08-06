@@ -16,7 +16,7 @@ gcc -shared -std=c99 -Wall -O2 -fPIC -D_POSIX_SOURCE -D_GNU_SOURCE  -Wl,--no-as-
 python3 -m pip install --upgrade pip
 pip3       install --upgrade  jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools virtualenv virtualenvwrapper numpy
 
-wget -qO- https://deb.nodesource.com/setup_12.x | bash
+wget -qO- https://deb.nodesource.com/setup_current.x | bash
 apt-get -y install nodejs
 npm install -g configurable-http-proxy
 apt-get -y autoremove ; apt-get autoclean

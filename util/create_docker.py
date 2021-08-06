@@ -48,7 +48,7 @@ except:
 has_gpu = []
 image_name = image_name_cpu
 
-outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:10.2-base nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:11.4.1-base-ubuntu20.04 nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 if len(outs) > 0:
     has_gpu = ["--gpus", getGPUParam(username)]
     image_name = image_name_gpu
