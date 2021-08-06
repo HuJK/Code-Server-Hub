@@ -384,7 +384,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
     if hash nvidia-smi 2>/dev/null; then
         docker pull whojk/code-server-hub-docker:basicML
         { # try
-            docker run --rm --gpus all nvidia/cuda:11.4.1-base-ubuntu20.04 nvidia-smi &&
+            docker run --rm --gpus all nvidia/cuda:11.2.0-base-ubuntu20.04 nvidia-smi &&
             echo "Nvidia docker installed, skip nvidia-docker autoinstall"
         } || { # catch
             # save log for exception 
