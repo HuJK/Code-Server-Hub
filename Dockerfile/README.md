@@ -1,6 +1,7 @@
 # code-server-hub-docker
 
 These dockerfiles are for Code Server docker version.
+It will automatically pull my image if you use my install script. If you don't want to use mine, you can build it by you self.
 
 I use some feature from BuildKit, so prepare buildx first
 
@@ -17,22 +18,31 @@ docker buildx use mybuilder
 ### CPU version (amd64/arm64)
 minimal version (1.5GB)
 ```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --output="type=docker"
+
 ```
 
 standerd version (4GB)
 ```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --output="type=docker"
 ```
 
 ### GPU version (amd64)
+Requirement: nvidia driver 460+
+
 standerd version with essential machine learning packages (11GB)
 ```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --output="type=docker"
 ```
 
 You can build it by your self.
 
+#### Build all and upload to registry
+```
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
+```
 
 ## Usage
 When you start container, [this script](https://github.com/HuJK/Code-Server-Hub/blob/master/util/create_docker.py) will check whether you can run nvidia-docker by following code:
