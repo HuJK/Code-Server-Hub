@@ -40,10 +40,12 @@ rm code-server.tar.gz
 
 if hash docker 2>/dev/null; then
     echo "Docker installed, update docker image"
-    if [[ "$(docker images -q $image_name_cpu 2> /dev/null)" == "" ]]; then
+    if test ! -z "$(docker images -q $image_name_cpu)"; then
+        echo docker pull $image_name_cpu
         docker pull $image_name_cpu
     fi
-    if [[ "$(docker images -q $image_name_gpu 2> /dev/null)" == "" ]]; then
+    if test ! -z "$(docker images -q $image_name_gpu)"; then
+        echo docker pull $image_name_gpu
         docker pull $image_name_gpu
     fi
 fi
