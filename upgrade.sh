@@ -1,8 +1,6 @@
 #!/bin/bash
-
-
 cd /etc/code-server-hub
-git pull -q
+git pull --no-edit
 eval $(cat util/create_docker.py | grep "image_name_cpu = " | head -n 1 | sed 's/ //g')
 eval $(cat util/create_docker.py | grep "image_name_gpu = " | head -n 1 | sed 's/ //g')
 
