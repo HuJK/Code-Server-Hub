@@ -41,7 +41,7 @@ You can build it by your self.
 ```
 docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --push
 docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --push
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
+docker buildx build --platform linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
 ```
 
 ## Usage

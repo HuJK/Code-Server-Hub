@@ -6,6 +6,8 @@ set -x
 ROOTOWNER=$(stat -c '%U' /root)
 if [ "$ROOTOWNER" != "$USERNAME" ]; then
     echo "First run, initing"
+    ln -s /home/$USERNAME /root/$USERNAME
+    ln -s /data /root/data
     useradd -u $USERUID -d /root $USERNAME
     usermod -aG sudo $USERNAME
     groupmod -g $USERGID $USERNAME
