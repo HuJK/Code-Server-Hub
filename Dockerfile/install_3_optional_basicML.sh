@@ -22,11 +22,12 @@ function get_cpu_architecture()
 cpu_arch=$(get_cpu_architecture)
 
 ln -s cuda /usr/local/nvidia
-pip3       install --upgrade keras mxnet torch opencv-python torchvision librosa
+pip3       install --upgrade keras mxnet opencv-python librosa
+pip3 install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 if [ "$cpu_arch" = "amd64" ]; then
     echo "These packages are x86_64 only."
-    pip3   install --upgrade tensorflow tensorboard tensorboardX torchaudio cupy-cuda112
+    pip3   install --upgrade tensorflow tensorboard tensorboardX cupy-cuda112
 fi
 
 if [ "$cpu_arch" = "arm64" ]; then
