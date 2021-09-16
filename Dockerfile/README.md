@@ -13,26 +13,45 @@ export DOCKER_CLI_EXPERIMENTAL=enabled
 export DOCKER_BUILDKIT=1
 docker buildx create --name mybuilder --driver docker-container
 docker buildx use mybuilder
+
+# setup cpu arch function
+function get_cpu_architecture()
+{
+    local cpuarch=$(uname -m)
+    case $cpuarch in
+         x86_64)
+              echo "amd64";
+              ;;
+         aarch64)
+              echo "arm64";
+              ;;
+         *)
+              echo "Not supported cpu architecture: ${cpuarch}"  >&2
+              exit 1
+              ;;
+    esac
+}
+cpu_arch=$(get_cpu_architecture)
 ```
 
-### CPU version (amd64/arm64)
+### CPU version
 minimal version (1.5GB)
 ```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --output="type=docker"
+docker buildx build --platform linux/$cpu_arch -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --output="type=docker"
 
 ```
 
 standerd version (4GB)
 ```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --output="type=docker"
+docker buildx build --platform linux/$cpu_arch -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --output="type=docker"
 ```
 
-### GPU version (amd64)
+### GPU version
 Requirement: nvidia driver 460+
 
 standerd version with essential machine learning packages (11GB)
 ```bash
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --output="type=docker"
+docker buildx build --platform linux/$cpu_arch -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --output="type=docker"
 ```
 
 You can build it by your self.
@@ -41,7 +60,7 @@ You can build it by your self.
 ```
 docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal -f ./Dockerfile_1_minimal . --push
 docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard -f ./Dockerfile_2_standard . --push
-docker buildx build --platform linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML -f ./Dockerfile_3_basicML . --push
 ```
 
 ## Usage
