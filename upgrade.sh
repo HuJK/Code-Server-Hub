@@ -26,7 +26,7 @@ function get_cpu_architecture()
 }
 cpu_arch=$(get_cpu_architecture)
 echo "###doenload latest code-server###"
-curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
+curl -L -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \

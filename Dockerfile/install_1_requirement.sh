@@ -23,7 +23,7 @@ apt-get -y autoremove ; apt-get autoclean
 
 sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
 git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone --depth 1 git://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
+git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
 mkdir ~/.virtualenvs
 rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
 
@@ -48,7 +48,7 @@ cpu_arch=$(get_cpu_architecture)
 mkdir -p /etc/code-server-hub/.cshub
 cd /etc/code-server-hub
 echo "###doenload latest code-server###"
-curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
+curl -L -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \

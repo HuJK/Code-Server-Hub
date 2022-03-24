@@ -73,7 +73,7 @@ sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=yes -pip3=yes -c=yes -rd=no 
 
 #### 多個人用的server，安裝普通版+docker版+pwquality
 ```
-sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -rd=no -d=yes -de=yes -dn=yes -dp=yes
 ```
 
 然後用瀏覽器訪問server ip即可

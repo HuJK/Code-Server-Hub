@@ -30,7 +30,7 @@ sudo install.sh
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd=no -d=yes -de=yes -dn=yes -dp=yes
 ```
 ##### Paramaters description
 

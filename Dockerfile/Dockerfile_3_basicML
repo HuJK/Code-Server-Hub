@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM --platform=$TARGETPLATFORM  nvidia/cuda:11.2.0-cudnn8-devel-ubuntu20.04
+FROM --platform=$TARGETPLATFORM  nvidia/cuda:11.4.0-cudnn8-devel-ubuntu20.04
 
 COPY *.c /tmp/
 
