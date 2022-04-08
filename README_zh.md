@@ -157,7 +157,7 @@ openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 下載最新的 code-server
 ```
 cd /etc/code-server-hub
-curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
+curl -L -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \

@@ -157,7 +157,7 @@ chgrp shadow /etc/code-server-hub/util/anime_pic
 cd /etc/code-server-hub
 
 echo "###doenload latest code-server###"
-curl -s https://api.github.com/repos/cdr/code-server/releases/latest \
+curl -L -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
 | tr -d \" \
