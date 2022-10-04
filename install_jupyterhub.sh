@@ -2,6 +2,7 @@
 
 pip3 install --upgrade pip
 pip3 install jupyterlab jupyterhub
+pip3 install markupsafe==2.0.1
 npm install -g configurable-http-proxy
 
 mkdir -p /etc/code-server-hub/util/jupyterhub_workdir
