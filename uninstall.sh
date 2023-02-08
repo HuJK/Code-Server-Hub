@@ -1,7 +1,7 @@
 #!/bin/bash
 set +e
-rm -r /etc/code-server-hub
-rm /etc/nginx/sites-available/code
-rm /etc/nginx/sites-available/code-hub-docker
-rm /etc/nginx/sites-enabled/code
-rm /etc/nginx/sites-enabled/code-hub-docker
+rm -r /etc/code-server-hub || true
+rm -r /etc/servstat || true
+rm -r /etc/systemd/system/cshub-openresty.service || true
+rm -r /etc/systemd/system/jupyterhub.service || true
+rm -r /etc/systemd/system/serverstat.service || true

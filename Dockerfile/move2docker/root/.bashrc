@@ -102,4 +102,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 eval "$(thefuck --alias)"
+
+if [ -d "/root/.miniconda/bin" ] && [[ ":$PATH:" != *":/root/.miniconda/bin:"* ]]; then
+    PATH="${PATH:+"$PATH:"}/root/.miniconda/bin"
+fi
 # MOTD

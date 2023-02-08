@@ -20,6 +20,7 @@ echo "c.JupyterHub.port = 18517
 c.JupyterHub.ssl_key = '/etc/code-server-hub/cert/ssl.key'
 c.JupyterHub.ssl_cert = '/etc/code-server-hub/cert/ssl.pem'
 c.Spawner.default_url = '/lab'
+c.PAMAuthenticator.open_sessions = True
 " > jupyterhub_config.py
 
 

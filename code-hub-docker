@@ -98,7 +98,7 @@ server {
                 tmp = ngx.decode_base64(tmp)
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
-                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_auth_py   = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
                 server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
@@ -106,7 +106,7 @@ server {
                 ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
                 if response.status >= 400 then
                     fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/create_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
-                    fp:write(server_auth)
+                    fp:write(server_auth_py)
                     fp:close()
                     ngx.say('<head><style>code {display: block; /* fixes a strange ie margin bug */font-family: Courier New;font-size: 11pt;overflow:auto;background: #f0f0f0 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAASwCAYAAAAt7rCDAAAABHNCSVQICAgIfAhkiAAAAQJJREFUeJzt0kEKhDAMBdA4zFmbM+W0upqFOhXrDILwsimFR5pfMrXW5jhZr7PwRlxVX8//jNHrGhExjXzdu9c5IiIz+7iqVmB7Hwp4OMa2nhhwN/PRGEMBh3Zjt6KfpzPztxW9MSAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzB8HS+J9kUTvzEDMwAAAABJRU5ErkJggg==) left top repeat-y;border: 10px solid white;padding: 10px 10px 10px 21px;max-height:1000px;line-height: 1.2em;}</style></head>')
                     ngx.say('<body>')
@@ -155,7 +155,7 @@ server {
                 tmp = ngx.decode_base64(tmp)
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
-                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_auth_py   = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
 				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
@@ -188,7 +188,7 @@ server {
                 tmp = ngx.decode_base64(tmp)
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
-                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_auth_py   = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 ngx_say = '<!DOCTYPE html><html> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> '
                 ngx_say = ngx_say .. ' <style>*{font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;} '
                 ngx_say = ngx_say .. '.MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black;} body{background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/.well-known/Meteor.jpg") no-repeat fixed; background-position: center top; background-size: cover;}.buttonRed{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.button{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.buttonGray{display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #525252; border: 10px; border-radius: 15px; box-shadow: 0 9px #999;}.buttonGray:hover{background-color: #525252} .alert * {-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-ms-touch-action: none;}.alert *:focus {outline: 0}.alert {position: fixed;top: 0%;left: 50%;margin-left: -350px;margin-top: 80px;width: 700px;text-align: center;font-family: -apple-system, SF UI Text, Helvetica Neue, Helvetica, Arial, sans-serif;font-size: 18px;line-height: 1.4;border-radius: 13px;overflow: hidden;z-index: 9999999999999999999999998;background-color: rgba(255, 255, 255, 0.9);}.alert .inner {padding: 15px;}.alert .title {font-weight: 500;font-size: 30px;color: red;}.alert .text {margin-top: 5px;font-size: 20px;}.alert .btnline{display: flex;justify-content: space-around;}.alert .boderline{border-top: #c4c4c4 1px solid ;}.alert .iosbutton {position: relative;height: 55px;line-height: 55px;font-size: 24px;color: #007aff;border-radius: 0 0 13px 13px;overflow: hidden;cursor: pointer;}.alert .iosbutton:after {content: ""position: absolute;left: 0;top: 0;height: 1px;width: 100%;display: block;z-index: 9999999999999999999999999;}'
@@ -213,7 +213,7 @@ server {
                 tmp = ngx.decode_base64(tmp)
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
                 remote_password = tmp:sub(tmp:find(':')+1)
-                server_auth      = md5.sumhexa(ngx.var.server_salt .. remote_password)
+                server_auth_py   = md5.sumhexa(ngx.var.server_salt .. remote_password)
                 server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
                 server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
 				server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"

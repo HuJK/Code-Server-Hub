@@ -98,3 +98,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 eval "$(thefuck --alias)"
+if [ -d "/root/.miniconda/bin" ] && [[ ":$PATH:" != *":/root/.miniconda/bin:"* ]]; then
+    PATH="${PATH:+"$PATH:"}/root/.miniconda/bin"
+fi

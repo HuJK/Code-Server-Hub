@@ -97,8 +97,8 @@ apt-get update
 #apt-get upgrade -y
 echo "###install dependanse phase###"
 echo "Install dependances"
-apt-get install -y nginx-extras ca-certificates socat
-apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git
+apt-get install -y nginx ca-certificates socat
+apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
 set +e # folling command only have one will success
 #cockpit for user management
@@ -137,8 +137,6 @@ cd /etc
 set +e
 git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 cd /etc/code-server-hub
-ln -s /etc/code-server-hub/code            /etc/nginx/sites-available/code
-ln -s ../sites-available/code              /etc/nginx/sites-enabled/code
 set -e
 
 echo "###add nginx to shadow to make pam_module work###"
@@ -146,13 +144,16 @@ usermod -aG shadow www-data
 echo "###set permission###"
 mkdir -p /etc/code-server-hub/.cshub
 mkdir -p /etc/code-server-hub/envs
+mkdir -p /var/log/code-server-hub/
 chmod -R 755 /etc/code-server-hub/.cshub
 chmod -R 775 /etc/code-server-hub/util
 chmod -R 773 /etc/code-server-hub/sock
 chmod -R 770 /etc/code-server-hub/envs
 chmod -R 700 /etc/code-server-hub/cert
+chown www-data /var/log/code-server-hub
 chgrp shadow /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/util/anime_pic
+ln -s /etc/code-server-hub/code            /etc/code-server-hub/util/openresty/conf/sites-enabled/code.conf
 
 cd /etc/code-server-hub
 
@@ -189,6 +190,20 @@ if [[ $HOMEPGE =~ [yY].* ]]; then
     set -e
 fi
 
+
+echo "###Compiel and install openresty###"
+wget https://openresty.org/download/openresty-1.21.4.1.tar.gz
+tar -xvf openresty-1.21.4.1.tar.gz
+git clone https://github.com/sto/ngx_http_auth_pam_module
+cd openresty-1.21.4.1/
+./configure -j2 --add-module=../ngx_http_auth_pam_module --with-pcre-jit \
+    --prefix=/etc/code-server-hub/util/openresty/build \
+    --conf-path=/etc/code-server-hub/util/openresty/conf/nginx.conf
+
+gmake
+gmake install
+
+ln -s /etc/code-server-hub/util/openresty/conf/cshub-openresty.service  /etc/systemd/system/cshub-openresty.service
 
 #ask for enable ssl at nginx
 if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
@@ -425,8 +440,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
 
     #install code-hub-docker
     cd /etc/code-server-hub
-    ln -s /etc/code-server-hub/code-hub-docker /etc/nginx/sites-available/code-hub-docker
-    ln -s ../sites-available/code-hub-docker   /etc/nginx/sites-enabled/code-hub-docker
+    ln -s /etc/code-server-hub/code-hub-docker            /etc/code-server-hub/util/openresty/conf/sites-enabled/code-hub-docker.conf
     if [[ $HOMEPGE =~ [yY].* ]] && [[ $DOCKER =~ [yY].* ]]; then
         set +e
         rm /var/www/html/index.nginx-debian.html
@@ -442,6 +456,7 @@ fi
 echo "###restart nginx and cockpit###"
 systemctl enable nginx
 systemctl enable cockpit.socket
+systemctl enable cshub-openresty
 service nginx stop
 service nginx start
 service cockpit stop

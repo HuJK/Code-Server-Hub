@@ -8,6 +8,7 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     echo "First run, initing"
     ln -s /home/$USERNAME /root/$USERNAME
     ln -s /data /root/data
+    echo "export PATH=$PATH:/usr/local/cuda/bin" > /etc/profile.d/20-nvcc.sh
     useradd -u $USERUID -d /root $USERNAME
     usermod -aG sudo $USERNAME
     groupmod -g $USERGID $USERNAME

@@ -1,0 +1,17 @@
+[Unit]
+Description=A high performance web server and a reverse proxy server
+Documentation=man:nginx(8)
+After=network.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/cshub-openresty.pid
+ExecStartPre=/etc/code-server-hub/util/openresty/build/bin/openresty -t -q -g 'daemon on; master_process on;'
+ExecStart=/etc/code-server-hub/util/openresty/build/bin/openresty -g 'daemon on; master_process on;'
+ExecReload=/etc/code-server-hub/util/openresty/build/bin/openresty -g 'daemon on; master_process on;' -s reload
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/cshub-openresty.pid
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

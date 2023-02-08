@@ -3,12 +3,24 @@ set -x
 set -e
 export DEBIAN_FRONTEND=noninteractive
 echo "Install additional tools"
-
+. /etc/os-release
 
 add-apt-repository ppa:longsleep/golang-backports
 apt-get -y update
+case $VERSION_ID in
+20.04)
+    apt-get -y install openjdk-17-jdk-headless
+    ;;
+22.04)
+    apt-get -y install openjdk-19-jdk-headless
+    ;;
+*)
+    echo "Unsupported version, update the script"
+    exit -1
+    ;;
+esac
 
-apt-get -y install fish htop aria2 lsof tree ncdu golang-go openjdk-16-jdk-headless atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr netcat parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat libopenblas-dev liblapack-dev gfortran cmake convmv llvm
+apt-get -y install fish htop aria2 lsof tree ncdu golang-go atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr netcat parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat libopenblas-dev liblapack-dev gfortran cmake convmv llvm
 apt-get -y autoremove ; apt-get autoclean 
 
 pip3       install --upgrade tornado tqdm sympy galgebra pandas plotly nose pillow pyparsing scikit-image scikit-learn scipy matplotlib              
