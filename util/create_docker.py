@@ -2,10 +2,10 @@ import os
 import sys
 import itertools
 import subprocess
+import pathlib
 from pathlib import Path
 
-image_name_cpu = "whojk/code-server-hub-docker:minimal"
-image_name_gpu = "whojk/code-server-hub-docker:basicML"
+os.chdir(pathlib.Path(__file__).parent.resolve())
 
 username  = sys.argv[1]
 useruid = subprocess.Popen(["id", "-u", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
@@ -46,12 +46,15 @@ except:
 
 
 has_gpu = []
-image_name = image_name_cpu
 
-outs, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:11.2.0-base-ubuntu20.04 nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-if len(outs) > 0:
+
+get_docker_image_name = subprocess.Popen(["python3 get_docker_image_name.py"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+image_name, errs = get_docker_image_name.communicate()
+image_name = image_name.replace(b"\n",b"").decode("utf8")
+
+if get_docker_image_name.returncode == 0:
     has_gpu = ["--gpus", getGPUParam(username)]
-    image_name = image_name_gpu
+
 print(has_gpu)
 
 

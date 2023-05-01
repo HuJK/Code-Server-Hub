@@ -98,7 +98,7 @@ apt-get update
 echo "###install dependanse phase###"
 echo "Install dependances"
 apt-get install -y nginx ca-certificates socat
-apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev
+apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev jq
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
 set +e # folling command only have one will success
 #cockpit for user management
@@ -246,7 +246,6 @@ if [[ ! $COCKPIT =~ [yYnN].* ]]; then
 fi
 if [[ $COCKPIT =~ [yY].* ]]; then
     set +e # folling command only have one will success
-    apt-get install -y -t xenial-backports cockpit cockpit-pcp #for ubuntu 16.04
     apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
     apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
     set -e
@@ -397,7 +396,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
 
     #ask for install nvidia-docker
     if hash nvidia-smi 2>/dev/null; then
-        docker pull whojk/code-server-hub-docker:basicML
+        docker pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
         { # try
             docker run --rm --gpus all nvidia/cuda:11.2.0-base-ubuntu20.04 nvidia-smi &&
             echo "Nvidia docker installed, skip nvidia-docker autoinstall"
@@ -431,8 +430,9 @@ if [[ $DOCKER =~ [yY].* ]]; then
     else
         echo "Nvidia driver not found, skip nvidia-docker autoinstall"
         if [[ $DOCKER_IMAGE == "standard" ]]; then
-            docker pull whojk/code-server-hub-docker:standard
-            sed -i.bak "/^image_name_cpu = .*/cimage_name_cpu = 'whojk/code-server-hub-docker:standard'" /etc/code-server-hub/util/create_docker.py
+            tmp=$(mktemp)
+            jq '.0 = "standard"' /etc/code-server-hub/Dockerfile/versions.json > "$tmp" && mv "$tmp" /etc/code-server-hub/Dockerfile/versions.json
+            docker pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
         else
             docker pull whojk/code-server-hub-docker:minimal
         fi

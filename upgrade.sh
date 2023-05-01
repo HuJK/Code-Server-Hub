@@ -1,11 +1,9 @@
 #!/bin/bash
 cd /etc/code-server-hub
 git pull --no-edit
-eval $(cat util/create_docker.py | grep "image_name_cpu = " | head -n 1 | sed 's/ //g')
-eval $(cat util/create_docker.py | grep "image_name_gpu = " | head -n 1 | sed 's/ //g')
+export image_name=$(python3 util/get_docker_image_name.py)
 
-echo $image_name_cpu
-echo $image_name_gpu
+echo $image_name
 
 function get_cpu_architecture()
 {
@@ -40,12 +38,6 @@ rm code-server.tar.gz
 
 if hash docker 2>/dev/null; then
     echo "Docker installed, update docker image"
-    if test ! -z "$(docker images -q $image_name_cpu)"; then
-        echo docker pull $image_name_cpu
-        docker pull $image_name_cpu
-    fi
-    if test ! -z "$(docker images -q $image_name_gpu)"; then
-        echo docker pull $image_name_gpu
-        docker pull $image_name_gpu
-    fi
+    echo docker pull $image_name
+    docker pull $image_name
 fi
