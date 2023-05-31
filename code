@@ -267,11 +267,27 @@ server {
                 package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
             end
             local url_tool = require 'url_tool'
+            local cookie_tool = require 'cookie_tool'
+
+            local xsrf_value = ngx.var.cookie__xsrf
+            if xsrf_value == nil then
+                local response_get_xsrf = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login')
+                local xsrf_cookie = cookie_tool.parsecookie(response_get_xsrf.header["set-cookie"])
+                xsrf_value = xsrf_cookie["_xsrf"]
+                ngx.req.set_header("Cookie",response_get_xsrf.header["set-cookie"])
+                --ngx.header["set-cookie"] = response_get_xsrf.header["set-cookie"]
+                --ngx.say("_xsrf: " .. xsrf_value)
+            else
+                --ngx.say("use old _xsrf: " .. xsrf_value)
+            end
+
             ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
-            response = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login?next=', { method = ngx.HTTP_POST, body = "username=" .. url_tool.urlEncode(remote_user) .. "&password=" ..  url_tool.urlEncode(remote_password)})
+            response = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login?next=', { method = ngx.HTTP_POST, body = "username=" .. url_tool.urlEncode(remote_user) .. "&password=" ..  url_tool.urlEncode(remote_password) .. "&_xsrf=" ..  url_tool.urlEncode(xsrf_value)})
             if response.status < 400 then
                 ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
                 ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
+            else
+                ngx.say("Error: " .. response.body)
             end
         }
         header_filter_by_lua_block {

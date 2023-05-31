@@ -3,3 +3,6 @@
 
 # But not these files...
 !.gitignore
+!sites-enabled
+!cshub-openresty.service
+!nginx.conf
