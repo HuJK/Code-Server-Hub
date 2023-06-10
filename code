@@ -282,7 +282,7 @@ server {
             end
 
             if xsrf_value == nil then
-                xsrf_value == ""
+                xsrf_value = ""
             end
 
             ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
