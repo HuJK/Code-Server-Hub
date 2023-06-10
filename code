@@ -281,13 +281,17 @@ server {
                 --ngx.say("use old _xsrf: " .. xsrf_value)
             end
 
+            if xsrf_value == nil then
+                srf_value == ""
+            end
+
             ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
             response = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login?next=', { method = ngx.HTTP_POST, body = "username=" .. url_tool.urlEncode(remote_user) .. "&password=" ..  url_tool.urlEncode(remote_password) .. "&_xsrf=" ..  url_tool.urlEncode(xsrf_value)})
             if response.status < 400 then
                 ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
                 ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
             else
-                ngx.say("Error: " .. response.body)
+                ngx.say("Unable to retrive cookie from " .. ngx.var.jupyter_addr_internal .. " Please check systemctl status jupyterhub. Error" .. response.body)
             end
         }
         header_filter_by_lua_block {
@@ -310,7 +314,7 @@ server {
 				ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.jupyter_addr .. "/hub/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.jupyter_addr .. "/hub/" .. '" method="get"></form></body></html>')
             else
                 ngx.status = 404
-                ngx.say("Unable to connect to " .. ngx.var.jupyter_addr_internal)
+                ngx.say("Unable to retrive cookie from " .. ngx.var.jupyter_addr_internal .. " Please check systemctl status jupyterhub. Error" .. response.body)
             end
         }
     }
