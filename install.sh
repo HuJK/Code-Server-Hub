@@ -200,8 +200,8 @@ cd openresty-1.21.4.1/
     --prefix=/etc/code-server-hub/util/openresty/build \
     --conf-path=/etc/code-server-hub/util/openresty/conf/nginx.conf
 
-gmake
-gmake install
+make
+make install
 
 ln -s /etc/code-server-hub/util/openresty/conf/cshub-openresty.service  /etc/systemd/system/cshub-openresty.service
 
