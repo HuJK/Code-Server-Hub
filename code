@@ -39,7 +39,8 @@ server {
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
         auth_pam_service_name "login";
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $host;
+        proxy_set_header Host    $http_host ;
+        proxy_set_header Origin  "https://${http_host}" ;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         set $server_auth_base64 "bm9sb2dpbjpOb3RTZXRZZXQ=";
         set $server_sock_url   "Not_Set_Yet";
