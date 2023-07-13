@@ -23,7 +23,7 @@ all_versions = sorted(all_versions,reverse=True)
 #print(all_versions)
 #print(all_versions_str)
 
-outs_c, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:11.2.0-base-ubuntu20.04 nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+outs_c, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:11.2.2-base-ubuntu20.04 nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 if len(outs_c) > 0:
     outs , errs = subprocess.Popen(["nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if len(outs) > 0:
