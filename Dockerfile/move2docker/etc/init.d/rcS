@@ -11,9 +11,12 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     echo "export PATH=$PATH:/usr/local/cuda/bin" > /etc/profile.d/20-nvcc.sh
     useradd -u $USERUID -d /root $USERNAME
     usermod -aG sudo $USERNAME
+    usermod -aG root $USERNAME
     groupmod -g $USERGID $USERNAME
     git config --global user.email "$USERNAME@example.com"
     git config --global user.name $USERNAME
+    eval "$(/opt/miniconda/bin/conda shell.bash hook)"
+    conda init --all
     chmod 700 /root
     chmod -R 700 /root/.oh-my-zsh
     chown -R $USERNAME:$USERNAME /root

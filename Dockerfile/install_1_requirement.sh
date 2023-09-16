@@ -1,23 +1,40 @@
 #!/bin/bash
 set -x
 set -e
+ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime
 export DEBIAN_FRONTEND=noninteractive
 echo "Install requirement tools"
+. /etc/os-release
+
 apt-get -y update
 apt-get -y install software-properties-common
 add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
-apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev build-essential
+
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev build-essential bc
+
+
+
+export PIP_BREAK_SYSTEM_PACKAGES=1
+case $VERSION_ID in
+20.04)
+    pip3 install --upgrade  jupyter jupyterlab jupyter_http_over_ws setuptools virtualenv virtualenvwrapper numpy
+    ;;
+22.04)
+    apt-get -y install jupyter python3-jupyterlab-server python3-notebook python3-jupyter-sphinx python3-jupyter-server-mathjax jupyter-nbextension-jupyter-js-widgets python3-alembic python3-async-generator python3-certipy python3-dateutil python3-entrypoints python3-jinja2 python3-jupyter-telemetry python3-oauthlib python3-packaging python3-pamela python3-prometheus-client python3-requests python3-sqlalchemy python3-tornado python3-traitlets python3:any python3-bcrypt python3-notebook libjs-bootstrap libjs-jquery libjs-prototype libjs-requirejs fonts-font-awesome
+    apt-get -y install python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy
+    pip3  install jupyterlab
+    ;;
+*)
+    echo "Unsupported version, update the script"
+    exit 255
+    ;;
+esac
+unset PIP_BREAK_SYSTEM_PACKAGES
 
 gcc -shared -std=c99 -Wall -O2 -fPIC -D_POSIX_SOURCE -D_GNU_SOURCE  -Wl,--no-as-needed -ldl -o /lib/runit-docker.so /tmp/runit-docker.c
 
-python3 -m pip install --upgrade pip
-pip3       install --upgrade  jupyter jupyterlab jupyterhub jupyter_http_over_ws setuptools virtualenv virtualenvwrapper numpy
-
-wget -qO- https://deb.nodesource.com/setup_current.x | bash
-apt-get -y install nodejs
-npm install -g configurable-http-proxy
 apt-get -y autoremove ; apt-get autoclean
 
 
@@ -45,6 +62,34 @@ function get_cpu_architecture()
 }
 cpu_arch=$(get_cpu_architecture)
 
+if [ "$cpu_arch" = "amd64" ]; then
+    echo "These packages are x86_64 only."
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+fi
+
+if [ "$cpu_arch" = "arm64" ]; then
+    echo "These packages are arm only."
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O /tmp/miniconda.sh
+fi
+
+mkdir -p /opt
+chmod 755 /tmp/miniconda.sh
+bash /tmp/miniconda.sh -b -p /opt/miniconda
+
+mkdir -p /root/.config/fish/
+eval "$(/opt/miniconda/bin/conda shell.bash hook)"
+conda activate base
+if dpkg --compare-versions "$VERSION_ID" "<=" "20.04"; then
+    conda install -y python=3.8
+elif dpkg --compare-versions "$VERSION_ID" "<=" "22.04"; then
+    conda install -y python=3.10
+fi
+conda install ipykernel
+ipython kernel install --user --name=base
+conda install -c conda-forge nodejs=20.6.1
+npm install -g ijavascript
+ijsinstall --spec-path=full
+
 mkdir -p /etc/code-server-hub/.cshub
 cd /etc/code-server-hub
 echo "###doenload latest code-server###"
@@ -61,5 +106,6 @@ rm -rf /root/.cache
 rm -rf /root/.npm/_cacache
 
 ls /etc/code-server-hub/.cshub
+chmod -R 775 /opt/miniconda
 
 exit 0

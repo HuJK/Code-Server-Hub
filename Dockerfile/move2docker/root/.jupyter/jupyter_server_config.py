@@ -1,5 +1,5 @@
 # Configuration file for jupyter-notebook.
-
+import os
 #------------------------------------------------------------------------------
 # Application(SingletonConfigurable) configuration
 #------------------------------------------------------------------------------
@@ -743,7 +743,7 @@ c.ContentsManager.allow_hidden = False
 #      A directory against against which API-style paths are to be resolved.
 #  
 #  log : logging.Logger
-
+c.FileCheckpoints.checkpoint_dir = os.path.expanduser('~/.ipynb_checkpoints')
 ## By default notebooks are saved on disk on a temporary file and then if
 #  successfully written, it replaces the old ones. This procedure, namely
 #  'atomic_writing', causes some bugs on file system without operation order
@@ -759,7 +759,7 @@ c.ContentsManager.allow_hidden = False
 ## If True (default), deleting files will send them to the platform's
 #  trash/recycle bin, where they can be recovered. If False, deleting files
 #  really deletes them.
-#c.FileContentsManager.delete_to_trash = True
+c.FileContentsManager.delete_to_trash = False
 
 ## Python callable or importstring thereof
 #  

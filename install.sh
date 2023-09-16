@@ -331,8 +331,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
             case $DOCKER_INSTALL in
                 [Yy]* ) 
                     apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
-                    curl -fsSL "https://download.docker.com/linux/$ID/gpg" | sudo apt-key add -;
-                    sudo add-apt-repository "deb [arch=${cpu_arch}] https://download.docker.com/linux/$ID $(lsb_release -cs) stable";
+                    curl https://get.docker.com | bash
                     apt-get update;
                     apt-get install -y docker-ce docker-ce-cli containerd.io;
                     break;;
@@ -454,9 +453,9 @@ fi
 
 
 echo "###restart nginx and cockpit###"
-systemctl enable nginx
-systemctl enable cockpit.socket
-systemctl enable cshub-openresty
+systemctl enable --now nginx
+systemctl enable --now cockpit.socket
+systemctl enable --now cshub-openresty
 service nginx stop
 service nginx start
 service cockpit stop
@@ -466,3 +465,4 @@ if [ "${PASSWORD}" != "" ]; then
     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
 fi
 exit 0
+

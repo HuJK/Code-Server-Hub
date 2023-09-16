@@ -103,7 +103,5 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 eval "$(thefuck --alias)"
 
-if [ -d "/root/.miniconda/bin" ] && [[ ":$PATH:" != *":/root/.miniconda/bin:"* ]]; then
-    PATH="${PATH:+"$PATH:"}/root/.miniconda/bin"
-fi
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 # MOTD
