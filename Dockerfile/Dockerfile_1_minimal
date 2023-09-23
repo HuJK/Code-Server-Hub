@@ -3,6 +3,7 @@ FROM --platform=$TARGETPLATFORM ubuntu
 
 COPY *.c /tmp/
 
+
 COPY           install_1_requirement.sh /tmp/
 RUN  bash /tmp/install_1_requirement.sh
 
@@ -21,7 +22,7 @@ RUN  bash /tmp/install_1_requirement.sh
 #COPY           install_6_optional_pykaldi.sh /tmp/
 #RUN  bash /tmp/install_6_optional_pykaldi.sh
 
-RUN --mount=type=bind,source=move2docker,target=/tmp/move2docker rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* /; rm -rf /root/.local/share/code-server;
+RUN --mount=type=bind,source=move2docker,target=/tmp/move2docker rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* /;
 
 ENV CUDA_DEVICE_ORDER=PCI_BUS_ID \
     LANG=en_US.UTF-8 \

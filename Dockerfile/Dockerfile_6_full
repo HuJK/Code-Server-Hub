@@ -1,6 +1,8 @@
+# syntax = docker/dockerfile:experimental
 FROM nvidia/cuda:10.2-cudnn7-devel
 
 COPY *.c /tmp/
+
 
 COPY           install_1_requirement.sh /tmp/
 RUN  bash /tmp/install_1_requirement.sh
@@ -20,8 +22,7 @@ RUN  bash /tmp/install_5_optional_espnet.sh
 COPY            install_6_optional_pykaldi.sh /tmp/
 RUN  bash /tmp/install_6_optional_pykaldi.sh
 
-COPY move2docker /tmp/move2docker
-RUN  rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* / ;rm -r /tmp/*
+RUN --mount=type=bind,source=move2docker,target=/tmp/move2docker rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* /;
 
 ENV CUDA_DEVICE_ORDER=PCI_BUS_ID \
     LANG=en_US.UTF-8 \

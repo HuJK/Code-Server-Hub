@@ -54,3 +54,4 @@ pip3       install --upgrade tornado tqdm sympy galgebra pandas plotly nose pill
 
 chmod -R 775 /opt/miniconda
 rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
+rm -r /root/.cache || true

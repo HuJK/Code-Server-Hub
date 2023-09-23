@@ -63,11 +63,11 @@ function get_cpu_architecture()
 }
 cpu_arch=$(get_cpu_architecture)
 
+echo "###doenload miniconda###"
 if [ "$cpu_arch" = "amd64" ]; then
     echo "These packages are x86_64 only."
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
 fi
-
 if [ "$cpu_arch" = "arm64" ]; then
     echo "These packages are arm only."
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O /tmp/miniconda.sh
@@ -91,9 +91,9 @@ conda install -c conda-forge nodejs=20.6.1
 npm install -g ijavascript
 ijsinstall --spec-path=full
 
+echo "###doenload latest code-server###"
 mkdir -p /etc/code-server-hub/.cshub
 cd /etc/code-server-hub
-echo "###doenload latest code-server###"
 curl -L -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | grep "browser_download_url.*linux-${cpu_arch}.tar.gz" \
 | cut -d : -f 2,3 \
@@ -109,5 +109,13 @@ rm -rf /root/.npm/_cacache
 ls /etc/code-server-hub/.cshub
 chmod -R 775 /opt/miniconda
 chmod -R 775 /etc/code-server-hub/.cshub
+rm -r /root/.cache || true
+
+echo "###disable lastlog###"
+cd /var/log
+for file in lastlog faillog; do
+  unlink $file
+  ln -s /dev/null $file
+done
 
 exit 0

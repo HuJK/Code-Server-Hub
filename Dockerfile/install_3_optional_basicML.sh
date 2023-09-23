@@ -83,4 +83,5 @@ pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard 
 #jupyter serverextension enable jupyter_tensorboard --sys-prefix
 
 chmod -R 775 /opt/miniconda
+rm -r /root/.cache || true
 
