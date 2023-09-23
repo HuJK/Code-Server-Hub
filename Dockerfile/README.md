@@ -60,10 +60,10 @@ You can build it by your self.
 
 #### Build all and upload to registry
 ```
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal           -f ./Dockerfile_1_minimal . --push
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard          -f ./Dockerfile_2_standard . --push
-docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML           -f ./Dockerfile_3_basicML-1120-2004 . --push
 docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML-1180-2204 -f ./Dockerfile_3_basicML-1180-2204 . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:basicML           -f ./Dockerfile_3_basicML-1120-2004 . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:standard          -f ./Dockerfile_2_standard . --push
+docker buildx build --platform linux/arm64,linux/amd64 -t whojk/code-server-hub-docker:minimal           -f ./Dockerfile_1_minimal . --push
 ```
 
 ## Usage
