@@ -15,12 +15,14 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     groupmod -g $USERGID $USERNAME
     git config --global user.email "$USERNAME@example.com"
     git config --global user.name $USERNAME
+    set +x
     eval "$(/opt/miniconda/bin/conda shell.bash hook)"
     conda init --all
+    echo "conda init --all"
+    set -x
     chmod 700 /root
     chmod -R 700 /root/.oh-my-zsh
     chown -R $USERNAME:$USERNAME /root
-    chown -R $USERNAME:$USERNAME /etc/code-server-hub/.cshub
     if [ ! -f "/home/$USERNAME/data" ] && [ ! -d "/home/$USERNAME/data" ]; then
         ln -s /data /home/$USERNAME/data || true
     fi
