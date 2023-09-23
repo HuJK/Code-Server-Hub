@@ -77,7 +77,7 @@ if [ "$cpu_arch" = "arm64" ]; then
     esac
 fi
 
-pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard tensorboardX imbalanced-learn streamlit fastapi uvicorn seaborn yellowbrick nltk
+pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard tensorboardX imbalanced-learn streamlit fastapi uvicorn seaborn yellowbrick nltk gradio
 
 #pip3 install jupyterlab-tensorboard-pro
 #jupyter serverextension enable jupyter_tensorboard --sys-prefix
