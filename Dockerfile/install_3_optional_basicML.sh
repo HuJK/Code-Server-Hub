@@ -50,7 +50,7 @@ if [ "$cpu_arch" = "amd64" ]; then
         pip3 install torch==1.12.0+cu102 torchaudio==0.12.0+cu102 torchvision==0.13.0+cu102 -f https://download.pytorch.org/whl/torch_stable.html
         ;;
     11.8)
-        pip3 install torch==2.0.0+cu118 torchaudio==2.0.1+cu118 torchvision==0.15.1+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+        pip3 install torch==2.0.1+cu118 torchaudio==2.0.2+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html
         pip3 install nvidia-tensorrt
         ;;
     *)
