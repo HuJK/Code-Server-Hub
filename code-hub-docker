@@ -105,7 +105,7 @@ server {
                 response = ngx.location.capture('/')
                 ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
                 if response.status >= 400 then
-                    local current_timestamp = os.time(os.date("!*t"))
+                    local current_timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
                     fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/create_docker.py " .. remote_user .. " " .. server_sock_path .. " " .. server_envs_path ,"w")
                     fp:write(server_auth_py)
                     fp:close()
@@ -117,7 +117,7 @@ server {
                     ngx.say("<hr />")
                     fp_dlog = io.popen("docker logs docker-" .. remote_user .. " --since " .. current_timestamp,"r")
                     ngx.say("<br> ".. ngx.var.server_service_name_full .. " spawning logs from " .. current_timestamp .. " :<code id=log_content>There should be some logs here</code><br>")
-                    ngx.say('<script>var timestamp=' .. current_timestamp .. ';function update(){var http_check_ready=new XMLHttpRequest;var http_get_logs=new XMLHttpRequest;http_check_ready.onreadystatechange=function(){if(http_check_ready.readyState===4&&http_check_ready.status===0||http_check_ready.status<400&&http_check_ready.status>=200){window.location.replace("/200-panel.html")}};http_get_logs.onreadystatechange=function(){if(http_get_logs.readyState==XMLHttpRequest.DONE){document.getElementById("log_content").innerHTML=http_get_logs.responseText.replaceAll("\\n","<br>")}};http_get_logs.open("GET","/200-server_logs.txt?current_timestamp="+timestamp,true);http_check_ready.open("GET","/",true);http_get_logs.send();http_check_ready.send()}window.onload=function(){update();setInterval((function(){update()}),1e3)};</script>')
+                    ngx.say('<script>var timestamp="' .. current_timestamp .. '";function update(){var http_check_ready=new XMLHttpRequest;var http_get_logs=new XMLHttpRequest;http_check_ready.onreadystatechange=function(){if(http_check_ready.readyState===4&&http_check_ready.status===0||http_check_ready.status<400&&http_check_ready.status>=200){window.location.replace("/200-panel.html")}};http_get_logs.onreadystatechange=function(){if(http_get_logs.readyState==XMLHttpRequest.DONE){document.getElementById("log_content").innerHTML=http_get_logs.responseText.replaceAll("\\n","<br>")}};http_get_logs.open("GET","/200-server_logs.txt?current_timestamp="+timestamp,true);http_check_ready.open("GET","/",true);http_get_logs.send();http_check_ready.send()}window.onload=function(){update();setInterval((function(){update()}),1e3)};</script>')
                     ngx.say('</body>')
                 else
                     ngx.redirect("/")
@@ -143,11 +143,6 @@ server {
                 tmp = tmp:sub(tmp:find(' ')+1)
                 tmp = ngx.decode_base64(tmp)
                 remote_user     = tmp:sub(0,tmp:find(":")-1)
-                remote_password = tmp:sub(tmp:find(':')+1)
-                server_auth_py   = md5.sumhexa(ngx.var.server_salt .. remote_password)
-                server_sock_name = remote_user .. "/" .. md5.sumhexa(ngx.var.server_sal2 .. remote_password)
-                server_sock_path = ngx.var.server_files_location .. "/sock/" .. ngx.var.server_service_name .. "/" .. server_sock_name .. ".sock"
-                server_envs_path = ngx.var.server_files_location .. "/envs/" .. ngx.var.server_service_name .. "-" .. remote_user .. ".envs"
                 local args, err = ngx.req.get_uri_args()
                 local current_timestamp = args["current_timestamp"]
                 fp_dlog = io.popen("docker logs docker-" .. remote_user .. " --since " .. current_timestamp,"r")
