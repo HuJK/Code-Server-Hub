@@ -1,6 +1,5 @@
 #!/bin/bash
-export SERVICE_URL="https://marketplace.visualstudio.com/_apis/public/gallery"
-export ITEM_URL="https://marketplace.visualstudio.com/items"
+export EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery","itemUrl":"https://marketplace.visualstudio.com/items"}'
 source /etc/code-server-hub/ENVSFILE
 cd $HOMEDIR
 su $USERNAME -c "/etc/code-server-hub/.cshub/bin/code-server --host 127.0.0.1 --port 16313 --auth none"
