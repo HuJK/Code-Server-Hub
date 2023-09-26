@@ -13,6 +13,7 @@ usergid = subprocess.Popen(["id", "-g", username], stdout=subprocess.PIPE).commu
 homedir =  subprocess.Popen(["bash", "-c", "echo ~" + username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
 sock_path = sys.argv[2]
 envs_path = sys.argv[3]
+password = sys.argv[4] if len(sys.argv) >=5 else input()
 sock_fold = os.path.dirname(sock_path)
 
 os.makedirs(os.path.dirname(sock_path),mode=0o333,exist_ok=True)
@@ -36,7 +37,7 @@ with open(envs_path,"w") as envsF:
     envsF.write("USERUID=" + useruid + "\n")
     envsF.write("USERGID=" + usergid + "\n")
     envsF.write("HOMEDIR=" + homedir + "\n")
-    envsF.write("PASSWORD=" + input())
+    envsF.write("PASSWORD=" +  password + "\n")
     envsF.flush()
 
 try:
@@ -55,15 +56,19 @@ image_name = image_name.replace(b"\n",b"").decode("utf8")
 if get_docker_image_name.returncode == 0:
     has_gpu = ["--gpus", getGPUParam(username)]
 
-print(has_gpu)
+#print(has_gpu)
 
+
+def run_command(command):
+    print(" ".join(command))
+    subprocess.call(command)
 
 stopc = ['docker', "stop" , "docker-"+username] 
-subprocess.call(stopc)
+run_command(stopc)
 
 runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getDataParam(username) +[image_name]
-subprocess.call(runc)
+run_command(runc)
 
 startc = ['docker', "start" ,"docker-"+username ]
-subprocess.call(startc)
+run_command(startc)
 
