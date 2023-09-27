@@ -1,6 +1,15 @@
 
 local url_tool = {}
 
+function url_tool.getname(path,prefix)
+    if string.len(path) < string.len(prefix) then
+        return nil
+    elseif string.sub(path,1,string.len(prefix)) ~= prefix then
+        return nil
+    end
+    return string.sub(path,string.len(prefix)+1,-1):gsub("\n","")
+end
+
 function url_tool.urlEncode(s)  
      s = string.gsub(s, "([^%w%.%- ])", function(c) return string.format("%%%02X", string.byte(c)) end)  
     return string.gsub(s, " ", "+")  

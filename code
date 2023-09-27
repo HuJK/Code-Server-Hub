@@ -4,9 +4,10 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-    set $server_files_location "/etc/code-server-hub";
-    set $server_service_name   "cshub";
+    set $server_files_location    "/etc/code-server-hub";
+    set $server_service_name      "cshub";
     set $server_service_name_full "Visual Studio Code Server";
+    set $py3                      "/usr/bin/python3";
     
     listen 8443 ssl;
     listen [::]:8443 ssl;
@@ -16,9 +17,25 @@ server {
     # Managing requests to verify letsencrypt host
     location /.well-known/Meteor.jpg {
         content_by_lua_block {
-            local python_get_img = io.popen('python3 "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. ngx.var.server_files_location .. '/util/anime_pic"')
-            ngx.print(python_get_img:read("*all"))
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require 'url_tool'
+            local prefix = ngx.var.server_files_location .. '/util/anime_pic'
+            local python_get_img = io.popen(ngx.var.py3 .. ' "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. prefix .. '" 2>&1', "r")
+            local img_path = python_get_img:read("*all")
+            local img_name = url_tool.getname(img_path, prefix)
+            if img_name ~= nil then
+                ngx.header.location = "/.well-known/Meteor" ..  img_name
+                ngx.status = 302
+            else
+                ngx.status = 500
+                ngx.say(img_path)
+            end
         }
+    }
+    location /.well-known/Meteor {
+        alias ${server_files_location}/util/anime_pic;
     }
     location /.well-known {
         alias /var/www/html/.well-known;
@@ -62,7 +79,7 @@ server {
                 server_sock_url  = "http://unix:" .. server_sock_path
                 ngx.var.server_sock_url = server_sock_url
                 ngx.var.server_auth_base64 = ngx.encode_base64( server_auth )
-                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/create_login.py","w")
+                fp = io.popen(ngx.var.py3 .. " " .. ngx.var.server_files_location .. "/util/create_login.py","w")
                 fp:write(server_sock_path)
                 fp:close()
             end
@@ -109,7 +126,7 @@ server {
                     ndcmd = "$HOME/." .. ngx.var.server_service_name .. "/bin/code-server --socket " .. server_sock_path .. " --auth password "
                     spcmd = "unset TMUX ;cp -prn " .. ngx.var.server_files_location .. "/." .. ngx.var.server_service_name .. " $HOME ;rm -f " .. server_sock_path .." 2>/dev/null ;tmux kill-session -t " .. ngx.var.server_service_name .. " ;tmux new -d -s " .. ngx.var.server_service_name .. "_setenv ;tmux set-environment -g PASSWORD " .. server_auth .. " ;tmux new -d -s " .. ngx.var.server_service_name .. " " .. ndcmd .. " ;tmux kill-session -t " .. ngx.var.server_service_name .. "_setenv ; tmux new -d -s chmod766 bash " .. ngx.var.server_files_location .. "/util/chmod766.sh " .. server_sock_path .. " "
                     spcmd_by_su = "su -l " .. remote_user  .. " -s /bin/bash -c '" .. spcmd .. "'"
-                    fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
+                    fp = io.popen(ngx.var.py3 .. " " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
                     fp:write(remote_password)
                     fp:close()
                     ngx.say('<head><style>code {display: block; /* fixes a strange ie margin bug */font-family: Courier New;font-size: 11pt;overflow:auto;background: #f0f0f0 url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAASwCAYAAAAt7rCDAAAABHNCSVQICAgIfAhkiAAAAQJJREFUeJzt0kEKhDAMBdA4zFmbM+W0upqFOhXrDILwsimFR5pfMrXW5jhZr7PwRlxVX8//jNHrGhExjXzdu9c5IiIz+7iqVmB7Hwp4OMa2nhhwN/PRGEMBh3Zjt6KfpzPztxW9MSAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzAMwzB8HS+J9kUTvzEDMwAAAABJRU5ErkJggg==) left top repeat-y;border: 10px solid white;padding: 10px 10px 10px 21px;max-height:1000px;line-height: 1.2em;}</style></head>')
@@ -165,7 +182,7 @@ server {
                 remote_password = tmp:sub(tmp:find(':')+1)
                 spcmd = "unset TMUX ;tmux send-keys -t " .. ngx.var.server_service_name .. " C-c ;sleep 1 ;tmux kill-session -t " .. ngx.var.server_service_name .. ""
                 spcmd_by_su = "su " .. remote_user  .. " -c '" .. spcmd .. "'"
-                fp = io.popen("python3 " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
+                fp = io.popen(ngx.var.py3 .. " " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
                 fp:write(remote_password)
                 fp:close()
                 ngx.redirect("/")

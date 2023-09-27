@@ -50,16 +50,16 @@ if vars["prev_update"] < time.time()- 80000:
 def try_get_pic(try_t = 3):
     c = random.choices(list(vars["pic_data"].keys()), weights=map(lambda x:x["score"],list(vars["pic_data"].values())))[0]
     if os.path.isfile(temp_folder / (c + ".png")):
-        #print(str(temp_folder / c))
-        sys.stdout.buffer.write(open(temp_folder / (c + ".png"),"rb").read())
+        print(str(temp_folder / c) + ".png")
+        #sys.stdout.buffer.write(open(temp_folder / (c + ".png"),"rb").read())
         
     else:
         try:
             r = requests.get(vars["pic_data"][c]["url"])
             r.raise_for_status()
             open(temp_folder / (c + ".png"),"wb").write(r.content)
-            #print(str(temp_folder / c))
-            sys.stdout.buffer.write(r.content)
+            print(str(temp_folder / c) + ".png")
+            #sys.stdout.buffer.write(r.content)
         except requests.HTTPError as e:
             if try_t > 0:
                 vars["pic_data"][c]["score"] = 0

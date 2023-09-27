@@ -4,9 +4,10 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-    set $server_files_location "/etc/code-server-hub";
-    set $server_service_name   "cshubD";
+    set $server_files_location    "/etc/code-server-hub";
+    set $server_service_name      "cshubD";
     set $server_service_name_full "Personal Container ";
+    set $py3                      "/usr/bin/python3";
     
     listen 2087 ssl;
     listen [::]:2087 ssl;
@@ -15,9 +16,25 @@ server {
     server_name default_server;
     location /.well-known/Meteor.jpg {
         content_by_lua_block {
-            local python_get_img = io.popen('python3 "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. ngx.var.server_files_location .. '/util/anime_pic"')
-            ngx.print(python_get_img:read("*all"))
+            if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
+                package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
+            end
+            local url_tool = require 'url_tool'
+            local prefix = ngx.var.server_files_location .. '/util/anime_pic'
+            local python_get_img = io.popen(ngx.var.py3 .. ' "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. prefix .. '" 2>&1', "r")
+            local img_path = python_get_img:read("*all")
+            local img_name = url_tool.getname(img_path, prefix)
+            if img_name ~= nil then
+                ngx.header.location = "/.well-known/Meteor" ..  img_name
+                ngx.status = 302
+            else
+                ngx.status = 500
+                ngx.say(img_path)
+            end
         }
+    }
+    location /.well-known/Meteor {
+        alias ${server_files_location}/util/anime_pic;
     }
     # Managing requests to verify letsencrypt host
     location /.well-known {
