@@ -41,3 +41,4 @@ if hash docker 2>/dev/null; then
     echo docker pull $image_name
     docker pull $image_name
 fi
+/etc/code-server-hub/util/openresty/build/bin/openresty -s reload
