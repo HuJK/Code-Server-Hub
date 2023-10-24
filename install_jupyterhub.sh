@@ -1,8 +1,8 @@
 #!/bin/bash
 . /etc/os-release
+mkdir -p /etc/code-server-hub/util/jupyterhub_workdir
 
-
-if dpkg --compare-versions "$VERSION_ID" "<=" "21.10"; then 
+if dpkg --compare-versions "$VERSION_ID" "<=" "23.04"; then 
     pip3 install --upgrade pip
     pip3 install jupyterlab jupyterhub
     pip3 install markupsafe==2.0.1
@@ -20,11 +20,11 @@ ExecStart=/usr/local/bin/jupyterhub -f jupyterhub_config.py
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
 else
-    apt install -y jupyterhub
-    export PIP_BREAK_SYSTEM_PACKAGES=1
-    pip3 install jupyterlab
-    pip3 install markupsafe==2.0.1
-    unset PIP_BREAK_SYSTEM_PACKAGES
+    apt-get install -y pipenv
+    cd /etc/code-server-hub/util/jupyterhub_workdir
+    pipenv --python 3
+    pipenv install jupyterhub
+    npm install -g configurable-http-proxy
     echo "[Unit]
 Description=Jupyterhub
 After=syslog.target network.target
@@ -33,13 +33,12 @@ After=syslog.target network.target
 User=root
 WorkingDirectory=/etc/code-server-hub/util/jupyterhub_workdir
 Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
-ExecStart=/usr/bin/jupyterhub -f jupyterhub_config.py
+ExecStart=/usr/bin/pipenv run jupyterhub -f jupyterhub_config.py
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
 fi
 
-mkdir -p /etc/code-server-hub/util/jupyterhub_workdir
 cd /etc/code-server-hub/util/jupyterhub_workdir
 # jupyterhub --generate-config
 # sed -i "s/#c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
