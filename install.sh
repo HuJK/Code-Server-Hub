@@ -102,7 +102,12 @@ apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpc
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
 set +e # folling command only have one will success
 #cockpit for user management
-apt-get install -y npm
+if ! command -v npm &> /dev/null
+then
+    echo "npm could not be found, installing npm"
+    apt-get install -y npm
+fi
+
 
 set -e
 
