@@ -435,7 +435,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
         echo "Nvidia driver not found, skip nvidia-docker autoinstall"
         if [[ $DOCKER_IMAGE == "standard" ]]; then
             tmp=$(mktemp)
-            jq '.0 = "standard"' /etc/code-server-hub/Dockerfile/versions.json > "$tmp" && mv "$tmp" /etc/code-server-hub/Dockerfile/versions.json
+            jq '."0" = "standard"' /etc/code-server-hub/Dockerfile/versions.json > "$tmp" && mv "$tmp" /etc/code-server-hub/Dockerfile/versions.json
             docker pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
         else
             docker pull whojk/code-server-hub-docker:minimal
