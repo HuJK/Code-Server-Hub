@@ -3,6 +3,7 @@ import sys
 import itertools
 import subprocess
 import pathlib
+import json
 from pathlib import Path
 
 os.chdir(pathlib.Path(__file__).parent.resolve())
@@ -15,6 +16,9 @@ sock_path = sys.argv[2]
 envs_path = sys.argv[3]
 password = sys.argv[4] if len(sys.argv) >=5 else input()
 sock_fold = os.path.dirname(sock_path)
+gpuuser = {"*":"all"}
+if os.path.isfile("/etc/code-server-hub/util/gpuuser.json"):
+    gpuuser = json.loads(open("/etc/code-server-hub/util/gpuuser.json").read())
 
 os.makedirs(os.path.dirname(sock_path),mode=0o333,exist_ok=True)
 os.makedirs(os.path.dirname(envs_path),mode=0o333,exist_ok=True)
@@ -29,7 +33,9 @@ def getDataParam(username):
     return list(itertools.chain(*map(list,(zip(["-v"]*len(user_available_folder),[fpath for fpath in user_available_folder])))))
 
 def getGPUParam(username):
-    return "all"
+    if username in gpuuser:
+        return gpuuser[username]
+    return gpuuser["*"]
 
 with open(envs_path,"w") as envsF:
     envsF.write("SOCKPATH=" + sock_path + "\n")
