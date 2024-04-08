@@ -50,7 +50,7 @@ echo "thefuck --alias | source" >> /etc/fish/config.fish
 
 eval "$(/opt/miniconda/bin/conda shell.bash hook)"
 conda activate base
-pip3       install --upgrade tornado tqdm sympy galgebra pandas plotly nose pillow pyparsing scikit-image scikit-learn scipy matplotlib
+pip3 install --upgrade tornado tqdm sympy galgebra pandas plotly nose pillow pyparsing scikit-image scikit-learn scipy matplotlib fastapi uvicorn omegaconf requests protobuf pytest pyyaml colorama datasets jinja2 markdown psutil rich
 
 chmod -R 775 /opt/miniconda
 rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8

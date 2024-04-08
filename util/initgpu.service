@@ -1,0 +1,12 @@
+[Unit]
+Description=Initialize nvidia driver and nvidia-container
+
+[Service]
+Type=one-hot
+ExecStartPre=nvidia-smi -pm ENABLED
+ExecStart=sh -c '/usr/bin/nvidia-ctk system create-dev-char-symlinks --create-all || true'
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

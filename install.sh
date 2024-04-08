@@ -419,6 +419,9 @@ if [[ $DOCKER =~ [yY].* ]]; then
                         curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -;
                         curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list;
                         sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit nvidia-container-runtime;
+                        echo 'ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-ctk system 	create-dev-char-symlinks --create-all"' > /lib/udev/rules.d/71-nvidia-dev-char.rules
+                        ln -s /etc/code-server-hub/util/initgpu.service  /etc/systemd/system/initgpu.service
+                        systemctl enable --now initgpu
                         systemctl restart docker;
                         break;;
                     [Aa]* ) 
@@ -461,10 +464,7 @@ echo "###restart nginx and cockpit###"
 systemctl enable --now nginx
 systemctl enable --now cockpit.socket
 systemctl enable --now cshub-openresty
-service nginx stop
-service nginx start
-service cockpit stop
-service cockpit start
+
 if [ "${PASSWORD}" != "" ]; then
     echo "Your username:password for portainer is admin:${PASSWORD} Login at https://$(wget -qO- https://ifconfig.me/):9000"
     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"

@@ -12,6 +12,10 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     useradd -u $USERUID -d /root $USERNAME --no-log-init
     usermod -aG sudo $USERNAME
     usermod -aG root $USERNAME
+    mkdir -p /root/.cache
+    mkdir -p /home/$USERNAME/.cache/huggingface
+    ln -s /home/$USERNAME/.cache/huggingface /root/.cache/huggingface
+    chown $USERNAME:$USERNAME /home/$USERNAME/.cache/huggingface
     groupmod -g $USERGID $USERNAME
     git config --global user.email "$USERNAME@example.com"
     git config --global user.name $USERNAME
