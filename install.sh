@@ -97,7 +97,7 @@ apt-get update
 #apt-get upgrade -y
 echo "###install dependanse phase###"
 echo "Install dependances"
-apt-get install -y nginx ca-certificates socat
+apt-get install -y nginx ca-certificates socat jq coreutils
 apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev jq
 apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
 set +e # folling command only have one will success
@@ -422,6 +422,19 @@ if [[ $DOCKER =~ [yY].* ]]; then
                         echo 'ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-ctk system 	create-dev-char-symlinks --create-all"' > /lib/udev/rules.d/71-nvidia-dev-char.rules
                         ln -s /etc/code-server-hub/util/initgpu.service  /etc/systemd/system/initgpu.service
                         systemctl enable --now initgpu
+                        daemon_json="/etc/docker/daemon.json"
+                        config_line='"exec-opts": ["native.cgroupdriver=cgroupfs"]'
+                        # Check if daemon.json exists
+                        if [ -f "$daemon_json" ]; then
+                            # Add the config line to daemon.json using temporary file
+                            tmp_file=$(mktemp)
+                            jq ". += { $config_line }" "$daemon_json" > "$tmp_file" && mv "$tmp_file" "$daemon_json"
+                            echo "Added config to $daemon_json"
+                        else
+                            # Create daemon.json with the config line
+                            echo "{ $config_line }" | sudo tee "$daemon_json" >/dev/null
+                            echo "Created $daemon_json"
+                        fi
                         systemctl restart docker;
                         break;;
                     [Aa]* ) 
