@@ -28,9 +28,18 @@ shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
 
 
 
-def getDataParam(username):
-    user_available_folder = ["{p}:{p}".format(p=p) for p in ["/data/local",homedir]] + ["{p}:{p}:ro".format(p=p) for p in ["/data","/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [envs_path+":/etc/code-server-hub/ENVSFILE:ro"]
-    return list(itertools.chain(*map(list,(zip(["-v"]*len(user_available_folder),[fpath for fpath in user_available_folder])))))
+def getMountParam(username):
+    rw_folders = [(p,p) for p in ["/data/local",homedir]]
+    ro_folders = [(p,p) for p in ["/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [(envs_path,"/etc/code-server-hub/ENVSFILE")]
+    row_folders = [(p,p) for p in ["/data"]]
+    mount_options = ["type=bind,source={s},target={d}".format(s=s,d=d) for s,d in rw_folders]
+    mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in ro_folders]
+    mount_options += ["type=bind,readonly,bind-recursive=writable,source={s},target={d}".format(s=s,d=d) for s,d in row_folders]
+    param_ret = []
+    for mount_opt in mount_options:
+        param_ret += ["--mount" , mount_opt]
+    print(param_ret)
+    return param_ret
 
 def getGPUParam(username):
     if username in gpuuser:
@@ -72,9 +81,8 @@ def run_command(command):
 stopc = ['docker', "stop" , "docker-"+username] 
 run_command(stopc)
 
-runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getDataParam(username) +[image_name]
+runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getMountParam(username) +[image_name]
 run_command(runc)
 
 startc = ['docker', "start" ,"docker-"+username ]
 run_command(startc)
-
