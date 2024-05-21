@@ -1,4 +1,6 @@
 import os
+import subprocess
+import re
 import sys
 import itertools
 import subprocess
@@ -26,15 +28,35 @@ os.makedirs(os.path.dirname(envs_path),mode=0o333,exist_ok=True)
 mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
 shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"
 
+def get_docker_version():
+    try:
+        result = subprocess.run(['docker', '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if result.returncode == 0:
+            version_output = result.stdout.strip()
+            version_match = re.search(r'Docker version (\d+\.\d+\.\d+)', version_output)
+            if version_match:
+                version_str = version_match.group(1).split(".")
+                version_int = [int(v) for v in version_str]
+                return tuple(version_int)
+            else:
+                raise Exception("Error: Could not parse Docker version")
+        else:
+            raise Exception(f"Error: {result.stderr.strip()}")
+    except FileNotFoundError:
+        raise Exception("Error: Docker is not installed or not found in PATH")
 
+docker_version = get_docker_version()
 
 def getMountParam(username):
     rw_folders = [(p,p) for p in ["/data/local",homedir]]
-    ro_folders = [(p,p) for p in ["/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [(envs_path,"/etc/code-server-hub/ENVSFILE")]
-    row_folders = [(p,p) for p in ["/data"]]
-    mount_options = ["type=bind,source={s},target={d}".format(s=s,d=d) for s,d in rw_folders]
-    mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in ro_folders]
-    mount_options += ["type=bind,readonly,bind-recursive=writable,source={s},target={d}".format(s=s,d=d) for s,d in row_folders]
+    ro_folders = [(p,p) for p in ["/data"]]
+    rro_folders = [(p,p) for p in ["/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [(envs_path,"/etc/code-server-hub/ENVSFILE")]
+    mount_options =  ["type=bind,source={s},target={d}".format(s=s,d=d) for s,d in rw_folders]
+    mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in rro_folders]
+    if docker_version >= (25,0,0):
+        mount_options += ["type=bind,readonly,bind-recursive=writable,source={s},target={d}".format(s=s,d=d) for s,d in ro_folders]
+    else:
+        mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in ro_folders]
     param_ret = []
     for mount_opt in mount_options:
         param_ret += ["--mount" , mount_opt]
