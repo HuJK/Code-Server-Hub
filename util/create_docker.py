@@ -60,7 +60,6 @@ def getMountParam(username):
     param_ret = []
     for mount_opt in mount_options:
         param_ret += ["--mount" , mount_opt]
-    print(param_ret)
     return param_ret
 
 def getGPUParam(username):
@@ -95,10 +94,10 @@ if get_docker_image_name.returncode == 0:
 
 #print(has_gpu)
 
-
 def run_command(command):
-    print(" ".join(command))
-    subprocess.call(command)
+    print("$ " + " ".join(command), flush=True)
+    subprocess.call(command, stderr=sys.stdout.buffer)
+    print("", flush=True)
 
 stopc = ['docker', "stop" , "docker-"+username] 
 run_command(stopc)
