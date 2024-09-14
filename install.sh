@@ -160,6 +160,21 @@ chgrp shadow /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/util/anime_pic
 ln -s /etc/code-server-hub/code            /etc/code-server-hub/util/openresty/conf/sites-enabled/code.conf
 
+SUDOERS_FILE="/etc/sudoers"
+LINE="www-data ALL=NOPASSWD: /etc/code-server-hub/util/close_docker.sh"
+
+install() {
+    # Check if the line already exists in sudoers
+    if sudo grep -Fxq "$LINE" "$SUDOERS_FILE"; then
+        echo "Entry already exists in sudoers."
+    else
+        # Add the line to sudoers
+        echo "$LINE" | sudo tee -a "$SUDOERS_FILE" > /dev/null
+        echo "Entry added to sudoers."
+    fi
+}
+install
+
 cd /etc/code-server-hub
 
 echo "###doenload latest code-server###"

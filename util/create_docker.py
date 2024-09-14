@@ -102,6 +102,9 @@ def run_command(command):
 stopc = ['docker', "stop" , "docker-"+username] 
 run_command(stopc)
 
+stopc2 = ['sudo', '/etc/code-server-hub/util/close_docker.sh' , username]
+run_command(stopc2)
+
 runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getMountParam(username) +[image_name]
 run_command(runc)
 
