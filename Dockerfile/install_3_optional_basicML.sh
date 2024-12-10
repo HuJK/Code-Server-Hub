@@ -91,8 +91,8 @@ pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard 
 pip3 install --upgrade torchdiffeq torchsde transformers safetensors tomesd pytorch-lightning einops inflection kornia langchain
 pip3 install --upgrade sentencepiece tiktoken einops optimum wandb
 
-aria2c  -x 16 -j 16  "https://ollama.com/download/ollama-linux-$cpu_arch" -d / -o /usr/bin/ollama
-chmod 755 /usr/bin/ollama
+curl -fsSL https://ollama.com/install.sh | sh
+
 #pip3 install jupyterlab-tensorboard-pro
 #jupyter serverextension enable jupyter_tensorboard --sys-prefix
 

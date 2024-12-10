@@ -11,8 +11,15 @@ docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447
 # enable expremental feature
 export DOCKER_CLI_EXPERIMENTAL=enabled
 export DOCKER_BUILDKIT=1
-docker buildx create --name mybuilder --driver docker-container
-docker buildx use mybuilder
+
+# Build ARM on remote server
+docker buildx create --name remote-build --node local --platform=linux/amd64,linux/amd64/v2,linux/amd64/v3,linux/386
+docker buildx create --name remote-build --append --node remote-arm --platform=linux/arm64,linux/arm/v7,linux/arm/v6 ssh://root@your.arm.example.com
+docker buildx use remote-build
+
+# All local build
+docker buildx create --name local-build --driver docker-container
+docker buildx use local-build
 
 # setup cpu arch function
 function get_cpu_architecture()
