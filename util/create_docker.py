@@ -22,6 +22,38 @@ gpuuser = {"*":"all"}
 if os.path.isfile("/etc/code-server-hub/util/gpuuser.json"):
     gpuuser = json.loads(open("/etc/code-server-hub/util/gpuuser.json").read())
 
+storageuser = {"*":
+               {
+                   "rw":["/data/local","__HOMEDIR__"],
+                   "ro":["/data"],
+                   "rro": ["/etc/localtime" , "__LOCALTIME__" , ["__ENVSPATH__","/etc/code-server-hub/ENVSFILE"]]
+               }
+              }
+if os.path.isfile("/etc/code-server-hub/util/storageuser.json"):
+    storageuser = json.loads(open("/etc/code-server-hub/util/storageuser.json").read())
+def getStorage(username):
+    replace_vars = {"__HOMEDIR__": homedir , "__LOCALTIME__": str(Path("/etc/localtime").resolve()), "__ENVSPATH__": envs_path}
+    if username in storageuser:
+        storagedata = storageuser[username].copy()
+    else:
+        storagedata = storageuser["*"].copy()
+    storagedata_processed = {}
+    for k, v_list in storagedata.items():
+        v_list_processed = []
+        for v_ext_in in v_list:
+            if type(v_ext_in) == list:
+                v_ext_in = [v_ext_in[0],v_ext_in[1]]
+            else:
+                v_ext_in = [v_ext_in,v_ext_in]
+            if v_ext_in[0] in replace_vars:
+                v_ext_in[0] = replace_vars[v_ext_in[0]]
+            if v_ext_in[1] in replace_vars:
+                v_ext_in[1] = replace_vars[v_ext_in[1]]
+            v_ext_in=tuple(v_ext_in)
+            v_list_processed += [v_ext_in]
+        storagedata_processed[k] = v_list_processed
+    return storagedata_processed["rw"], storagedata_processed["ro"], storagedata_processed["rro"]
+
 os.makedirs(os.path.dirname(sock_path),mode=0o333,exist_ok=True)
 os.makedirs(os.path.dirname(envs_path),mode=0o333,exist_ok=True)
 
@@ -48,9 +80,7 @@ def get_docker_version():
 docker_version = get_docker_version()
 
 def getMountParam(username):
-    rw_folders = [(p,p) for p in ["/data/local",homedir]]
-    ro_folders = [(p,p) for p in ["/data"]]
-    rro_folders = [(p,p) for p in ["/etc/localtime" , str(Path("/etc/localtime").resolve())]] + [(envs_path,"/etc/code-server-hub/ENVSFILE")]
+    rw_folders, ro_folders, rro_folders = getStorage(username)
     mount_options =  ["type=bind,source={s},target={d}".format(s=s,d=d) for s,d in rw_folders]
     mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in rro_folders]
     if docker_version >= (25,0,0):
