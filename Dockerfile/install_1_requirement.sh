@@ -12,18 +12,16 @@ add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
 
-apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python-setuptools p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev build-essential bc
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy p7zip-full p7zip-rar git-core zsh tmux thefuck libssl-dev libffi-dev build-essential bc
 
 
 
 export PIP_BREAK_SYSTEM_PACKAGES=1
 case $VERSION_ID in
 20.04)
-    apt-get -y install python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy
     pip3 install --upgrade  jupyter jupyterlab jupyter_http_over_ws
     ;;
 22.04)
-    apt-get -y install python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy
     apt-get -y install jupyter python3-jupyterlab-server python3-notebook python3-jupyter-sphinx python3-jupyter-server-mathjax jupyter-nbextension-jupyter-js-widgets python3-alembic python3-async-generator python3-certipy python3-dateutil python3-entrypoints python3-jinja2 python3-jupyter-telemetry python3-oauthlib python3-packaging python3-pamela python3-prometheus-client python3-requests python3-sqlalchemy python3-tornado python3-traitlets python3:any python3-bcrypt python3-notebook libjs-bootstrap libjs-jquery libjs-prototype libjs-requirejs fonts-font-awesome
     pip3  install jupyterlab
     ;;
