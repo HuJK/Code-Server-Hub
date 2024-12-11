@@ -12,9 +12,18 @@ apt-get -y update
 case $VERSION_ID in
 20.04)
     apt-get -y install openjdk-17-jdk-headless
+    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
+    apt-get install -y speedtest
     ;;
 22.04)
     apt-get -y install openjdk-19-jdk-headless
+    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
+    apt-get install -y speedtest
+    ;;
+24.04)
+    apt-get -y install openjdk-21-jdk-headless
+    # speedtest-cli not available at ubuntu 24.04
+    #curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
     ;;
 *)
     echo "Unsupported version, update the script"
@@ -40,9 +49,9 @@ function get_cpu_architecture()
 }
 cpu_arch=$(get_cpu_architecture)
 
-curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
 
-apt-get -y install fish htop aria2 lsof tree ncdu golang-go atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr-tiny iputils-ping netcat parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat libopenblas-dev liblapack-dev gfortran cmake convmv llvm speedtest
+
+apt-get -y install fish htop aria2 lsof tree ncdu golang-go atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr-tiny iputils-ping netcat-openbsd parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat libopenblas-dev liblapack-dev gfortran cmake convmv llvm
 apt-get -y autoremove ; apt-get autoclean 
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install

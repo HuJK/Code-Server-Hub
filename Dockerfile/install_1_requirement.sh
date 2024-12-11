@@ -25,6 +25,9 @@ case $VERSION_ID in
     apt-get -y install jupyter python3-jupyterlab-server python3-notebook python3-jupyter-sphinx python3-jupyter-server-mathjax jupyter-nbextension-jupyter-js-widgets python3-alembic python3-async-generator python3-certipy python3-dateutil python3-entrypoints python3-jinja2 python3-jupyter-telemetry python3-oauthlib python3-packaging python3-pamela python3-prometheus-client python3-requests python3-sqlalchemy python3-tornado python3-traitlets python3:any python3-bcrypt python3-notebook libjs-bootstrap libjs-jquery libjs-prototype libjs-requirejs fonts-font-awesome
     pip3  install jupyterlab
     ;;
+24.04)
+    pip3 install --upgrade  jupyter jupyterlab jupyter_http_over_ws
+    ;;
 *)
     echo "Unsupported version, update the script"
     exit 255
