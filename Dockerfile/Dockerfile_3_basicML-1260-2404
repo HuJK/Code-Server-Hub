@@ -1,0 +1,34 @@
+# syntax = docker/dockerfile:experimental
+FROM --platform=$TARGETPLATFORM  nvidia/cuda:12.6.0-cudnn-devel-ubuntu24.04
+
+COPY *.c /tmp/
+ENV CUDA_VERSION 12.6
+
+COPY           install_1_requirement.sh /tmp/
+RUN  bash /tmp/install_1_requirement.sh
+
+COPY           install_2_optional_useful.sh /tmp/
+RUN  bash /tmp/install_2_optional_useful.sh
+
+COPY            install_3_optional_basicML.sh /tmp/
+RUN  bash /tmp/install_3_optional_basicML.sh
+
+#COPY           install_4_optional_kaldi.sh /tmp/
+#RUN  bash /tmp/install_4_optional_kaldi.sh
+
+#COPY           install_5_optional_espnet.sh /tmp/
+#RUN  bash /tmp/install_5_optional_espnet.sh
+
+#COPY           install_6_optional_pykaldi.sh /tmp/
+#RUN  bash /tmp/install_6_optional_pykaldi.sh
+
+RUN --mount=type=bind,source=move2docker,target=/tmp/move2docker rsync -a --no-perms --no-owner --no-group --chmod=755 --keep-dirlinks /tmp/move2docker/* /;
+
+ENV CUDA_DEVICE_ORDER=PCI_BUS_ID \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    NVIDIA_DRIVER_CAPABILITIES=all \
+    MKL_DEBUG_CPU_TYPE=5
+
+ENTRYPOINT ["/sbin/runit-docker"]
+

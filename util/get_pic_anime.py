@@ -11,6 +11,7 @@ from pathlib import Path
 temp_folder = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("./anime_pic")
 os.makedirs(temp_folder, exist_ok = True)
 
+config = {"source":"reddit","sub":"Animewallpaper","flair_name":"Desktop"}
 
 vars = {"prev_update":0 , "pic_data": {} }
 if os.path.isfile(temp_folder / ".vars.json"):
@@ -52,7 +53,6 @@ def try_get_pic(try_t = 3):
     if os.path.isfile(temp_folder / (c + ".png")):
         print(str(temp_folder / c) + ".png")
         #sys.stdout.buffer.write(open(temp_folder / (c + ".png"),"rb").read())
-        
     else:
         try:
             r = requests.get(vars["pic_data"][c]["url"])

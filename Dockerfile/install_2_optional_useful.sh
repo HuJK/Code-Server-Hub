@@ -31,23 +31,18 @@ case $VERSION_ID in
     ;;
 esac
 
-function get_cpu_architecture()
-{
+function get_cpu_architecture() {
     local cpuarch=$(uname -m)
     case $cpuarch in
-         x86_64)
-              echo "amd64";
-              ;;
-         aarch64)
-              echo "arm64";
-              ;;
-         *)
-              echo "Not supported cpu architecture: ${cpuarch}"  >&2
+         x86_64)  echo "amd64" ;;
+         aarch64) echo "arm64" ;;
+         *) 
+              echo "Not supported CPU architecture: ${cpuarch}" >&2
               exit 1
               ;;
     esac
 }
-cpu_arch=$(get_cpu_architecture)
+CPU_ARCH=$(get_cpu_architecture)
 
 
 
@@ -55,7 +50,22 @@ apt-get -y install fish htop aria2 lsof tree ncdu golang-go atop duplicity emacs
 apt-get -y autoremove ; apt-get autoclean 
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install
-echo "thefuck --alias | source" >> /etc/fish/config.fish 
+
+case $VERSION_ID in
+20.04)
+    echo "thefuck --alias | source" >> /etc/fish/config.fish
+    ;;
+22.04)
+    echo "thefuck --alias | source" >> /etc/fish/config.fish
+    ;;
+24.04)
+    echo "thefuck doesn't support 24.04, skip"
+    ;;
+*)
+    echo "Unsupported version, update the script"
+    exit 255
+    ;;
+esac
 
 eval "$(/opt/miniconda/bin/conda shell.bash hook)"
 conda activate base

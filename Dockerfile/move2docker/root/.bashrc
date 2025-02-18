@@ -101,7 +101,10 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-eval "$(thefuck --alias)"
+
+if command -v thefuck &> /dev/null; then
+    eval "$(thefuck --alias)"
+fi
 
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 # MOTD
