@@ -23,7 +23,7 @@ The main difference between ```RealOS Panel``` and ```Container Panel``` is ever
     * Because we can't connect listened port from external network.
     * If you want to host services in the container, please check IP of the container with ```ip addr``` command first.
     * Then port forwarding port from RealOS to your container by execute this command(Replace ```172.22.17.3``` by your ip) in Real OS.
-    * ```socat TCP-LISTEN:10080,fork TCP:172.22.17.3:8080```
+    * ```socat TCP-LISTEN:20080,fork TCP:172.22.17.3:8080```
 * run docker
     * Because we can't run docker in docker, so I installed [rootless docker](https://github.com/HuJK/rootless_docker) at every server.
     * If you need to run docker, just run ```docker``` command in RealOS.

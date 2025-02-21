@@ -26,7 +26,7 @@
     * 因為容器裡面listen port外面連不上。
     * 如需在容器裡面架服務外面連，請先在容器裡面用 ```ip addr```查詢容器的ip
     * 架好服務以後再用該指令把主系統的port forawding去容器裡面(172.22.17.3換成你的ip)
-    * ```socat TCP-LISTEN:10080,fork TCP:172.22.17.3:80```
+    * ```socat TCP-LISTEN:20080,fork TCP:172.22.17.3:80```
 * 跑docker
     * 因為docker裡面不能跑docker(很麻煩)，所以每台server我都安裝了 [rootless docker](https://github.com/HuJK/rootless_docker)。
     * 如果有跑現成docker image的需求，直接在主系統用docker指令即可

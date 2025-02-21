@@ -17,6 +17,7 @@ server {
     # Managing requests to verify letsencrypt host
     location /.well-known/Meteor.jpg {
         content_by_lua_block {
+            ngx.header.content_type = 'text/plain'
             if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
                 package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
             end

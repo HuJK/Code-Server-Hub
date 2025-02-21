@@ -19,6 +19,7 @@ server {
             if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
                 package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
             end
+            ngx.header.content_type = 'text/plain'
             local url_tool = require 'url_tool'
             local prefix = ngx.var.server_files_location .. '/util/anime_pic'
             local python_get_img = io.popen(ngx.var.py3 .. ' "' .. ngx.var.server_files_location .. '/util/get_pic_anime.py" "' .. prefix .. '" 2>&1', "r")
