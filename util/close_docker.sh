@@ -28,7 +28,7 @@ get_pstree() {
     local pstree=""
     while [ "$pid" -ne 1 ]; do
         pstree+="$pid "
-        ppid=$(ps -o ppid= -p "$pid" 2>/dev/null)
+        ppid=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d '[:space:]')
         if [ -z "$ppid" ]; then
             break
         fi
