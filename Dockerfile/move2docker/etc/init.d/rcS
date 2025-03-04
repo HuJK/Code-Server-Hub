@@ -26,6 +26,9 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     groupmod -g $USERGID $USERNAME
     git config --global user.email "$USERNAME@example.com"
     git config --global user.name $USERNAME
+    git config --global --add oh-my-zsh.hide-status 1
+    git config --global --add oh-my-zsh.hide-dirty 1
+    git config --global bash.showInformativeStatus false
     set +x
     echo "conda init --all"
     eval "$(/opt/miniconda/bin/conda shell.bash hook)"
