@@ -13,5 +13,5 @@ try:
 except:
     pass
 subprocess.call(['docker', "stop" , "docker-"+username] )
-subprocess.call(['sudo', '/etc/code-server-hub/util/close_docker.sh' , username] )
+#subprocess.call(['sudo', '/etc/code-server-hub/util/close_docker.sh' , username] )
 
