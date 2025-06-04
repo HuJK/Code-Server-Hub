@@ -56,6 +56,7 @@ c.JupyterHub.ssl_cert = '/etc/code-server-hub/cert/ssl.pem'
 c.Spawner.default_url = '/lab'
 c.FileCheckpoints.checkpoint_dir = os.path.expanduser('~/.ipynb_checkpoints')
 c.PAMAuthenticator.open_sessions = True
+c.Authenticator.allow_all = True
 " > jupyterhub_config.py
 
 
