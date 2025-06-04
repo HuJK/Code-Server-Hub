@@ -468,6 +468,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
         if [[ $DOCKER_IMAGE == "standard" ]]; then
             tmp=$(mktemp)
             jq '."0" = "standard"' /etc/code-server-hub/Dockerfile/versions.json > "$tmp" && mv "$tmp" /etc/code-server-hub/Dockerfile/versions.json
+            chmod 755 /etc/code-server-hub/Dockerfile/versions.json
             docker pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
         else
             docker pull whojk/code-server-hub-docker:minimal
