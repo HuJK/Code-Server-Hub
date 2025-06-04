@@ -256,7 +256,7 @@ if [[ $LIBPWQUALITY =~ [yY].* ]]; then
     apt-get install -y libpam-pwquality
     cp /etc/code-server-hub/util/pwquality.conf /etc/security/pwquality.conf
     mkdir -p /usr/share/dict
-    wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Common-Credentials/10-million-password-list-top-1000000.txt -O /usr/share/dict/10-million-password-list-top-1000000.txt
+    wget https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Passwords/Common-Credentials/xato-net-10-million-passwords.txt -O /usr/share/dict/10-million-password-list-top-1000000.txt
     create-cracklib-dict /usr/share/dict/10-million-password-list-top-1000000.txt
 fi
 
