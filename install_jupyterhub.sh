@@ -22,8 +22,10 @@ WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
 else
     apt-get install -y pipenv
     cd /etc/code-server-hub/util/jupyterhub_workdir
+    mkdir -p /etc/code-server-hub/util/jupyterhub_workdir/pipenvs
+    export WORKON_HOME=/etc/code-server-hub/util/jupyterhub_workdir/pipenvs
     pipenv --python 3
-    pipenv install jupyterhub
+    pipenv install jupyterhub jupyterlab
     npm install -g configurable-http-proxy
     echo "[Unit]
 Description=Jupyterhub
@@ -33,6 +35,7 @@ After=syslog.target network.target
 User=root
 WorkingDirectory=/etc/code-server-hub/util/jupyterhub_workdir
 Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
+Environment="WORKON_HOME=/etc/code-server-hub/util/jupyterhub_workdir/pipenvs"
 ExecStart=/usr/bin/pipenv run jupyterhub -f jupyterhub_config.py
 
 [Install]
