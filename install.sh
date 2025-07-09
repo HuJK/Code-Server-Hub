@@ -303,7 +303,6 @@ if [[ $JUPYTERHUB =~ [yY].* ]]; then
         done
     }
     set +e
-    pip3 install certbot-dns-cloudflare
     wget -O- https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install_jupyterhub.sh | bash
     set -e
 fi
