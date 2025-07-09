@@ -9,7 +9,7 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     ln -s /home/$USERNAME /root/$USERNAME
     ln -s /data /root/data
     echo "export PATH=$PATH:/usr/local/cuda/bin" > /etc/profile.d/20-nvcc.sh
-    useradd -u $USERUID -d /root $USERNAME --no-log-init
+    useradd -u $USERUID -d /root $USERNAME --no-log-init --non-unique
     usermod -aG sudo $USERNAME
     usermod -aG root $USERNAME
 
