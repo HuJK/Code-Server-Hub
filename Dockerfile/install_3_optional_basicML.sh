@@ -19,10 +19,11 @@ CPU_ARCH=$(get_cpu_architecture)
 
 apt update 
 ln -s cuda /usr/local/nvidia
-apt-get install ffmpeg libsm6 libxext6 libhdf5-dev  -y
+apt-get install ffmpeg libsm6 libxext6 libhdf5-dev pipx -y
 
 eval "$(/opt/miniconda/bin/conda shell.bash hook)"
 conda activate base
+pipx install uv
 
 case $CUDA_VERSION in
 11.2)

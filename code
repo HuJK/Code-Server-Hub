@@ -8,7 +8,7 @@ server {
     set $server_service_name      "cshub";
     set $server_service_name_full "Visual Studio Code Server";
     set $py3                      "/usr/bin/python3";
-    
+
     listen 8443 ssl;
     listen [::]:8443 ssl;
     ssl_certificate     '/etc/code-server-hub/cert/ssl.pem';
@@ -43,13 +43,13 @@ server {
     }
 
     client_max_body_size 0;
-    
+
     # Set this and add to line 140 if you set cockpit under some subpath . ex: 14: set $cockpit_addr "/cockpit";140:location ~ "/(cockpit).*" {
     set $cockpit_addr "";
     set $jupyter_addr "";
     set $cockpit_addr_internal "https://127.0.0.1:9090";
     set $jupyter_addr_internal "https://127.0.0.1:18517";
-    
+
     set $server_salt "1!2@3=我是鹽";
     set $server_sal2 "1!2@3=我是糖";
     # Managing literal requests to the front end
@@ -66,7 +66,7 @@ server {
             if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
                 package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
             end
-            
+
             if ngx.var.http_authorization and ngx.var.remote_user then
                 local md5 = require('md5')
                 local tmp = ngx.var.http_authorization
@@ -91,16 +91,16 @@ server {
         # websocket headers
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection $connection_upgrade;
-        # if proxy_pass to workspace failed, spawn workspace 
-        
+        # if proxy_pass to workspace failed, spawn workspace
+
         error_page 502 =404 /502-server_conn_err.html;
     }
- 
+
     location = /502-server_conn_err.html {
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
         auth_pam_service_name "login";
         return 404 '<!DOCTYPE html><html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style> *{font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;}.MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black; color:white; } body { background: url("/.well-known/Meteor.jpg") no-repeat fixed; background-position: center top; background-size: cover; } .buttonRed { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonRed:hover { background-color: #d12626 } .buttonRed:active { background-color: #d12626; box-shadow: 0 5px #666; transform: translateY(4px); } .button { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .button:hover { background-color: #3e8e41 } .button:active { background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px); } .buttonGray { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #525252; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonGray:hover { background-color: #525252 } </style></head><body><a href="https://raw.githubusercontent.com/HuJK/Code-Server-Hub/refs/heads/master/util/sites/readme.png"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://raw.githubusercontent.com/HuJK/Code-Server-Hub/refs/heads/master/util/sites/readme.png" alt="Usage Doc"></a> <center> <h1 class=MainTitle>${server_service_name_full} Control Panel</h1></center> <center> <input type="button" class="button" value="Start Server" onclick="window.location.href=\'/200-server_spawn.html\'" style="width:160px;height:60px;font-size:20px;"> <input type="button" class="buttonRed" value="Log out" onclick="window.location.href=\'/200-logout.html\'" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /> <center> <input type="button" class="buttonGray" value="VS code" style="width:120px;height:60px;font-size:20px;" disabled> <input type="button" class="button" value="Jupyter" onclick="window.open(\'/302-jupyterhub.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Cockpit" onclick="window.open(\'/302-cockpit.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Account" onclick="window.open(\'/302-account.html\')" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /></body></html>';
-    } 
+    }
 
     location = /200-server_spawn.html {
         default_type 'text/html';
@@ -111,7 +111,7 @@ server {
             if string.find(package.path, ngx.var.server_files_location .. "/util/?.lua",1,true) == nil then
                 package.path = package.path .. ";" .. ngx.var.server_files_location .. "/util/?.lua"
             end
-            local md5 = require 'md5'  
+            local md5 = require 'md5'
             if ngx.var.http_authorization then
                 local tmp = ngx.var.http_authorization
                 tmp = tmp:sub(tmp:find(' ')+1)
@@ -146,16 +146,16 @@ server {
                     ngx.say("<br>Please refresh this page after a few seconds.<br>")
                     ngx.say('<script>window.onload = function() { setInterval(function(){ var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function() { console.log(xhttp); if ((xhttp.readyState === 4 && xhttp.status === 0) || (xhttp.status < 400 && xhttp.status >= 200)) { window.location.replace("/200-panel.html"); } }; xhttp.open("GET", "/", true); xhttp.send();},1000);};</script>')
                     ngx.say('</body>')
-					ngx.say("<!--\n" .. spcmd_by_su .. "\n-->")
+                    ngx.say("<!--\n" .. spcmd_by_su .. "\n-->")
                 else
                     ngx.redirect("/")
                 end
             else
                 ngx.say("Need auth info!")
             end
-        } 
+        }
     }
-    
+
     set $panelHTML  '<!DOCTYPE html><html><head>  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <style> *{font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "標楷體", DFKai-SB, sans-serif;}.MainTitle{text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,2px 2px 2px black; color:white; }  body {background: url("/.well-known/Meteor.jpg") no-repeat fixed;background-position: center top;background-size:cover;} .buttonRed { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #f22424; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .buttonRed:hover { background-color: #d12626 } .buttonRed:active { background-color: #d12626; box-shadow: 0 5px #666; transform: translateY(4px); } .button { display: inline-block; padding: 15px 25px; font-size: 24px; cursor: pointer; text-align: center; text-decoration: none; outline: none; color: #fff; background-color: #4CAF50; border: 10px; border-radius: 15px; box-shadow: 0 9px #999; } .button:hover { background-color: #3e8e41 } .button:active { background-color: #3e8e41; box-shadow: 0 5px #666; transform: translateY(4px); } </style></head><body><a href="https://github.com/HuJK/Code-Server-Hub/blob/master/util/sites/README.md"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://raw.githubusercontent.com/HuJK/Code-Server-Hub/refs/heads/master/util/sites/readme.png" alt="Usage Doc"></a> <center> <h1 class=MainTitle>${server_service_name_full} Control Panel</h1></center> <center> <input type="button" class="buttonRed" value="Stop Server" onclick="window.location.href=\'/200-shutdown.html\'" style="width:160px;height:60px;font-size:20px;"> <input type="button" class="buttonRed" value="Log out" onclick="window.location.href=\'/200-logout.html\'" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /> <center> <input type="button" class="button" value="VS code" onclick="window.open(\'/\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Jupyter" onclick="window.open(\'/302-jupyterhub.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Cockpit" onclick="window.open(\'/302-cockpit.html\')" style="width:120px;height:60px;font-size:20px;"> <input type="button" class="button" value="Account" onclick="window.open(\'/302-account.html\')" style="width:120px;height:60px;font-size:20px;"> </center> <hr style="visibility: hidden;" /></body></html>';
     location = /200-panel.html {
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
@@ -170,7 +170,7 @@ server {
             end
         }
     }
-    
+
     location = /200-shutdown.html {
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
         auth_pam_service_name "login";
@@ -205,7 +205,7 @@ server {
         proxy_set_header Host    $http_host ;
         gzip off;
     }
-    
+
     location ~ "^/(user|hub)/.*" {
         proxy_http_version 1.1;
         proxy_buffering off;
@@ -265,7 +265,7 @@ server {
                 ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. "/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. "/" .. '" method="get"></form></body></html>')
             else
                 ngx.status = 404
-				ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie failed.<br/>Redirect to ' .. "/200-server_spawn.html" .. ' to try again after 0.1 seconds.</p><form name="homepage" action="' .. "/200-server_spawn.html" .. '" method="get"></form></body></html>')
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie failed.<br/>Redirect to ' .. "/200-server_spawn.html" .. ' to try again after 0.1 seconds.</p><form name="homepage" action="' .. "/200-server_spawn.html" .. '" method="get"></form></body></html>')
             end
         }
     }
@@ -287,25 +287,28 @@ server {
             end
             local url_tool = require 'url_tool'
             local cookie_tool = require 'cookie_tool'
-
             local xsrf_value = ngx.var.cookie__xsrf
-            if xsrf_value == nil then
-                local response_get_xsrf = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login')
-                local xsrf_cookie = cookie_tool.parsecookie(response_get_xsrf.header["set-cookie"])
-                xsrf_value = xsrf_cookie["_xsrf"]
-                ngx.req.set_header("Cookie",response_get_xsrf.header["set-cookie"])
-                --ngx.header["set-cookie"] = response_get_xsrf.header["set-cookie"]
-                --ngx.say("_xsrf: " .. xsrf_value)
-            else
-                --ngx.say("use old _xsrf: " .. xsrf_value)
-            end
-
+            ngx.req.clear_header("Cookie")
+            local response_get_xsrf = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login')
+            local xsrf_cookie = cookie_tool.parsecookie(response_get_xsrf.header["set-cookie"])
+            xsrf_value = xsrf_cookie["_xsrf"]
+            ngx.req.set_header("Cookie", "_xsrf=" .. xsrf_value)
+            ngx.req.set_header("Origin", "https://" .. ngx.var.host)
+            ngx.req.set_header("Referer", "https://" .. ngx.var.host .. "/hub/login")
+            --ngx.header["set-cookie"] = response_get_xsrf.header["set-cookie"]
+            --ngx.say("_xsrf: " .. xsrf_value)
             if xsrf_value == nil then
                 xsrf_value = ""
             end
-
             ngx.req.set_header("Content-Type", "application/x-www-form-urlencoded")
-            response = ngx.location.capture(ngx.var.jupyter_addr .. '/hub/login?next=', { method = ngx.HTTP_POST, body = "username=" .. url_tool.urlEncode(remote_user) .. "&password=" ..  url_tool.urlEncode(remote_password) .. "&_xsrf=" ..  url_tool.urlEncode(xsrf_value)})
+            response = ngx.location.capture(
+                ngx.var.jupyter_addr .. '/hub/login?next=',
+                {
+                    method = ngx.HTTP_POST,
+                    body = "username=" .. url_tool.urlEncode(remote_user) .. "&password=" ..  url_tool.urlEncode(remote_password) .. "&_xsrf=" ..  url_tool.urlEncode(xsrf_value),
+                    vars = { }
+                }
+            )
             if response.status < 400 then
                 ngx.var.setcookie00 = url_tool.serialize(response.header["set-cookie"])
                 ngx.var.SetCookie11 = url_tool.serialize(response.header["Set-Cookie"])
@@ -330,7 +333,7 @@ server {
             tmp = ngx.decode_base64(tmp)
             remote_user     = tmp:sub(0,tmp:find(":")-1)
             if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
-				ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.jupyter_addr .. "/hub/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.jupyter_addr .. "/hub/" .. '" method="get"></form></body></html>')
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. ngx.var.jupyter_addr .. "/hub/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. ngx.var.jupyter_addr .. "/hub/" .. '" method="get"></form></body></html>')
             else
                 ngx.status = 404
                 ngx.say("Unable to retrive cookie from " .. ngx.var.jupyter_addr_internal .. " Please check systemctl status jupyterhub. Error" .. response.body)
@@ -381,7 +384,7 @@ server {
             end
         }
     }
-    
+
     location = /302-account.html {
         add_header "Content-Type" "text/html" always;
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
@@ -432,7 +435,7 @@ server {
         }
 
     }
-    
+
 
     location = /401-logout.html {
         auth_pam "uU86bq7aCRrTz0bT5fYbhKAX";
