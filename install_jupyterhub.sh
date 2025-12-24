@@ -2,56 +2,52 @@
 . /etc/os-release
 mkdir -p /etc/code-server-hub/util/jupyterhub_workdir
 
-if dpkg --compare-versions "$VERSION_ID" "<=" "23.04"; then 
-    pip3 install --upgrade pip
-    pip3 install jupyterlab jupyterhub
-    pip3 install markupsafe==2.0.1
-    npm install -g configurable-http-proxy
-    echo "[Unit]
-Description=Jupyterhub
-After=syslog.target network.target
+# Install necessary system packages
+apt-get update
+apt-get install -y python3-pip python3-venv
 
-[Service]
-User=root
-WorkingDirectory=/etc/code-server-hub/util/jupyterhub_workdir
-Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
-ExecStart=/usr/local/bin/jupyterhub -f jupyterhub_config.py
-
-[Install]
-WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
+# For Ubuntu 18.04 and older, install Python 3.8 for modern JupyterHub
+if dpkg --compare-versions "$VERSION_ID" "<=" "18.04"; then
+    # Add deadsnakes PPA for newer Python versions
+    apt-get install -y software-properties-common
+    add-apt-repository -y ppa:deadsnakes/ppa
+    apt-get update
+    apt-get install -y python3.8 python3.8-venv python3.8-dev
+    PYTHON_CMD="python3.8"
 else
-    apt-get install -y pipenv
-    cd /etc/code-server-hub/util/jupyterhub_workdir
-    mkdir -p /etc/code-server-hub/util/jupyterhub_workdir/pipenvs
-    export WORKON_HOME=/etc/code-server-hub/util/jupyterhub_workdir/pipenvs
-    pipenv --python 3
-    pipenv install jupyterhub jupyterlab
-    npm install -g configurable-http-proxy
-    echo "[Unit]
-Description=Jupyterhub
-After=syslog.target network.target
-
-[Service]
-User=root
-WorkingDirectory=/etc/code-server-hub/util/jupyterhub_workdir
-Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
-Environment="WORKON_HOME=/etc/code-server-hub/util/jupyterhub_workdir/pipenvs"
-ExecStart=/usr/bin/pipenv run jupyterhub -f jupyterhub_config.py
-
-[Install]
-WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
+    # Ubuntu 20.04+ already has Python 3.8+
+    PYTHON_CMD="python3"
 fi
 
 cd /etc/code-server-hub/util/jupyterhub_workdir
-# jupyterhub --generate-config
-# sed -i "s/#c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
-# sed -i "s/#c.JupyterHub.ssl_cert = ''/c.JupyterHub.ssl_cert = '\/etc\/code-server-hub\/cert\/ssl.pem'/g" jupyterhub_config.py
-# sed -i "s/#c.JupyterHub.ssl_key = ''/c.JupyterHub.ssl_key = '\/etc\/code-server-hub\/cert\/ssl.key'/g" jupyterhub_config.py
-# sed -i "s/# c.Spawner.default_url = ''/c.Spawner.default_url = '\/lab'/g" jupyterhub_config.py
-# sed -i "s/# c.JupyterHub.ssl_cert = ''/c.JupyterHub.ssl_cert = '\/etc\/code-server-hub\/cert\/ssl.pem'/g" jupyterhub_config.py
-# sed -i "s/# c.JupyterHub.ssl_key = ''/c.JupyterHub.ssl_key = '\/etc\/code-server-hub\/cert\/ssl.key'/g" jupyterhub_config.py
-# sed -i "s/# c.JupyterHub.port = ''/c.JupyterHub.port = 18517'/g" jupyterhub_config.py
 
+# Create virtual environment with appropriate Python
+$PYTHON_CMD -m venv /etc/code-server-hub/util/jupyterhub_workdir/venv
+
+# Install packages
+VENV_PATH="/etc/code-server-hub/util/jupyterhub_workdir/venv"
+$VENV_PATH/bin/pip install --upgrade pip
+$VENV_PATH/bin/pip install jupyterhub jupyterlab nodeenv
+
+# Setup node environment within venv
+$VENV_PATH/bin/nodeenv -p --node=lts
+$VENV_PATH/bin/npm install -g configurable-http-proxy
+
+# Create systemd service
+echo "[Unit]
+Description=Jupyterhub
+After=syslog.target network.target
+
+[Service]
+User=root
+WorkingDirectory=/etc/code-server-hub/util/jupyterhub_workdir
+Environment=\"PATH=$VENV_PATH/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"
+ExecStart=$VENV_PATH/bin/jupyterhub -f jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
+
+# Create JupyterHub configuration
 echo "import os
 c.JupyterHub.port = 18517
 c.JupyterHub.ssl_key = '/etc/code-server-hub/cert/ssl.key'
@@ -62,6 +58,7 @@ c.PAMAuthenticator.open_sessions = True
 c.Authenticator.allow_all = True
 " > jupyterhub_config.py
 
-
+# Enable and start the service
+systemctl daemon-reload
 systemctl enable --now jupyterhub
 systemctl start jupyterhub
