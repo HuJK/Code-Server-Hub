@@ -20,55 +20,55 @@ do
 case $i in
     -hp=*|--homepage=*)
     HOMEPGE="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -hps=*|--homepage-ssl=*)
     HOMEPGE_SSL="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -pq=*|--pwquality=*)
     LIBPWQUALITY="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -st=*|--server-stat=*)
     SERVERSTAT="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -jph=*|--jupyterhub=*)
     JUPYTERHUB="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -pip3=*|--jupyterhub-pip3=*)
     JUPYTERHUB_PIP3="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -c=*|--cockpit=*)
     COCKPIT="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -rd=*|--rootless-docker=*)
     ROOTLESS_DOCKER="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -d=*|--docker=*)
     DOCKER="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -de=*|--docker-engine-install=*)
     DOCKER_INSTALL="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -dn=*|--docker-nvidia=*)
     DOCKER_NVIDIA="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -dp=*|--docker-portainer=*)
     DOCKER_PORTAINER="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     -di=*|--docker-image=*)
     DOCKER_IMAGE="${i#*=}"
-    shift # past argument=value
+    shift
     ;;
     *)
     ;;
@@ -91,41 +91,56 @@ echo "Docker image for code-server = ${DOCKER_IMAGE}"
 
 sleep 5
 
-set -e
-#echo "###update phase###"
-apt-get update
-#apt-get upgrade -y
-echo "###install dependanse phase###"
-echo "Install dependances"
-apt-get install -y nginx ca-certificates socat jq coreutils
-apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev jq
-apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
-set +e # folling command only have one will success
-#cockpit for user management
-if ! command -v npm &> /dev/null
-then
-    echo "npm could not be found, installing npm"
-    apt-get install -y npm
+# Decide whether we should touch nginx at all
+TOUCH_NGINX="NO"
+
+# If either homepage or homepage-ssl requested, we would normally touch nginx
+if [[ $HOMEPGE =~ [yY].* ]] || [[ $HOMEPGE_SSL =~ [yY].* ]]; then
+    TOUCH_NGINX="YES"
 fi
 
+# Extra safety check:
+# If 80/443 is already in use AND nginx config dir doesn't exist,
+# force TOUCH_NGINX=NO and ignore hp/hps (avoid stomping other web servers).
+PORT_IN_USE="NO"
+if ss -ltn 2>/dev/null | awk '{print $4}' | grep -Eq '(:80$|:443$)'; then
+    PORT_IN_USE="YES"
+fi
+
+if [[ "${PORT_IN_USE}" == "YES" ]] && [[ ! -d /etc/nginx/sites-available ]]; then
+    echo "Detected port 80/443 already in use, but /etc/nginx/sites-available is missing."
+    echo "Assuming nginx is not present and another web server is running. Will NOT touch nginx."
+    TOUCH_NGINX="NO"
+    HOMEPGE="NO"
+    HOMEPGE_SSL="NO"
+fi
+
+echo "Touch nginx (install/config/enable) = ${TOUCH_NGINX}"
+echo "Install homepage                    = ${HOMEPGE}"
+echo "Enable SSL for homepage             = ${HOMEPGE_SSL}"
 
 set -e
+apt-get update
+
+echo "###install dependanse phase###"
+echo "Install dependances"
+# Only install nginx-related packages if we plan to touch nginx
+if [[ "${TOUCH_NGINX}" == "YES" ]]; then
+    apt-get install -y nginx
+fi
+apt-get install -y ca-certificates socat jq coreutils
+apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev jq
+apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
+
 
 function get_cpu_architecture()
 {
     local cpuarch;
     cpuarch=$(uname -m)
     case $cpuarch in
-         x86_64)
-              echo "amd64";
-              ;;
-         aarch64)
-              echo "arm64";
-              ;;
-         *)
-              echo "Not supported cpu architecture: ${cpuarch}"  >&2
-              exit 1
-              ;;
+         x86_64)  echo "amd64";;
+         aarch64) echo "arm64";;
+         *) echo "Not supported cpu architecture: ${cpuarch}"  >&2; exit 1;;
     esac
 }
 cpu_arch=$(get_cpu_architecture)
@@ -134,18 +149,18 @@ if [ -f /etc/os-release ]; then
     . /etc/os-release
 fi
 
-
 echo "###doenload files###"
 cd /etc
 
-#install Code server
 set +e
 git clone --depth 1 https://github.com/HuJK/Code-Server-Hub.git code-server-hub
 cd /etc/code-server-hub
 set -e
 
 echo "###add nginx to shadow to make pam_module work###"
+# NOTE: this is only meaningful if nginx is installed; harmless otherwise
 usermod -aG shadow www-data
+
 echo "###set permission###"
 mkdir -p /etc/code-server-hub/.cshub
 mkdir -p /etc/code-server-hub/envs
@@ -164,11 +179,9 @@ SUDOERS_FILE="/etc/sudoers"
 LINE="www-data ALL=NOPASSWD: /etc/code-server-hub/util/close_docker.sh"
 
 install() {
-    # Check if the line already exists in sudoers
     if sudo grep -Fxq "$LINE" "$SUDOERS_FILE"; then
         echo "Entry already exists in sudoers."
     else
-        # Add the line to sudoers
         echo "$LINE" | sudo tee -a "$SUDOERS_FILE" > /dev/null
         echo "Entry added to sudoers."
     fi
@@ -183,8 +196,8 @@ curl -L -s https://api.github.com/repos/cdr/code-server/releases/latest \
 | cut -d : -f 2,3 \
 | tr -d \" \
 | wget -i - -O code-server.tar.gz
-echo "###unzip code-server.tar.gz###"
 
+echo "###unzip code-server.tar.gz###"
 rm -r /etc/code-server-hub/.cshub/* || true
 tar xzvf code-server.tar.gz -C .cshub
 mv .cshub/*/* .cshub/
@@ -200,16 +213,18 @@ cd /etc/code-server-hub/cert
 openssl genrsa -out ssl.key 2048
 openssl req -new -x509 -key ssl.key -out ssl.pem -days 3650 -subj /CN=localhost
 
-if [[ ! $HOMEPGE =~ [yYnN].* ]]; then
-    read -p "Do you want to install homepage(yes/no)? " HOMEPGE
+# Only ask/install homepage stuff if nginx is allowed to be touched
+if [[ "${TOUCH_NGINX}" == "YES" ]]; then
+    if [[ ! $HOMEPGE =~ [yYnN].* ]]; then
+        read -p "Do you want to install homepage(yes/no)? " HOMEPGE
+    fi
+    if [[ $HOMEPGE =~ [yY].* ]]; then
+        set +e
+        mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
+        ln -s /etc/code-server-hub/util/sites/index_page_nodocker.html /var/www/html/index.nginx-debian.html
+        set -e
+    fi
 fi
-if [[ $HOMEPGE =~ [yY].* ]]; then
-    set +e
-    mv /var/www/html/index.nginx-debian.html   /var/www/html/index.nginx-debian.html.bak
-    ln -s /etc/code-server-hub/util/sites/index_page_nodocker.html /var/www/html/index.nginx-debian.html
-    set -e
-fi
-
 
 echo "###Compiel and install openresty###"
 wget https://openresty.org/download/openresty-1.21.4.1.tar.gz
@@ -225,27 +240,31 @@ make install
 
 ln -s /etc/code-server-hub/util/openresty/conf/cshub-openresty.service  /etc/systemd/system/cshub-openresty.service
 
-#ask for enable ssl at nginx
-if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
-    while true; do
-        echo "=========================================================================="
-        if [[ ! $HOMEPGE_SSL =~ [yYnN].* ]]; then
-            read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" HOMEPGE_SSL
-        fi
-        
-        case $HOMEPGE_SSL in
-            [Yy]* ) 
-                sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default;
-                break;;
-            [Nn]* ) 
-                echo "Skipped";
-                break;;
-            [Aa]* ) 
-                echo "Aborted";
-                exit;;
-            * ) echo "Please answer yes or no.";;
-        esac
-    done
+# Only touch nginx config if nginx is allowed to be touched
+if [[ "${TOUCH_NGINX}" == "YES" ]]; then
+    if ! grep -q -e  "^[^#]*listen 443 ssl" /etc/nginx/sites-available/default; then
+        while true; do
+            echo "=========================================================================="
+            if [[ ! $HOMEPGE_SSL =~ [yYnN].* ]]; then
+                read -p "Do you want enable ssl encryption on your nginx config /etc/nginx/sites-available/default ? (Yes/No/Abort)" HOMEPGE_SSL
+            fi
+
+            case $HOMEPGE_SSL in
+                [Yy]* )
+                    sed -i.bak "/^[^#]*listen 80.*/a\  listen 443 ssl;\n  listen [::]:443 ssl;\n  ssl_certificate '/etc/code-server-hub/cert/ssl.pem';\n  ssl_certificate_key '/etc/code-server-hub/cert/ssl.key';" /etc/nginx/sites-available/default
+                    break;;
+                [Nn]* )
+                    echo "Skipped"
+                    break;;
+                [Aa]* )
+                    echo "Aborted"
+                    exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+        done
+    fi
+else
+    echo "Skipping nginx install/config because HOMEPGE=NO and HOMEPGE_SSL=NO"
 fi
 
 # libpam-pwquality
@@ -265,39 +284,31 @@ if [[ ! $COCKPIT =~ [yYnN].* ]]; then
     read -p "Do you want to install cockpit at 9090 now(yes/no)? " COCKPIT
 fi
 if [[ $COCKPIT =~ [yY].* ]]; then
-    set +e # folling command only have one will success
-    apt-get install -y -t bionic-backports cockpit cockpit-pcp #for ubuntu 18.04
-    apt-get install -y cockpit cockpit-pcp                     #for ubuntu 20.04
+    set +e
+    apt-get install -y -t bionic-backports cockpit cockpit-pcp
+    apt-get install -y cockpit cockpit-pcp
     set -e
 fi
 
-#Jupyterhub
+# Jupyterhub
 if [[ ! $JUPYTERHUB =~ [yYnN].* ]]; then
     read -p "Do you want to install jupyterhub at port 8000(yes/no)? " JUPYTERHUB
 fi
 if [[ $JUPYTERHUB =~ [yY].* ]]; then
-    { # try
-        pip3 -V
-    } || { # catch
-        # save log for exception 
+    { pip3 -V; } || {
         echo "=========================================================================="
         while true; do
             if [[ ! $JUPYTERHUB_PIP3 =~ [yYnN].* ]]; then
                 read -p "pip3 has problem, trying to fix now?? (Yes/No/Abort)" JUPYTERHUB_PIP3
             fi
-            
             case $JUPYTERHUB_PIP3 in
-                [Yy]* ) 
+                [Yy]* )
                     apt purge -y python3-pip
                     wget https://bootstrap.pypa.io/get-pip.py
                     python3 get-pip.py
                     break;;
-                [Aa]* ) 
-                    echo "Aborted";
-                    exit;;
-                [Nn]* ) 
-                    echo "Skipped";
-                    break;;
+                [Aa]* ) echo "Aborted"; exit;;
+                [Nn]* ) echo "Skipped"; break;;
                 * ) echo "Please answer yes or no or abort.";;
             esac
         done
@@ -318,7 +329,7 @@ if [[ $SERVERSTAT =~ [yY].* ]]; then
     bash install.sh
 fi
 
-#Rootless docker
+# Rootless docker
 if [[ ! $DOCKER =~ [yYnN].* ]]; then
     read -p "Do you want to install Rootless docker for all users(yes/no)? " ROOTLESS_DOCKER
 fi
@@ -329,16 +340,16 @@ if [[ $ROOTLESS_DOCKER =~ [yY].* ]]; then
     sudo bash ./install-rootless-docker.sh
 fi
 
-#Jupyterhub
+# Docker version
 if [[ ! $DOCKER =~ [yYnN].* ]]; then
     read -p "Do you want to install docker version of code-server-hub at port 2087(yes/no)? " DOCKER
 fi
 if [[ $DOCKER =~ [yY].* ]]; then
-    #ask for install docker
     mkdir -p /data/local
     chmod 777 /data/local
     export FSTAB_SECURE='/data/local /data/local                                                none nosuid,nodev,bind 0 0'
     grep -qxF "${FSTAB_SECURE}" /etc/fstab || echo "${FSTAB_SECURE}" >> /etc/fstab
+
     if hash docker 2>/dev/null; then
         echo "Docker installed, skip docker auto install"
     else
@@ -348,37 +359,31 @@ if [[ $DOCKER =~ [yY].* ]]; then
                 read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" DOCKER_INSTALL
             fi
             case $DOCKER_INSTALL in
-                [Yy]* ) 
-                    apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common;
+                [Yy]* )
+                    apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
                     curl https://get.docker.com | bash
-                    apt-get update;
-                    apt-get install -y docker-ce docker-ce-cli containerd.io;
+                    apt-get update
+                    apt-get install -y docker-ce docker-ce-cli containerd.io
                     break;;
-                [Nn]* ) 
-                    echo "Skipped";
-                    break;;
-                [Aa]* ) 
-                    echo "Aborted";
-                    exit;;
+                [Nn]* ) echo "Skipped"; break;;
+                [Aa]* ) echo "Aborted"; exit;;
                 * ) echo "Please answer yes or no or abort.";;
             esac
         done
     fi
     usermod -aG docker www-data
 
-
-    #Portainer
+    # Portainer ...
     has_portainer=$(docker container ls -a | grep portainer) || true
     PASSWORD=""
     if [ -z "$has_portainer" ]; then
         echo "=========================================================================="
-        
         while true; do
-        if [[ ! $DOCKER_PORTAINER =~ [yYnN].* ]]; then
-            read -p "Do you want install portainer(a web based docker gui) at port 9000 now? (Yes/No)" DOCKER_PORTAINER
-        fi
+            if [[ ! $DOCKER_PORTAINER =~ [yYnN].* ]]; then
+                read -p "Do you want install portainer(a web based docker gui) at port 9000 now? (Yes/No)" DOCKER_PORTAINER
+            fi
             case $DOCKER_PORTAINER in
-                [Yy]* ) 
+                [Yy]* )
                     docker run -d -p 9000:9443 \
                         --name portainer --restart always \
                         -v /var/run/docker.sock:/var/run/docker.sock \
@@ -388,7 +393,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
                         portainer/portainer \
                         --ssl \
                         --sslcert /etc/code-server-hub/cert/ssl.pem \
-                        --sslkey  /etc/code-server-hub/cert/ssl.key;
+                        --sslkey  /etc/code-server-hub/cert/ssl.key
                     echo "=========================================================================="
                     PASSWORD=`date +%s|md5sum|base64|head -c 12`
                     echo "Your username:password for portainer is admin:${PASSWORD} Login at https://$(wget -qO- https://ifconfig.me/):9000"
@@ -404,59 +409,45 @@ if [[ $DOCKER =~ [yY].* ]]; then
                         sleep 1
                     done
                     break;;
-                [Nn]* ) 
-                    echo "Skipped";
-                    break;;
+                [Nn]* ) echo "Skipped"; break;;
                 * ) echo "Please answer yes or no.";;
             esac
         done
     fi
 
-    #ask for install nvidia-docker
+    # Nvidia docker ... (unchanged)
     if hash nvidia-smi 2>/dev/null; then
-        { # try
-            docker run --rm --gpus all nvidia/cuda:11.2.2-base-ubuntu20.04 nvidia-smi &&
-            echo "Nvidia docker installed, skip nvidia-docker autoinstall"
-        } || { # catch
-            # save log for exception 
+        { docker run --rm --gpus all nvidia/cuda:11.2.2-base-ubuntu20.04 nvidia-smi &&
+          echo "Nvidia docker installed, skip nvidia-docker autoinstall"; } || {
             echo "=========================================================================="
             while true; do
-
                 if [[ ! $DOCKER_NVIDIA =~ [yYnN].* ]]; then
                     read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Abort)" DOCKER_NVIDIA
                 fi
                 case $DOCKER_NVIDIA in
-                    [Yy]* ) 
-                        # Nvidia-Docker
+                    [Yy]* )
                         curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
                           && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
                             sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
                             sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-                        sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit nvidia-container-runtime;
+                        sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit nvidia-container-runtime
                         echo 'ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-ctk system 	create-dev-char-symlinks --create-all"' > /lib/udev/rules.d/71-nvidia-dev-char.rules
                         ln -s /etc/code-server-hub/util/initgpu.service  /etc/systemd/system/initgpu.service
                         systemctl enable --now initgpu
                         daemon_json="/etc/docker/daemon.json"
                         config_line='"exec-opts": ["native.cgroupdriver=cgroupfs"]'
-                        # Check if daemon.json exists
                         if [ -f "$daemon_json" ]; then
-                            # Add the config line to daemon.json using temporary file
                             tmp_file=$(mktemp)
                             jq ". += { $config_line }" "$daemon_json" > "$tmp_file" && mv "$tmp_file" "$daemon_json"
                             echo "Added config to $daemon_json"
                         else
-                            # Create daemon.json with the config line
                             echo "{ $config_line }" | sudo tee "$daemon_json" >/dev/null
                             echo "Created $daemon_json"
                         fi
-                        systemctl restart docker;
+                        systemctl restart docker
                         break;;
-                    [Aa]* ) 
-                        echo "Aborted";
-                        exit;;
-                    [Nn]* ) 
-                        echo "Skipped";
-                        break;;
+                    [Aa]* ) echo "Aborted"; exit;;
+                    [Nn]* ) echo "Skipped"; break;;
                     * ) echo "Please answer yes or no or abort.";;
                 esac
             done
@@ -474,23 +465,25 @@ if [[ $DOCKER =~ [yY].* ]]; then
         fi
     fi
 
-    #install code-hub-docker
     cd /etc/code-server-hub
     ln -s /etc/code-server-hub/code-hub-docker            /etc/code-server-hub/util/openresty/conf/sites-enabled/code-hub-docker.conf
     if [[ $HOMEPGE =~ [yY].* ]] && [[ $DOCKER =~ [yY].* ]]; then
         set +e
         rm /var/www/html/index.nginx-debian.html
-            ln -s /etc/code-server-hub/util/sites/index_page.html /var/www/html/index.nginx-debian.html
+        ln -s /etc/code-server-hub/util/sites/index_page.html /var/www/html/index.nginx-debian.html
         set -e
     fi
 fi
 
+echo "###restart services###"
+# Only enable/start nginx if we touched nginx
+if [[ "${TOUCH_NGINX}" == "YES" ]]; then
+    systemctl enable --now nginx
+else
+    echo "Skipping nginx service enable/start"
+fi
 
-
-
-
-echo "###restart nginx and cockpit###"
-systemctl enable --now nginx
+# cockpit/openresty are independent; keep behavior
 systemctl enable --now cockpit.socket
 systemctl enable --now cshub-openresty
 
@@ -499,4 +492,3 @@ if [ "${PASSWORD}" != "" ]; then
     echo "Generated password are store at ~/.ssh/portainer_pwd.txt"
 fi
 exit 0
-
