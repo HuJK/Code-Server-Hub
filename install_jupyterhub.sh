@@ -27,7 +27,7 @@ $PYTHON_CMD -m venv /etc/code-server-hub/util/jupyterhub_workdir/venv
 # Install packages
 VENV_PATH="/etc/code-server-hub/util/jupyterhub_workdir/venv"
 $VENV_PATH/bin/pip install --upgrade pip
-$VENV_PATH/bin/pip install jupyterhub jupyterlab nodeenv
+$VENV_PATH/bin/pip install jupyter jupyterhub jupyterlab nodeenv
 
 # Setup node environment within venv
 $VENV_PATH/bin/nodeenv -p --node=lts
