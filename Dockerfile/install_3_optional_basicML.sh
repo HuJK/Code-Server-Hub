@@ -35,6 +35,9 @@ case $CUDA_VERSION in
 12.6)
     pip3 install --upgrade cupy-cuda12x
     ;;
+12.8)
+    pip3 install --upgrade cupy-cuda12x
+    ;;
 *)
     echo "Unsupported version, update the script"
     exit 255
@@ -44,7 +47,7 @@ esac
 
 if [ "$CPU_ARCH" = "amd64" ]; then
     echo "These packages are x86_64 only."
-    pip3 install onnxruntime-gpu
+    pip3 install onnxruntime-gpu ninja
 
     case $CUDA_VERSION in
     11.2)
@@ -52,14 +55,24 @@ if [ "$CPU_ARCH" = "amd64" ]; then
         pip3 install --upgrade aqlm
         ;;
     11.8)
-        pip3 install torch==2.2.2+cu118 torchaudio==2.2.2+cu118 torchvision==0.17.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html
+        pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
         pip3 install nvidia-tensorrt bitsandbytes
-        pip3 install --upgrade aqlm[gpu,cpu] # aqlm GPU requires python >= 3.9, not available at ubuntu 20.04
+        pip3 install --upgrade aqlm[gpu,cpu]
         ;;
     12.6)
-        pip3 install torch==2.3.1+cu121 torchaudio==2.3.1+cu121 torchvision==0.18.1+cu121 -f https://download.pytorch.org/whl/torch_stable.html
+        pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
         pip3 install nvidia-tensorrt bitsandbytes
-        pip3 install --upgrade aqlm[gpu,cpu] # aqlm GPU requires python >= 3.9, not available at ubuntu 20.04
+        pip3 install --upgrade aqlm[gpu,cpu]
+        uv pip install vllm --torch-backend=cu126 --system
+        pip3 install flash-attn --no-build-isolation
+        ;;
+    12.8)
+        pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+        pip3 install nvidia-tensorrt bitsandbytes
+        pip3 install --upgrade aqlm[gpu,cpu]
+        pip3 install vllm
+        uv pip install vllm --torch-backend=cu128 --system
+        pip3 install flash-attn --no-build-isolation
         ;;
     *)
         echo "Unsupported version, update the script"
@@ -70,15 +83,20 @@ fi
 
 if [ "$CPU_ARCH" = "arm64" ]; then
     echo "These packages are arm only."
+    pip3 install ninja
+
     case $CUDA_VERSION in
     11.2)
         pip3 install torch==1.12.0 torchaudio==0.12.0 torchvision==0.13.0 -f https://download.pytorch.org/whl/torch_stable.html
         ;;
     11.8)
-        pip3 install torch torchaudio torchvision -f https://download.pytorch.org/whl/torch_stable.html
+        pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu118
         ;;
     12.6)
-        pip3 install torch torchaudio torchvision -f https://download.pytorch.org/whl/torch_stable.html
+        pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu126
+        ;;
+    12.8)
+        pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu128
         ;;
     *)
         echo "Unsupported version, update the script"
@@ -89,8 +107,8 @@ if [ "$CPU_ARCH" = "arm64" ]; then
     pip3 install --upgrade aqlm
 fi
 
-pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard tensorboardX imbalanced-learn streamlit seaborn yellowbrick nltk gradio chromadb accelerate
-pip3 install --upgrade torchdiffeq torchsde transformers safetensors tomesd pytorch-lightning einops inflection kornia langchain
+pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard tensorboardX imbalanced-learn streamlit seaborn yellowbrick nltk gradio chromadb accelerate peft PyPDF2
+pip3 install --upgrade torchdiffeq torchsde transformers safetensors tomesd pytorch-lightning einops inflection kornia langchain tqdm scikit-learn openai
 pip3 install --upgrade sentencepiece tiktoken einops optimum wandb
 
 curl -fsSL https://ollama.com/install.sh | sh

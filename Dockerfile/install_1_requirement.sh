@@ -112,7 +112,8 @@ set +x
 eval "$(/opt/miniconda/bin/conda shell.bash hook)"
 conda activate base
 set -x
-
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 conda install ipykernel
 ipython kernel install --user --name=base
 conda install -c conda-forge nodejs=20.6.1

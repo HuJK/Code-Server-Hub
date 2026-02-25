@@ -2,4 +2,4 @@
 export EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery","itemUrl":"https://marketplace.visualstudio.com/items"}'
 source /etc/code-server-hub/ENVSFILE
 cd $HOMEDIR
-su $USERNAME -c "/etc/code-server-hub/.cshub/bin/code-server --host 127.0.0.1 --port 16313 --auth none"
+su $USERNAME -c "HOME=/root;PATH=\"/root/.local/bin:$HOMEDIR/.local/bin:$PATH\";/etc/code-server-hub/.cshub/bin/code-server --host 127.0.0.1 --port 16313 --auth none"

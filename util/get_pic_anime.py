@@ -39,7 +39,11 @@ def fetch_img_list_from_reddit(reddit_config,pages,after="",ps={}):
         url += ("" if after == "" else "&after=" + after)
         r = requests.get(url, headers = {'User-agent': 'your bot 0.2'})
         r.raise_for_status()
-        a = json.loads(r.text)
+        try:
+            a = json.loads(r.text)
+        except Exception as e:
+            print("Unable to decode json: ",r.text)
+            os._exit(1)
         for p in a["postOrder"]:
             try:
                 picurl = a["posts"][p]["media"]["content"]
