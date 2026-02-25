@@ -10,11 +10,6 @@ echo "Install additional tools"
 add-apt-repository ppa:longsleep/golang-backports
 apt-get -y update
 case $VERSION_ID in
-20.04)
-    apt-get -y install openjdk-17-jdk-headless
-    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
-    apt-get install -y speedtest
-    ;;
 22.04)
     apt-get -y install openjdk-21-jdk-headless
     curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash
@@ -51,9 +46,6 @@ apt-get -y autoremove ; apt-get autoclean
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install
 
 case $VERSION_ID in
-20.04)
-    echo "thefuck --alias | source" >> /etc/fish/config.fish
-    ;;
 22.04)
     echo "thefuck --alias | source" >> /etc/fish/config.fish
     ;;

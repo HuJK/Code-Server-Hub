@@ -24,11 +24,8 @@ apt-get install ffmpeg libsm6 libxext6 libhdf5-dev pipx -y
 eval "$(/opt/miniconda/bin/conda shell.bash hook)"
 conda activate base
 pipx install uv
-
+export PATH=/root/.local/bin:$PATH
 case $CUDA_VERSION in
-11.2)
-    pip3 install --upgrade cupy-cuda11x
-    ;;
 11.8)
     pip3 install --upgrade cupy-cuda11x
     ;;
@@ -50,10 +47,6 @@ if [ "$CPU_ARCH" = "amd64" ]; then
     pip3 install onnxruntime-gpu ninja
 
     case $CUDA_VERSION in
-    11.2)
-        pip3 install torch==1.12.0+cu102 torchaudio==0.12.0+cu102 torchvision==0.13.0+cu102 -f https://download.pytorch.org/whl/torch_stable.html
-        pip3 install --upgrade aqlm
-        ;;
     11.8)
         pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
         pip3 install nvidia-tensorrt bitsandbytes
@@ -86,9 +79,6 @@ if [ "$CPU_ARCH" = "arm64" ]; then
     pip3 install ninja
 
     case $CUDA_VERSION in
-    11.2)
-        pip3 install torch==1.12.0 torchaudio==0.12.0 torchvision==0.13.0 -f https://download.pytorch.org/whl/torch_stable.html
-        ;;
     11.8)
         pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu118
         ;;

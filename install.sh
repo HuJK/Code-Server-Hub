@@ -417,7 +417,7 @@ if [[ $DOCKER =~ [yY].* ]]; then
 
     # Nvidia docker ... (unchanged)
     if hash nvidia-smi 2>/dev/null; then
-        { docker run --rm --gpus all nvidia/cuda:11.2.2-base-ubuntu20.04 nvidia-smi &&
+        { docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi &&
           echo "Nvidia docker installed, skip nvidia-docker autoinstall"; } || {
             echo "=========================================================================="
             while true; do
