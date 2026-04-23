@@ -63,7 +63,6 @@ if [ "$CPU_ARCH" = "amd64" ]; then
         pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
         pip3 install nvidia-tensorrt bitsandbytes
         pip3 install --upgrade aqlm[gpu,cpu]
-        pip3 install vllm
         uv pip install vllm --torch-backend=cu128 --system
         pip3 install flash-attn --no-build-isolation
         ;;
