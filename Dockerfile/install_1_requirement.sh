@@ -12,7 +12,7 @@ add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
 
-apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy p7zip-full p7zip-rar git-core zsh tmux libssl-dev libffi-dev build-essential bc
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy p7zip-full p7zip-rar git-core zsh tmux libssl-dev libffi-dev build-essential bc unzip
 
 
 
@@ -36,7 +36,7 @@ gcc -shared -std=c99 -Wall -O2 -fPIC -D_POSIX_SOURCE -D_GNU_SOURCE  -Wl,--no-as-
 
 apt-get -y autoremove ; apt-get autoclean
 
-
+umask 002
 sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh) --unattended"
 git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
@@ -112,9 +112,16 @@ conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/ma
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 conda install ipykernel
 ipython kernel install --user --name=base
-conda install -c conda-forge nodejs=20.6.1
-npm install -g ijavascript
-ijsinstall --spec-path=full
+pip3 install virtualenvwrapper
+
+curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "/opt/fnm" --skip-shell 
+FNM_PATH="/opt/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --shell bash)"
+fi
+
+fnm install --lts
 
 echo "###doenload latest code-server###"
 mkdir -p /etc/code-server-hub/.cshub
@@ -133,6 +140,7 @@ rm -rf /root/.npm/_cacache
 
 ls /etc/code-server-hub/.cshub
 chmod -R 775 /opt/miniconda
+chmod -R 775 /opt/fnm
 chmod -R 775 /etc/code-server-hub/.cshub
 rm -r /root/.cache || true
 

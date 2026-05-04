@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export SHELL=/usr/bin/zsh
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
 # Path to your oh-my-zsh installation.
 export ZSH="/root/.oh-my-zsh"
@@ -98,6 +99,42 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+if [ -z "$ZSH_INIT_DONE" ]; the
+
 if command -v thefuck &> /dev/null; then
     eval "$(thefuck --alias)"
 fi
+
+# Zsh - .zshrc
+_lazy_virtualenvwrapper() {
+    unfunction mkvirtualenv rmvirtualenv workon deactivate lsvirtualenv \
+               cdvirtualenv cdsitepackages toggleglobalsitepackages \
+               _lazy_virtualenvwrapper
+    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+}
+
+mkvirtualenv()              { _lazy_virtualenvwrapper; mkvirtualenv "$@"; }
+rmvirtualenv()              { _lazy_virtualenvwrapper; rmvirtualenv "$@"; }
+workon()                    { _lazy_virtualenvwrapper; workon "$@"; }
+deactivate()                { _lazy_virtualenvwrapper; deactivate "$@"; }
+lsvirtualenv()              { _lazy_virtualenvwrapper; lsvirtualenv "$@"; }
+cdvirtualenv()              { _lazy_virtualenvwrapper; cdvirtualenv "$@"; }
+cdsitepackages()            { _lazy_virtualenvwrapper; cdsitepackages "$@"; }
+toggleglobalsitepackages()  { _lazy_virtualenvwrapper; toggleglobalsitepackages "$@"; }
+
+typeset -U path  # 
+export PATH="/opt/miniconda/bin:$PATH"
+
+conda() {
+    unfunction conda
+    eval "$('/opt/miniconda/bin/conda' 'shell.zsh' 'hook')"
+    conda "$@"
+}
+
+FNM_PATH="/opt/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --shell bash)"
+fi
+umask 002

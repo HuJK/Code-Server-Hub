@@ -1,0 +1,29 @@
+{
+  "*": {
+    "add": {
+      "ro": [
+        "/shared/course-data"
+      ]
+    }
+  },
+  "alice": {
+    "add": {
+      "rw": [
+        "/srv/alice-work"
+      ]
+    }
+  },
+  "bob": {
+    "remove": [
+      "__HOMEDIR__"
+    ],
+    "add": {
+      "rw": [
+        [
+          "/special-home/bob",
+          "/home/bob"
+        ]
+      ]
+    }
+  }
+}

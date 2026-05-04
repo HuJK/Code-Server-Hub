@@ -42,7 +42,7 @@ CPU_ARCH=$(get_cpu_architecture)
 
 apt-get -y install fish htop aria2 lsof tree ncdu golang-go atop duplicity emacs gawk gnupg2 lftp libsqlite3-dev libssl-dev libtool mc mtr-tiny iputils-ping netcat-openbsd parallel screen silversearcher-ag sl sqlite3 tig vifm wyrd zlib1g-dev zlib1g-dev openssh-server autossh socat libopenblas-dev liblapack-dev gfortran cmake convmv llvm ripgrep
 apt-get -y autoremove ; apt-get autoclean 
-
+umask 002
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf ;  ~/.fzf/install
 
 case $VERSION_ID in

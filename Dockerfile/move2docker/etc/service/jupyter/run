@@ -1,4 +1,5 @@
 #!/bin/bash
 source /etc/code-server-hub/ENVSFILE
+umask 002
 cd $HOMEDIR
 su $USERNAME -c "HOME=/root;PATH=\"/root/.local/bin:$HOMEDIR/.local/bin:$PATH\";jupyter lab"

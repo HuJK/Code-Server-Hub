@@ -1,7 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-
+export SHELL=/bin/bash
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -106,5 +106,41 @@ if command -v thefuck &> /dev/null; then
     eval "$(thefuck --alias)"
 fi
 
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
-# MOTD
+if [ -z "$BASH_INIT_DONE" ]; the
+
+# Bash - .bashrc
+_lazy_virtualenvwrapper() {
+    unset -f mkvirtualenv rmvirtualenv workon deactivate lsvirtualenv \
+            cdvirtualenv cdsitepackages toggleglobalsitepackages \
+            _lazy_virtualenvwrapper
+    source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+}
+
+mkvirtualenv()              { _lazy_virtualenvwrapper; mkvirtualenv "$@"; }
+rmvirtualenv()              { _lazy_virtualenvwrapper; rmvirtualenv "$@"; }
+workon()                    { _lazy_virtualenvwrapper; workon "$@"; }
+deactivate()                { _lazy_virtualenvwrapper; deactivate "$@"; }
+lsvirtualenv()              { _lazy_virtualenvwrapper; lsvirtualenv "$@"; }
+cdvirtualenv()              { _lazy_virtualenvwrapper; cdvirtualenv "$@"; }
+cdsitepackages()            { _lazy_virtualenvwrapper; cdsitepackages "$@"; }
+toggleglobalsitepackages()  { _lazy_virtualenvwrapper; toggleglobalsitepackages "$@"; }
+
+case ":$PATH:" in
+    *":/opt/miniconda/bin:"*) ;;
+    *) export PATH="/opt/miniconda/bin:$PATH" ;;
+esac
+
+conda() {
+    unset -f conda
+    eval "$('/opt/miniconda/bin/conda' 'shell.bash' 'hook')"
+    conda "$@"
+}
+
+
+# fnm
+FNM_PATH="/opt/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --shell bash)"
+fi
+umask 002

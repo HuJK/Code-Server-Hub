@@ -35,6 +35,9 @@ case $CUDA_VERSION in
 12.8)
     pip3 install --upgrade cupy-cuda12x
     ;;
+13.0)
+    pip3 install --upgrade cupy-cuda13x
+    ;;
 *)
     echo "Unsupported version, update the script"
     exit 255
@@ -66,6 +69,13 @@ if [ "$CPU_ARCH" = "amd64" ]; then
         uv pip install vllm --torch-backend=cu128 --system
         pip3 install flash-attn --no-build-isolation
         ;;
+    13.0)
+        pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
+        pip3 install nvidia-tensorrt bitsandbytes
+        pip3 install --upgrade aqlm[gpu,cpu]
+        uv pip install vllm --torch-backend=cu130 --system
+        pip3 install flash-attn --no-build-isolation
+        ;;
     *)
         echo "Unsupported version, update the script"
         exit 255
@@ -86,6 +96,9 @@ if [ "$CPU_ARCH" = "arm64" ]; then
         ;;
     12.8)
         pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu128
+        ;;
+    13.0)
+        pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu130
         ;;
     *)
         echo "Unsupported version, update the script"

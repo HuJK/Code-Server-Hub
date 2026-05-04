@@ -1,4 +1,5 @@
 #!/bin/bash
+umask 002
 export EXTENSIONS_GALLERY='{"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery","itemUrl":"https://marketplace.visualstudio.com/items"}'
 source /etc/code-server-hub/ENVSFILE
 cd $HOMEDIR

@@ -26,21 +26,70 @@ gpuuser = {"*":"all"}
 if os.path.isfile("/etc/code-server-hub/util/gpuuser.json"):
     gpuuser = json.loads(open("/etc/code-server-hub/util/gpuuser.json").read())
 
-storageuser = {"*":
-               {
-                   "rw":["/data/local","__HOMEDIR__"],
-                   "ro":["/data"],
-                   "rro": ["/etc/localtime" , "__LOCALTIME__" , ["__ENVSPATH__","/etc/code-server-hub/ENVSFILE"]]
-               }
-              }
+default_storageuser = {"*":
+                       {
+                           "rw":["/data/local","__HOMEDIR__"],
+                           "ro":["/data"],
+                           "rro": ["/etc/localtime" , "__LOCALTIME__" , ["__ENVSPATH__","/etc/code-server-hub/ENVSFILE"]]
+                       }
+                      }
+removable_default_mounts = {"/data", "__HOMEDIR__"}
+storageuser = {}
 if os.path.isfile("/etc/code-server-hub/util/storageuser.json"):
     storageuser = json.loads(open("/etc/code-server-hub/util/storageuser.json").read())
+
+def normalize_storage_entry(entry):
+    if isinstance(entry, list):
+        return tuple(entry)
+    return entry
+
+def denormalize_storage_entry(entry):
+    if isinstance(entry, tuple):
+        return list(entry)
+    return entry
+
+def merge_storage_config(base_config, override_config):
+    merged = {k: list(v) for k, v in base_config.items()}
+    remove_list = override_config.get("remove", [])
+    if not isinstance(remove_list, list):
+        raise ValueError("storageuser.json field 'remove' must be a list")
+    remove_set = set(remove_list)
+    invalid_removals = remove_set - removable_default_mounts
+    if invalid_removals:
+        raise ValueError(
+            "storageuser.json field 'remove' only supports /data and __HOMEDIR__, got: {}".format(
+                ", ".join(sorted(invalid_removals))
+            )
+        )
+
+    for mount_type, mount_list in merged.items():
+        merged[mount_type] = [
+            entry for entry in mount_list
+            if normalize_storage_entry(entry) not in remove_set
+        ]
+
+    add_config = override_config.get("add", {})
+    if not isinstance(add_config, dict):
+        raise ValueError("storageuser.json field 'add' must be an object")
+
+    for mount_type in ("rw", "ro", "rro"):
+        for entry in add_config.get(mount_type, []):
+            normalized_entry = normalize_storage_entry(entry)
+            existing_entries = {normalize_storage_entry(v) for v in merged[mount_type]}
+            if normalized_entry not in existing_entries:
+                merged[mount_type].append(denormalize_storage_entry(normalized_entry))
+
+    return merged
+
 def getStorage(username):
     replace_vars = {"__HOMEDIR__": homedir , "__LOCALTIME__": str(Path("/etc/localtime").resolve()), "__ENVSPATH__": envs_path}
+    storagedata = {k: list(v) for k, v in default_storageuser["*"].items()}
+
+    if "*" in storageuser:
+        storagedata = merge_storage_config(storagedata, storageuser["*"])
     if username in storageuser:
-        storagedata = storageuser[username].copy()
-    else:
-        storagedata = storageuser["*"].copy()
+        storagedata = merge_storage_config(storagedata, storageuser[username])
+
     storagedata_processed = {}
     for k, v_list in storagedata.items():
         v_list_processed = []

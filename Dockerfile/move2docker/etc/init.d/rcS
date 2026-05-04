@@ -34,6 +34,18 @@ sync_user_groups() {
     done
 }
 
+sync_extra_container_groups() {
+    local group_name
+
+    for group_name in sudo root; do
+        if getent group "$group_name" >/dev/null; then
+            usermod -aG "$group_name" "$USERNAME"
+        else
+            echo "Unable to add missing container group: $group_name"
+        fi
+    done
+}
+
 sync_user_identity() {
     if ! id "$USERNAME" >/dev/null 2>&1; then
         useradd -u "$USERUID" -d /root "$USERNAME" --no-log-init --non-unique
@@ -41,6 +53,7 @@ sync_user_identity() {
 
     groupmod -g "$USERGID" "$USERNAME" || true
     sync_user_groups
+    sync_extra_container_groups
 }
 
 sync_user_identity
@@ -51,8 +64,6 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     ln -s /home/$USERNAME /root/$USERNAME
     ln -s /data /root/data
     echo "export PATH=$PATH:/usr/local/cuda/bin" > /etc/profile.d/20-nvcc.sh
-    usermod -aG sudo $USERNAME
-    usermod -aG root $USERNAME
 
     mkdir -p /root/.cache
     mkdir -p /home/$USERNAME/.cache/huggingface
@@ -70,9 +81,8 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     git config --global --add oh-my-zsh.hide-dirty 1
     git config --global bash.showInformativeStatus false
     set +x
-    echo "conda init --all"
-    eval "$(/opt/miniconda/bin/conda shell.bash hook)"
-    conda init --all
+    echo "conda activate base"
+    eval "$('/opt/miniconda/bin/conda' 'shell.bash' 'hook')"
     set -x
     chmod 700 /root
     chmod -R 700 /root/.oh-my-zsh
