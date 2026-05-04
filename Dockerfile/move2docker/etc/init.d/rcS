@@ -3,13 +3,54 @@ set +e
 source /etc/code-server-hub/ENVSFILE
 set -x
 
+sync_user_groups() {
+    local group_spec gid group_name container_group fallback_group
+
+    for group_spec in $USERGROUPS; do
+        gid="${group_spec%%:*}"
+        group_name="${group_spec#*:}"
+
+        if ! [[ "$gid" =~ ^[0-9]+$ ]]; then
+            echo "Skipping invalid group id: $gid"
+            continue
+        fi
+
+        container_group="$(getent group "$gid" | cut -d: -f1)"
+        if [ -z "$container_group" ]; then
+            if getent group "$group_name" >/dev/null; then
+                fallback_group="hostgrp_${gid}"
+                groupadd -g "$gid" "$fallback_group" || true
+            else
+                groupadd -g "$gid" "$group_name" || true
+            fi
+            container_group="$(getent group "$gid" | cut -d: -f1)"
+        fi
+
+        if [ -n "$container_group" ]; then
+            usermod -aG "$container_group" "$USERNAME"
+        else
+            echo "Unable to sync host group ${group_name}:${gid}"
+        fi
+    done
+}
+
+sync_user_identity() {
+    if ! id "$USERNAME" >/dev/null 2>&1; then
+        useradd -u "$USERUID" -d /root "$USERNAME" --no-log-init --non-unique
+    fi
+
+    groupmod -g "$USERGID" "$USERNAME" || true
+    sync_user_groups
+}
+
+sync_user_identity
+
 ROOTOWNER=$(stat -c '%U' /root)
 if [ "$ROOTOWNER" != "$USERNAME" ]; then
     echo "First run, initing"
     ln -s /home/$USERNAME /root/$USERNAME
     ln -s /data /root/data
     echo "export PATH=$PATH:/usr/local/cuda/bin" > /etc/profile.d/20-nvcc.sh
-    useradd -u $USERUID -d /root $USERNAME --no-log-init --non-unique
     usermod -aG sudo $USERNAME
     usermod -aG root $USERNAME
 
@@ -23,7 +64,6 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     ln -s /home/$USERNAME/.conda/envs /opt/miniconda/envs
     chown $USERNAME:$USERNAME /home/$USERNAME/.conda/envs
 
-    groupmod -g $USERGID $USERNAME
     git config --global user.email "$USERNAME@example.com"
     git config --global user.name $USERNAME
     git config --global --add oh-my-zsh.hide-status 1

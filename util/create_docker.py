@@ -6,6 +6,7 @@ import itertools
 import subprocess
 import pathlib
 import json
+import shlex
 from pathlib import Path
 
 os.chdir(pathlib.Path(__file__).parent.resolve())
@@ -13,6 +14,9 @@ os.chdir(pathlib.Path(__file__).parent.resolve())
 username  = sys.argv[1]
 useruid = subprocess.Popen(["id", "-u", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
 usergid = subprocess.Popen(["id", "-g", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
+usergroupids = subprocess.Popen(["id", "-G", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8").split()
+usergroupnames = subprocess.Popen(["id", "-Gn", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8").split()
+usergroups = " ".join("{}:{}".format(gid, name) for gid, name in zip(usergroupids, usergroupnames))
 homedir =  subprocess.Popen(["bash", "-c", "echo ~" + username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
 sock_path = sys.argv[2]
 envs_path = sys.argv[3]
@@ -102,6 +106,7 @@ with open(envs_path,"w") as envsF:
     envsF.write("USERNAME=" + username + "\n")
     envsF.write("USERUID=" + useruid + "\n")
     envsF.write("USERGID=" + usergid + "\n")
+    envsF.write("USERGROUPS=" + shlex.quote(usergroups) + "\n")
     envsF.write("HOMEDIR=" + homedir + "\n")
     envsF.write("PASSWORD=" +  password + "\n")
     envsF.flush()
