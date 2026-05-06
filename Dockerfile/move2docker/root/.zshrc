@@ -100,7 +100,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [ -z "$ZSH_INIT_DONE" ]; the
 
 if command -v thefuck &> /dev/null; then
     eval "$(thefuck --alias)"

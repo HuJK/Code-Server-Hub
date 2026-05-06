@@ -60,21 +60,21 @@ if [ "$CPU_ARCH" = "amd64" ]; then
         pip3 install nvidia-tensorrt bitsandbytes
         pip3 install --upgrade aqlm[gpu,cpu]
         uv pip install vllm --torch-backend=cu126 --system
-        pip3 install flash-attn --no-build-isolation
+        MAX_JOBS=16 pip3 install flash-attn --no-build-isolation
         ;;
     12.8)
         pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
         pip3 install nvidia-tensorrt bitsandbytes
         pip3 install --upgrade aqlm[gpu,cpu]
         uv pip install vllm --torch-backend=cu128 --system
-        pip3 install flash-attn --no-build-isolation
+        MAX_JOBS=16 pip3 install flash-attn --no-build-isolation
         ;;
     13.0)
         pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130
         pip3 install nvidia-tensorrt bitsandbytes
         pip3 install --upgrade aqlm[gpu,cpu]
         uv pip install vllm --torch-backend=cu130 --system
-        pip3 install flash-attn --no-build-isolation
+        MAX_JOBS=16 pip3 install flash-attn --no-build-isolation
         ;;
     *)
         echo "Unsupported version, update the script"
@@ -90,23 +90,38 @@ if [ "$CPU_ARCH" = "arm64" ]; then
     case $CUDA_VERSION in
     11.8)
         pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu118
+        pip3 install onnxruntime
+        pip3 install --upgrade aqlm
         ;;
     12.6)
         pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu126
+        pip3 install onnxruntime
+        pip3 install --upgrade aqlm
+        uv pip install vllm --torch-backend=cu126 --system
+        MAX_JOBS=4 pip3 install flash-attn --no-build-isolation
         ;;
     12.8)
         pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu128
+        pip3 install bitsandbytes
+        pip3 install onnxruntime
+        pip3 install --upgrade aqlm
+        uv pip install vllm --torch-backend=cu128 --system
+        MAX_JOBS=4 pip3 install flash-attn --no-build-isolation
         ;;
     13.0)
         pip3 install torch torchaudio torchvision --index-url https://download.pytorch.org/whl/cu130
+        pip3 install bitsandbytes
+        pip3 install onnxruntime
+        pip3 install --upgrade aqlm
+        uv pip install vllm --torch-backend=cu130 --system
+        MAX_JOBS=4 pip3 install flash-attn --no-build-isolation
         ;;
     *)
         echo "Unsupported version, update the script"
         exit 255
         ;;
     esac
-    pip3 install onnxruntime
-    pip3 install --upgrade aqlm
+
 fi
 
 pip3 install --upgrade keras mxnet opencv-python librosa tensorflow tensorboard tensorboardX imbalanced-learn streamlit seaborn yellowbrick nltk gradio chromadb accelerate peft PyPDF2

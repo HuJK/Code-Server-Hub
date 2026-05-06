@@ -106,7 +106,6 @@ if command -v thefuck &> /dev/null; then
     eval "$(thefuck --alias)"
 fi
 
-if [ -z "$BASH_INIT_DONE" ]; the
 
 # Bash - .bashrc
 _lazy_virtualenvwrapper() {

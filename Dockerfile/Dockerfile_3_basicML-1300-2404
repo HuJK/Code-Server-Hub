@@ -2,7 +2,7 @@
 FROM --platform=$TARGETPLATFORM  nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
 
 COPY *.c /tmp/
-ENV CUDA_VERSION 12.8
+ENV CUDA_VERSION 13.0
 
 COPY           install_1_requirement.sh /tmp/
 RUN  bash /tmp/install_1_requirement.sh

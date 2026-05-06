@@ -56,6 +56,16 @@ sync_user_identity() {
     sync_extra_container_groups
 }
 
+link_dir() {
+    local user_path="$1"
+    local root_path="$2"
+    mkdir -p "$user_path"
+    mkdir -p "$(dirname "$root_path")"
+    ln -s "$user_path" "$root_path"
+    chown "$USERNAME:$USERNAME" "$user_path"
+    chmod g+s /opt/miniconda
+}
+
 sync_user_identity
 
 ROOTOWNER=$(stat -c '%U' /root)
@@ -64,29 +74,35 @@ if [ "$ROOTOWNER" != "$USERNAME" ]; then
     ln -s /home/$USERNAME /root/$USERNAME
     ln -s /data /root/data
     echo "export PATH=$PATH:/usr/local/cuda/bin" > /etc/profile.d/20-nvcc.sh
-
+    
     mkdir -p /root/.cache
-    mkdir -p /home/$USERNAME/.cache/huggingface
-    ln -s /home/$USERNAME/.cache/huggingface /root/.cache/huggingface
-    chown $USERNAME:$USERNAME /home/$USERNAME/.cache/huggingface
-
-    mkdir -p /home/$USERNAME/.conda/envs
-    rm -r /opt/miniconda/envs
-    ln -s /home/$USERNAME/.conda/envs /opt/miniconda/envs
-    chown $USERNAME:$USERNAME /home/$USERNAME/.conda/envs
+    mkdir -p /root/.config
+    rm -rf /opt/miniconda/envs
+    
+    link_dir "/home/$USERNAME/.cache/huggingface" "/root/.cache/huggingface"
+    link_dir "/home/$USERNAME/.conda/envs"        "/opt/miniconda/envs"
+    link_dir "/home/$USERNAME/.codex"             "/root/.codex"
+    link_dir "/home/$USERNAME/.claude"            "/root/.claude"
+    link_dir "/home/$USERNAME/.config/opencode"   "/root/.config/opencode"
+    link_dir "/home/$USERNAME/.gemini"            "/root/.gemini"
+    link_dir "/home/$USERNAME/.openclaw"          "/root/.openclaw"
+    link_dir "/home/$USERNAME/.openharness"       "/root/.openharness"
+    link_dir "/home/$USERNAME/.ohmo"              "/root/.ohmo"
 
     git config --global user.email "$USERNAME@example.com"
     git config --global user.name $USERNAME
     git config --global --add oh-my-zsh.hide-status 1
     git config --global --add oh-my-zsh.hide-dirty 1
     git config --global bash.showInformativeStatus false
-    set +x
-    echo "conda activate base"
-    eval "$('/opt/miniconda/bin/conda' 'shell.bash' 'hook')"
     set -x
     chmod 700 /root
     chmod -R 700 /root/.oh-my-zsh
     chown -R $USERNAME:$USERNAME /root
+    chown -R $USERNAME:$USERNAME /opt/fnm
+    chown $USERNAME:$USERNAME /opt/miniconda
+    chmod g+s /root
+    chmod g+s /opt/fnm
+    chmod g+s /opt/miniconda
     if [ ! -f "/home/$USERNAME/data" ] && [ ! -d "/home/$USERNAME/data" ]; then
         ln -s /data /home/$USERNAME/data || true
     fi
