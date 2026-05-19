@@ -12,9 +12,23 @@ add-apt-repository universe
 apt-get -y update
 apt-get -y dist-upgrade
 
-apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy p7zip-full p7zip-rar git-core zsh tmux libssl-dev libffi-dev build-essential bc unzip
+apt-get -y install apt-utils runit locales cron vim git sudo rsync nginx-full apache2-utils wget curl git ca-certificates python3 python3-pip python3-dev python3-setuptools virtualenv python3-virtualenvwrapper python3-numpy git-core zsh tmux libssl-dev libffi-dev build-essential bc unzip
 
-
+case $VERSION_ID in
+22.04)
+    apt-get -y p7zip-full p7zip-rar
+    ;;
+24.04)
+    apt-get -y p7zip-full p7zip-rar
+    ;;
+26.04)
+    apt-get -y install 7zip 7zip-rar
+    ;;
+*)
+    echo "Unsupported version, update the script"
+    exit 255
+    ;;
+esac
 
 export PIP_BREAK_SYSTEM_PACKAGES=1
 case $VERSION_ID in
@@ -24,6 +38,9 @@ case $VERSION_ID in
     ;;
 24.04)
     pip3 install --upgrade  jupyter jupyterlab jupyter_http_over_ws
+    ;;
+26.04)
+    apt-get -y install jupyterlab
     ;;
 *)
     echo "Unsupported version, update the script"
@@ -41,7 +58,28 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/maste
 git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/plugins/zsh-autosuggestions
 mkdir ~/.virtualenvs
-rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
+rm -rf /var/lib/apt/lists/* ; 
+
+case $VERSION_ID in
+22.04)
+    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+    locale-gen en_US.UTF-8
+    ;;
+24.04)
+    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+    locale-gen en_US.UTF-8
+    ;;
+26.04)
+    locale-gen en_US.UTF-8
+    ;;
+*)
+    echo "Unsupported version, update the script"
+    exit 255
+    ;;
+esac
+
+
+
 mkdir -p /root/.config/fish/
 
 function get_cpu_architecture() {
@@ -62,6 +100,7 @@ CPU_ARCH=$(get_cpu_architecture)
 case $VERSION_ID in
     "22.04") CONDA_VER="py310" ;;
     "24.04") CONDA_VER="py312" ;;
+    "26.04") CONDA_VER="py313" ;;
     *)  
         echo "Unsupported OS version: $VERSION_ID. Update the script."
         exit 255
@@ -147,8 +186,8 @@ rm -r /root/.cache || true
 echo "###disable lastlog###"
 cd /var/log
 for file in lastlog faillog; do
-  unlink $file
-  ln -s /dev/null $file
+  unlink $file || true
+  ln -s /dev/null $file || true
 done
 
 exit 0

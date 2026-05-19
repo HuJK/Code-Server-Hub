@@ -2,4 +2,14 @@
 source /etc/code-server-hub/ENVSFILE
 umask 002
 cd $HOMEDIR
-su $USERNAME -c "HOME=/root;PATH=\"/root/.local/bin:$HOMEDIR/.local/bin:$PATH\"; /usr/local/bin/jupyter lab"
+
+JUPYTER_CMD=""
+
+[ -x /usr/local/bin/jupyter ] && JUPYTER_CMD="/usr/local/bin/jupyter lab"
+[ -z "$JUPYTER_CMD" ] && [ -x /usr/bin/jupyter-lab ] && JUPYTER_CMD="/usr/bin/jupyter-lab"
+
+if [ -n "$JUPYTER_CMD" ]; then
+    su "$USERNAME" -c "HOME=/root; PATH=\"/root/.local/bin:$HOMEDIR/.local/bin:$PATH\"; $JUPYTER_CMD"
+else
+    echo "No Jupyter executable found"
+fi

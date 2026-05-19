@@ -19,6 +19,10 @@ case $VERSION_ID in
     apt-get -y install openjdk-25-jdk-headless
     # speedtest-cli not available at ubuntu 24.04
     ;;
+26.04)
+    apt-get -y install openjdk-25-jdk-headless
+    # speedtest-cli not available at ubuntu 24.04
+    ;;
 *)
     echo "Unsupported version, update the script"
     exit 255
@@ -52,6 +56,9 @@ case $VERSION_ID in
 24.04)
     echo "thefuck doesn't support 24.04, skip"
     ;;
+26.04)
+    echo "thefuck doesn't support 26.04, skip"
+    ;;
 *)
     echo "Unsupported version, update the script"
     exit 255
@@ -63,5 +70,5 @@ conda activate base
 pip3 install --upgrade tornado tqdm sympy galgebra pandas plotly nose pillow pyparsing scikit-image scikit-learn scipy matplotlib fastapi uvicorn omegaconf requests protobuf pytest pyyaml colorama datasets jinja2 markdown psutil rich
 
 chmod -R 775 /opt/miniconda
-rm -rf /var/lib/apt/lists/* ; localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 ; locale-gen en_US.UTF-8
+rm -rf /var/lib/apt/lists/*
 rm -r /root/.cache || true
