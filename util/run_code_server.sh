@@ -10,16 +10,16 @@ if [ -z "$SERVER_FILES_LOCATION" ] || [ -z "$SERVER_SERVICE_NAME" ] || [ -z "$SE
   exit 2
 fi
 
-CSHUB_HOME="$HOME/.$SERVER_SERVICE_NAME"
-CSHUB_COPY="$HOME/.$SERVER_SERVICE_NAME""_cp"
-
-if [ ! -d "$CSHUB_HOME" ]; then
-  rm -rf "$CSHUB_COPY"
-  cp -pr "$SERVER_FILES_LOCATION/.$SERVER_SERVICE_NAME" "$CSHUB_COPY"
-  mv "$CSHUB_COPY" "$CSHUB_HOME"
-fi
+CODE_SERVER_BIN="$SERVER_FILES_LOCATION/.$SERVER_SERVICE_NAME/bin/code-server"
+USER_DATA_DIR="$HOME/.local/share/code-server"
+EXTENSIONS_DIR="$USER_DATA_DIR/extensions"
 
 rm -f "$SERVER_SOCK_PATH"
-"$SERVER_FILES_LOCATION/util/chmod766.sh" "$SERVER_SOCK_PATH" &
+mkdir -p "$USER_DATA_DIR" "$EXTENSIONS_DIR"
 
-exec "$CSHUB_HOME/bin/code-server" --socket "$SERVER_SOCK_PATH" --auth password
+exec "$CODE_SERVER_BIN" \
+  --socket "$SERVER_SOCK_PATH" \
+  --socket-mode 766 \
+  --auth password \
+  --user-data-dir "$USER_DATA_DIR" \
+  --extensions-dir "$EXTENSIONS_DIR"
