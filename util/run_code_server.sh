@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-
+cd $HOME
 SERVER_FILES_LOCATION="$1"
 SERVER_SERVICE_NAME="$2"
 SERVER_SOCK_PATH="$3"

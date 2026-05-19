@@ -262,7 +262,7 @@ server {
             tmp = ngx.decode_base64(tmp)
             remote_user     = tmp:sub(0,tmp:find(":")-1)
             if ngx.var.setcookie00 ~= "nil" or ngx.var.setcookie11 ~= "nil" then
-                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. "/" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. "/" .. '" method="get"></form></body></html>')
+                ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie success.<br/>Redirect to ' .. "/?ew=true" .. ' after 0.1 seconds.</p><form name="homepage" action="' .. "/?ew=true" .. '" method="get"></form></body></html>')
             else
                 ngx.status = 404
                 ngx.say('<!DOCTYPE html><html><body><script>setTimeout(function(){document.homepage.submit();},100);</script><p>Retrieve cookie failed.<br/>Redirect to ' .. "/200-server_spawn.html" .. ' to try again after 0.1 seconds.</p><form name="homepage" action="' .. "/200-server_spawn.html" .. '" method="get"></form></body></html>')
