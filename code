@@ -124,8 +124,8 @@ server {
                 response = ngx.location.capture('/')
                 ngx.log(ngx.STDERR, "response.status=" .. tostring(response.status))
                 if response.status >= 400 then
-                    ndcmd = "$HOME/." .. ngx.var.server_service_name .. "/bin/code-server --socket " .. server_sock_path .. " --auth password "
-                    spcmd = "unset TMUX ;cp -prn " .. ngx.var.server_files_location .. "/." .. ngx.var.server_service_name .. " $HOME ;rm -f " .. server_sock_path .." 2>/dev/null ;tmux kill-session -t " .. ngx.var.server_service_name .. " ;tmux new -d -s " .. ngx.var.server_service_name .. "_setenv ;tmux set-environment -g PASSWORD " .. server_auth .. " ;tmux new -d -s " .. ngx.var.server_service_name .. " " .. ndcmd .. " ;tmux kill-session -t " .. ngx.var.server_service_name .. "_setenv ; tmux new -d -s chmod766 bash " .. ngx.var.server_files_location .. "/util/chmod766.sh " .. server_sock_path .. " "
+                    ndcmd = "PASSWORD=" .. server_auth .. " bash " .. ngx.var.server_files_location .. "/util/run_code_server.sh " .. ngx.var.server_files_location .. " " .. ngx.var.server_service_name .. " " .. server_sock_path
+                    spcmd = "unset TMUX ;tmux kill-session -t " .. ngx.var.server_service_name .. " ;tmux new -d -s " .. ngx.var.server_service_name .. " \"" .. ndcmd .. "\""
                     spcmd_by_su = "su -l " .. remote_user  .. " -s /bin/bash -c '" .. spcmd .. "'"
                     fp = io.popen(ngx.var.py3 .. " " .. ngx.var.server_files_location .. "/util/pip2su.py " ..  spcmd_by_su ,"w")
                     fp:write(remote_password)
@@ -139,7 +139,7 @@ server {
                     ngx.say("</code></p>")
                     ngx.say("<p>If server still not start, Please run this command in ssh console, check if there has any error:<br>")
                     ngx.say("<code>")
-                    ngx.say(("export PASSWORD=" .. server_auth .. ";" .. ndcmd):gsub(";", "\n"):gsub("\"", "&quot;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub("&", "&amp;"):gsub("\n", "<br>") .. "<br>")
+                    ngx.say(ndcmd:gsub(";", "\n"):gsub("\"", "&quot;"):gsub("<", "&lt;"):gsub(">", "&gt;"):gsub("&", "&amp;"):gsub("\n", "<br>") .. "<br>")
                     ngx.say("</code></p>")
                     ngx.say("<p>You can check " .. ngx.var.server_service_name_full .. " workspace status by this command: <br><code>tmux a -t " .. ngx.var.server_service_name .. "</code><br></p>")
                     ngx.say("<hr />")
