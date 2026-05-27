@@ -47,17 +47,6 @@ ExecStart=$VENV_PATH/bin/jupyterhub -f jupyterhub_config.py
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
 
-# Create JupyterHub configuration
-echo "import os
-c.JupyterHub.port = 18517
-c.JupyterHub.ssl_key = '/etc/code-server-hub/cert/ssl.key'
-c.JupyterHub.ssl_cert = '/etc/code-server-hub/cert/ssl.pem'
-c.Spawner.default_url = '/lab'
-c.FileCheckpoints.checkpoint_dir = os.path.expanduser('~/.ipynb_checkpoints')
-c.PAMAuthenticator.open_sessions = True
-c.Authenticator.allow_all = True
-" > jupyterhub_config.py
-
 # Enable and start the service
 systemctl daemon-reload
 systemctl enable --now jupyterhub
