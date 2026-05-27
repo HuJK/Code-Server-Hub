@@ -47,7 +47,7 @@ ExecStart=$VENV_PATH/bin/jupyterhub -f jupyterhub_config.py
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/jupyterhub.service
 
-chmod 776 /etc/code-server-hub/util/jupyterhub_workdir/jupyter_conf
+chmod 777 /etc/code-server-hub/util/jupyterhub_workdir/jupyter_conf
 # Enable and start the service
 systemctl daemon-reload
 systemctl enable --now jupyterhub
