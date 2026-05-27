@@ -3,5 +3,3 @@
 
 # But not these files...
 !.gitignore
-!jupyterhub_config.py
-!jupyter_conf
