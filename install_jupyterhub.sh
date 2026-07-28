@@ -31,7 +31,10 @@ $VENV_PATH/bin/pip install jupyter jupyterhub jupyterlab nodeenv
 
 # Setup node environment within venv
 $VENV_PATH/bin/nodeenv -p --node=lts
-$VENV_PATH/bin/npm install -g configurable-http-proxy
+# Run npm with the venv's node (npm's shebang is `env node`) and pin the global
+# prefix to the venv, so this works without a system nodejs and never leaks
+# into nvm/system npm prefixes
+PATH="$VENV_PATH/bin:$PATH" "$VENV_PATH/bin/npm" install -g --prefix "$VENV_PATH" configurable-http-proxy
 
 # Create systemd service
 echo "[Unit]

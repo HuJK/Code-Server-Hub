@@ -130,7 +130,7 @@ if [[ "${TOUCH_NGINX}" == "YES" ]]; then
 fi
 apt-get install -y ca-certificates socat jq coreutils
 apt-get install -y tmux libncurses-dev htop wget sudo curl vim openssl git libpcre3-dev libssl-dev perl make build-essential curl libpam0g-dev jq
-apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev nodejs
+apt-get install -y python3 python3-pip python3-dev p7zip-full libffi-dev
 
 
 function get_cpu_architecture()
