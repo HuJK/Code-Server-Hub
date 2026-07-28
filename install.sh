@@ -227,10 +227,11 @@ if [[ "${TOUCH_NGINX}" == "YES" ]]; then
 fi
 
 echo "###Compiel and install openresty###"
-wget https://openresty.org/download/openresty-1.21.4.1.tar.gz
-tar -xvf openresty-1.21.4.1.tar.gz
+NGINX_VERSION=1.29.2.5
+wget https://openresty.org/download/openresty-$NGINX_VERSION.tar.gz
+tar -xvf openresty-$NGINX_VERSION.tar.gz
 git clone https://github.com/sto/ngx_http_auth_pam_module
-cd openresty-1.21.4.1/
+cd openresty-$NGINX_VERSION/
 ./configure -j2 --add-module=../ngx_http_auth_pam_module --with-pcre-jit \
     --prefix=/etc/code-server-hub/util/openresty/build \
     --conf-path=/etc/code-server-hub/util/openresty/conf/nginx.conf
