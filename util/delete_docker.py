@@ -3,6 +3,10 @@ import sys
 import itertools
 import subprocess
 
+import engine_util
+
+engine_cmd = engine_util.engine_cmd()
+
 username  = sys.argv[1]
 sock_path = sys.argv[2]
 envs_path = sys.argv[3]
@@ -12,8 +16,8 @@ try:
     os.remove(sock_path)
 except:
     pass
-outs, errs = subprocess.Popen(['docker', "stop" , "docker-"+username]).communicate()
+outs, errs = subprocess.Popen(engine_cmd + ["stop" , "docker-"+username]).communicate()
 print(outs, errs)
-outs, errs = subprocess.Popen(['docker', "rm" , "docker-"+username]).communicate()
+outs, errs = subprocess.Popen(engine_cmd + ["rm" , "docker-"+username]).communicate()
 print(outs, errs)
 

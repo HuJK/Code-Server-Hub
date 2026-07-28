@@ -2,9 +2,10 @@
 Description=Initialize nvidia driver and nvidia-container
 
 [Service]
-Type=one-hot
+Type=oneshot
 ExecStartPre=nvidia-smi -pm ENABLED
 ExecStart=sh -c '/usr/bin/nvidia-ctk system create-dev-char-symlinks --create-all || true'
+ExecStart=sh -c 'mkdir -p /etc/cdi && /usr/bin/nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml || true'
 TimeoutStopSec=5
 KillMode=mixed
 

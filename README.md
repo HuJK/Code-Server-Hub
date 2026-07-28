@@ -30,7 +30,7 @@ sudo install.sh
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd=no -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 ##### Paramaters description
 
@@ -44,16 +44,42 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 | jph | Install jupyterhub|18517,8001|
 | pip3| Install python3-pip。it will be skipped if already installed. ||
 | c   | Install [cockpit](https://github.com/cockpit-project/cockpit)                  |9090|
-| rd  | Install [rootless-docker](https://github.com/HuJK/rootless_docker)          ||
-| d   | Install code-server-hub docker version |2087|
-| de  | Install docker engine，it will be skipped if already installed. ||
-| dn  | Install nvidia-docker，it will be skipped if already installed. ||
+| d   | Install code-server-hub docker version. Use ```-d=podman``` to use rootful podman as container engine instead of docker. The chosen engine is recorded in ```/etc/code-server-hub/config.json``` |2087|
+| de  | Install container engine (docker, or podman when ```-d=podman```)，it will be skipped if already installed. ||
+| dn  | Install nvidia container support (nvidia-docker for docker, CDI spec for podman)，it will be skipped if already installed. ||
 | dp  | Install portainer，it will be skipped if already installed.     |9000|
+
+#### Container engine config: config.json
+The installer writes ```/etc/code-server-hub/config.json``` to record which container engine is used:
+```json
+{
+  "engine": "podman",
+  "idmap": {
+    "enable": true,
+    "size": 1000000000,
+    "offset": 1000000000,
+    "passthrough_ranges": [[10000, 99999], [100000000, 999999999]]
+  }
+}
+```
+* ```engine```: ```docker``` or ```podman``` (rootful). All utility scripts (```util/engine.sh```, ```util/create_docker.py``` ...) read this file to decide which engine to call. Default is ```docker``` if the file is missing.
+* ```idmap```: podman only. Each container is started with ```--uidmap```/```--gidmap``` so that only the target user's own UID/GIDs inside ```passthrough_ranges``` are identity mapped; every other ID (including in-container root) is shifted by ```offset``` to a host range where no real account exists. So even root inside the container cannot access other users' files on shared mounts like ```/data```. Set ```"enable": false``` to disable.
+
+#### Per user GPU config: gpuuser.json
+Create ```/etc/code-server-hub/util/gpuuser.json``` (see ```util/example.gpuuser.json```) to limit which GPUs each user gets. The value is ```"all"```, or a list of GPU indices / UUIDs (empty list = no GPU):
+```json
+{
+  "*": [0, 1, 2, 3, 5, 6, 7],
+  "hujk": "all",
+  "cpuonlyuser": []
+}
+```
+```*``` is the default for users not listed. It is translated to ```--gpus``` for docker and to CDI ```--device nvidia.com/gpu=N``` for podman.
 
 ### If you want to install at your own server, this is the paramater I suggest.
 #### Minimal installatoin
 ```
-sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=no -pip3=no -c=no -rd=no -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=no -pip3=no -c=no -d=no -de=no -dn=no -dp=no
 ```
 
 Demo:
@@ -65,12 +91,12 @@ root|DockerAtHeroku
 
 #### Your own server，Normal version
 ```
-sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=yes -pip3=yes -c=yes -rd=no -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=yes -pip3=yes -c=yes -d=no -de=no -dn=no -dp=no
 ```
 
 #### Multi user server，normal version + docker version + pwquality
 ```
-sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 
 than access your ip with port 8443(normal version) and 2087(docker version) with web browser.

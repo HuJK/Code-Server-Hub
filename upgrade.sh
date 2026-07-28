@@ -51,9 +51,16 @@ tar xzvf code-server.tar.gz -C .cshub
 mv .cshub/*/* .cshub/
 rm code-server.tar.gz
 
-if hash docker 2>/dev/null; then
-    echo "Docker installed, update docker image"
-    echo docker pull $image_name
-    docker pull $image_name
+ENGINE="docker"
+if [ -f /etc/code-server-hub/config.json ]; then
+    ENGINE_CFG=$(jq -r '.engine // empty' /etc/code-server-hub/config.json 2>/dev/null)
+    if [ -n "$ENGINE_CFG" ] && [ "$ENGINE_CFG" != "null" ]; then
+        ENGINE="$ENGINE_CFG"
+    fi
+fi
+if hash $ENGINE 2>/dev/null; then
+    echo "$ENGINE installed, update container image"
+    echo $ENGINE pull $image_name
+    $ENGINE pull $image_name
 fi
 /etc/code-server-hub/util/openresty/build/bin/openresty -s reload

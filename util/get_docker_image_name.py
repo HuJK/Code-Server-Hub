@@ -9,6 +9,8 @@ from pathlib import Path
 
 os.chdir(pathlib.Path(__file__).parent.resolve())
 
+import engine_util
+
 image_name_base = "whojk/code-server-hub-docker:"
 image_name_tags = json.loads(open("../Dockerfile/versions.json").read())
 
@@ -23,7 +25,8 @@ all_versions = sorted(all_versions,reverse=True)
 #print(all_versions)
 #print(all_versions_str)
 
-outs_c, errs = subprocess.Popen(["docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+gpu_test_cmd = engine_util.engine_cmd() + ["run", "--rm"] + engine_util.gpu_args("all") + ["nvidia/cuda:11.8.0-base-ubuntu22.04", "nvidia-smi"]
+outs_c, errs = subprocess.Popen(gpu_test_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
 if len(outs_c) > 0:
     outs , errs = subprocess.Popen(["nvidia-smi"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if len(outs) > 0:

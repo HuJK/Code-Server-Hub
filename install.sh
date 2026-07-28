@@ -8,7 +8,6 @@ SERVERSTAT="ASK"
 JUPYTERHUB="ASK"
 JUPYTERHUB_PIP3="ASK"
 COCKPIT="ASK"
-ROOTLESS_DOCKER="ASK"
 DOCKER="ASK"
 DOCKER_INSTALL="ASK"
 DOCKER_NVIDIA="ASK"
@@ -46,10 +45,6 @@ case $i in
     COCKPIT="${i#*=}"
     shift
     ;;
-    -rd=*|--rootless-docker=*)
-    ROOTLESS_DOCKER="${i#*=}"
-    shift
-    ;;
     -d=*|--docker=*)
     DOCKER="${i#*=}"
     shift
@@ -82,10 +77,9 @@ echo "Install serverstat_backend   = ${SERVERSTAT}"
 echo "Install jupyterhub           = ${JUPYTERHUB}"
 echo "Install pip3 for jupyterhub  = ${JUPYTERHUB_PIP3}"
 echo "Install cockpit              = ${COCKPIT}"
-echo "Install docker version       = ${DOCKER}"
-echo "Install rootless docker      = ${ROOTLESS_DOCKER}"
-echo "Install docker               = ${DOCKER_INSTALL}"
-echo "Install nvidia-docker        = ${DOCKER_NVIDIA}"
+echo "Install docker version       = ${DOCKER} (yes/no/podman)"
+echo "Install container engine     = ${DOCKER_INSTALL}"
+echo "Install nvidia support       = ${DOCKER_NVIDIA}"
 echo "Install portainer            = ${DOCKER_PORTAINER}"
 echo "Docker image for code-server = ${DOCKER_IMAGE}"
 
@@ -330,41 +324,53 @@ if [[ $SERVERSTAT =~ [yY].* ]]; then
     bash install.sh
 fi
 
-# Rootless docker
-if [[ ! $DOCKER =~ [yYnN].* ]]; then
-    read -p "Do you want to install Rootless docker for all users(yes/no)? " ROOTLESS_DOCKER
-fi
-if [[ $ROOTLESS_DOCKER =~ [yY].* ]]; then
-    cd /etc
-    sudo git clone --depth 1 https://github.com/HuJK/rootless_docker.git
-    cd rootless_docker
-    sudo bash ./install-rootless-docker.sh
-fi
-
 # Docker version
-if [[ ! $DOCKER =~ [yYnN].* ]]; then
-    read -p "Do you want to install docker version of code-server-hub at port 2087(yes/no)? " DOCKER
+if [[ ! $DOCKER =~ [yYnNpP].* ]]; then
+    read -p "Do you want to install docker version of code-server-hub at port 2087(yes/no/podman)? " DOCKER
 fi
-if [[ $DOCKER =~ [yY].* ]]; then
+if [[ $DOCKER =~ [yYpP].* ]]; then
+    # container engine: "docker", or rootful "podman" when -d=podman
+    ENGINE="docker"
+    if [[ $DOCKER =~ ^[pP].* ]]; then
+        ENGINE="podman"
+    fi
+    echo "Container engine = ${ENGINE}"
+    cat > /etc/code-server-hub/config.json <<EOF
+{
+  "engine": "${ENGINE}",
+  "idmap": {
+    "enable": true,
+    "size": 1000000000,
+    "offset": 1000000000,
+    "passthrough_ranges": [[10000, 99999], [100000000, 999999999]]
+  }
+}
+EOF
+    chmod 644 /etc/code-server-hub/config.json
+
     mkdir -p /data/local
     chmod 777 /data/local
     export FSTAB_SECURE='/data/local /data/local                                                none nosuid,nodev,bind 0 0'
     grep -qxF "${FSTAB_SECURE}" /etc/fstab || echo "${FSTAB_SECURE}" >> /etc/fstab
 
-    if hash docker 2>/dev/null; then
-        echo "Docker installed, skip docker auto install"
+    if hash ${ENGINE} 2>/dev/null; then
+        echo "${ENGINE} installed, skip ${ENGINE} auto install"
     else
         echo "=========================================================================="
         while true; do
             if [[ ! $DOCKER_INSTALL =~ [yYnN].* ]]; then
-                read -p "Docker not detected. Dou you want to install docker now? (Yes/No/Abort)" DOCKER_INSTALL
+                read -p "${ENGINE} not detected. Dou you want to install ${ENGINE} now? (Yes/No/Abort)" DOCKER_INSTALL
             fi
             case $DOCKER_INSTALL in
                 [Yy]* )
-                    apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-                    curl https://get.docker.com | bash
-                    apt-get update
-                    apt-get install -y docker-ce docker-ce-cli containerd.io
+                    if [[ $ENGINE == "podman" ]]; then
+                        apt-get install -y podman
+                    else
+                        apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+                        curl https://get.docker.com | bash
+                        apt-get update
+                        apt-get install -y docker-ce docker-ce-cli containerd.io
+                    fi
                     break;;
                 [Nn]* ) echo "Skipped"; break;;
                 [Aa]* ) echo "Aborted"; exit;;
@@ -372,10 +378,28 @@ if [[ $DOCKER =~ [yY].* ]]; then
             esac
         done
     fi
-    usermod -aG docker www-data
+    if [[ $ENGINE == "podman" ]]; then
+        # rootful podman has no daemon/group. www-data (openresty) reaches it
+        # through sudo, see util/engine.sh . podman.socket provides the
+        # docker-compatible API used by portainer.
+        systemctl enable --now podman.socket || true
+        LINE_PODMAN="www-data ALL=NOPASSWD: /usr/bin/podman"
+        if sudo grep -Fxq "$LINE_PODMAN" "$SUDOERS_FILE"; then
+            echo "Podman entry already exists in sudoers."
+        else
+            echo "$LINE_PODMAN" | sudo tee -a "$SUDOERS_FILE" > /dev/null
+            echo "Podman entry added to sudoers."
+        fi
+    else
+        usermod -aG docker www-data
+    fi
 
     # Portainer ...
-    has_portainer=$(docker container ls -a | grep portainer) || true
+    ENGINE_SOCK="/var/run/docker.sock"
+    if [[ $ENGINE == "podman" ]]; then
+        ENGINE_SOCK="/run/podman/podman.sock"
+    fi
+    has_portainer=$(${ENGINE} container ls -a | grep portainer) || true
     PASSWORD=""
     if [ -z "$has_portainer" ]; then
         echo "=========================================================================="
@@ -385,9 +409,9 @@ if [[ $DOCKER =~ [yY].* ]]; then
             fi
             case $DOCKER_PORTAINER in
                 [Yy]* )
-                    docker run -d -p 9000:9443 \
+                    ${ENGINE} run -d -p 9000:9443 \
                         --name portainer --restart always \
-                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v ${ENGINE_SOCK}:/var/run/docker.sock \
                         -v portainer_data:/data \
                         -v /etc/letsencrypt:/etc/letsencrypt \
                         -v /etc/code-server-hub/cert/:/etc/code-server-hub/cert/ \
@@ -416,14 +440,18 @@ if [[ $DOCKER =~ [yY].* ]]; then
         done
     fi
 
-    # Nvidia docker ... (unchanged)
+    # Nvidia container support: nvidia-docker for docker, CDI for podman
     if hash nvidia-smi 2>/dev/null; then
-        { docker run --rm --gpus all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi &&
-          echo "Nvidia docker installed, skip nvidia-docker autoinstall"; } || {
+        GPU_TEST_ARGS="--gpus all"
+        if [[ $ENGINE == "podman" ]]; then
+            GPU_TEST_ARGS="--device nvidia.com/gpu=all"
+        fi
+        { ${ENGINE} run --rm ${GPU_TEST_ARGS} nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi &&
+          echo "Nvidia container support installed, skip autoinstall"; } || {
             echo "=========================================================================="
             while true; do
                 if [[ ! $DOCKER_NVIDIA =~ [yYnN].* ]]; then
-                    read -p "Nvidia-docker not detected. Dou you want to install nvidia-docker now? (Yes/No/Abort)" DOCKER_NVIDIA
+                    read -p "Nvidia container support not detected. Dou you want to install it now? (Yes/No/Abort)" DOCKER_NVIDIA
                 fi
                 case $DOCKER_NVIDIA in
                     [Yy]* )
@@ -431,21 +459,31 @@ if [[ $DOCKER =~ [yY].* ]]; then
                           && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
                             sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
                             sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-                        sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit nvidia-container-runtime
+                        if [[ $ENGINE == "podman" ]]; then
+                            sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+                        else
+                            sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit nvidia-container-runtime
+                        fi
                         echo 'ACTION=="add", DEVPATH=="/bus/pci/drivers/nvidia", RUN+="/usr/bin/nvidia-ctk system 	create-dev-char-symlinks --create-all"' > /lib/udev/rules.d/71-nvidia-dev-char.rules
                         ln -s /etc/code-server-hub/util/initgpu.service  /etc/systemd/system/initgpu.service
                         systemctl enable --now initgpu
-                        daemon_json="/etc/docker/daemon.json"
-                        config_line='"exec-opts": ["native.cgroupdriver=cgroupfs"]'
-                        if [ -f "$daemon_json" ]; then
-                            tmp_file=$(mktemp)
-                            jq ". += { $config_line }" "$daemon_json" > "$tmp_file" && mv "$tmp_file" "$daemon_json"
-                            echo "Added config to $daemon_json"
+                        if [[ $ENGINE == "podman" ]]; then
+                            # podman consumes GPUs via CDI, no daemon config needed
+                            mkdir -p /etc/cdi
+                            nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
                         else
-                            echo "{ $config_line }" | sudo tee "$daemon_json" >/dev/null
-                            echo "Created $daemon_json"
+                            daemon_json="/etc/docker/daemon.json"
+                            config_line='"exec-opts": ["native.cgroupdriver=cgroupfs"]'
+                            if [ -f "$daemon_json" ]; then
+                                tmp_file=$(mktemp)
+                                jq ". += { $config_line }" "$daemon_json" > "$tmp_file" && mv "$tmp_file" "$daemon_json"
+                                echo "Added config to $daemon_json"
+                            else
+                                echo "{ $config_line }" | sudo tee "$daemon_json" >/dev/null
+                                echo "Created $daemon_json"
+                            fi
+                            systemctl restart docker
                         fi
-                        systemctl restart docker
                         break;;
                     [Aa]* ) echo "Aborted"; exit;;
                     [Nn]* ) echo "Skipped"; break;;
@@ -453,22 +491,22 @@ if [[ $DOCKER =~ [yY].* ]]; then
                 esac
             done
         }
-        docker pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
+        ${ENGINE} pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
     else
-        echo "Nvidia driver not found, skip nvidia-docker autoinstall"
+        echo "Nvidia driver not found, skip nvidia container support autoinstall"
         if [[ $DOCKER_IMAGE == "standard" ]]; then
             tmp=$(mktemp)
             jq '."0" = "standard"' /etc/code-server-hub/Dockerfile/versions.json > "$tmp" && mv "$tmp" /etc/code-server-hub/Dockerfile/versions.json
             chmod 755 /etc/code-server-hub/Dockerfile/versions.json
-            docker pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
+            ${ENGINE} pull $(python3 /etc/code-server-hub/util/get_docker_image_name.py)
         else
-            docker pull whojk/code-server-hub-docker:minimal
+            ${ENGINE} pull whojk/code-server-hub-docker:minimal
         fi
     fi
 
     cd /etc/code-server-hub
     ln -s /etc/code-server-hub/code-hub-docker            /etc/code-server-hub/util/openresty/conf/sites-enabled/code-hub-docker.conf
-    if [[ $HOMEPGE =~ [yY].* ]] && [[ $DOCKER =~ [yY].* ]]; then
+    if [[ $HOMEPGE =~ [yY].* ]] && [[ $DOCKER =~ [yYpP].* ]]; then
         set +e
         rm /var/www/html/index.nginx-debian.html
         ln -s /etc/code-server-hub/util/sites/index_page.html /var/www/html/index.nginx-debian.html

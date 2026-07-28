@@ -31,7 +31,7 @@ sudo install.sh
 ```
 wget https://raw.githubusercontent.com/HuJK/Code-Server-Hub/master/install.sh
 chmod 755 install.sh 
-sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd=yes -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 
 ### 參數說明:
@@ -46,17 +46,43 @@ sudo ./install.sh -hp=yes -hps=yes -pq=yes -st=yes -jph=yes -pip3=yes -c=yes -rd
 | jph | 安裝jupyterhub，ML server必備|18517,8001|
 | pip3| 安裝python3-pip。已安裝會跳過 ||
 | c   | 安裝[cockpit](https://github.com/cockpit-project/cockpit)                  |9090|
-| rd  | 安裝[rootless-docker](https://github.com/HuJK/rootless_docker)          ||
-| d   | 安裝docker版code-server-hub  |2087|
-| de  | 安裝docker engine，已安裝會跳過 ||
-| dn  | 安裝nvidia-docker，已安裝會跳過 ||
+| d   | 安裝docker版code-server-hub。使用```-d=podman```可改用rootful podman當容器引擎，選擇的引擎會記錄在```/etc/code-server-hub/config.json```  |2087|
+| de  | 安裝容器引擎(docker，若```-d=podman```則安裝podman)，已安裝會跳過 ||
+| dn  | 安裝nvidia容器支援(docker裝nvidia-docker，podman改產生CDI spec)，已安裝會跳過 ||
 | dp  | 安裝portainer，已安裝會跳過     |9000|
+
+#### 容器引擎設定檔: config.json
+安裝腳本會產生```/etc/code-server-hub/config.json```記錄使用哪個容器引擎：
+```json
+{
+  "engine": "podman",
+  "idmap": {
+    "enable": true,
+    "size": 1000000000,
+    "offset": 1000000000,
+    "passthrough_ranges": [[10000, 99999], [100000000, 999999999]]
+  }
+}
+```
+* ```engine```: ```docker``` 或 ```podman```(rootful)。所有工具腳本(```util/engine.sh```、```util/create_docker.py```等)都會讀這個檔案決定要呼叫哪個引擎。檔案不存在時預設為```docker```。
+* ```idmap```: 只有podman模式使用。每個容器會帶上```--uidmap```/```--gidmap```，只有該使用者自己持有、且落在```passthrough_ranges```內的UID/GID會identity map進容器；其餘所有ID(包含容器內root)都會+```offset```映射到host上沒有任何真實帳號的高號段。因此就算在容器內提權到root，也無法存取```/data```等共用掛載上其他使用者的檔案。設```"enable": false```可停用。
+
+#### 每個使用者的GPU設定: gpuuser.json
+建立```/etc/code-server-hub/util/gpuuser.json```(參考```util/example.gpuuser.json```)可限制每個使用者能用哪些GPU。值為```"all"```或GPU編號/UUID的list(空list=不給GPU)：
+```json
+{
+  "*": [0, 1, 2, 3, 5, 6, 7],
+  "hujk": "all",
+  "cpuonlyuser": []
+}
+```
+```*```是沒列出的使用者的預設值。docker模式會轉成```--gpus```參數，podman模式會轉成CDI的```--device nvidia.com/gpu=N```。
 
 
 ### 如果想要安裝在自己VPS用，我推薦的安裝參數
 #### 最小安裝
 ```
-sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=no -pip3=no -c=no -rd=no -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=no -pip3=no -c=no -d=no -de=no -dn=no -dp=no
 ```
 
 Demo:
@@ -68,12 +94,12 @@ root|DockerAtHeroku
 
 #### 一個人用的server，安裝普通版
 ```
-sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=yes -pip3=yes -c=yes -rd=no -d=no -de=no -dn=no -dp=no
+sudo ./install.sh -hp=no -hps=no -pq=no -st=no -jph=yes -pip3=yes -c=yes -d=no -de=no -dn=no -dp=no
 ```
 
 #### 多個人用的server，安裝普通版+docker版+pwquality
 ```
-sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -rd=no -d=yes -de=yes -dn=yes -dp=yes
+sudo ./install.sh -hp=no -hps=no -pq=yes -st=no -jph=yes -pip3=yes -c=yes -d=yes -de=yes -dn=yes -dp=yes
 ```
 
 然後用瀏覽器訪問server ip即可

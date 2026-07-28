@@ -1,0 +1,9 @@
+{
+  "engine": "docker",
+  "idmap": {
+    "enable": true,
+    "size": 1000000000,
+    "offset": 1000000000,
+    "passthrough_ranges": [[10000, 99999], [100000000, 999999999]]
+  }
+}

@@ -11,6 +11,12 @@ from pathlib import Path
 
 os.chdir(pathlib.Path(__file__).parent.resolve())
 
+import engine_util
+engine = engine_util.get_engine()
+engine_cmd = engine_util.engine_cmd()
+if engine == "podman":
+    import podman_idmap
+
 username  = sys.argv[1]
 useruid = subprocess.Popen(["id", "-u", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
 usergid = subprocess.Popen(["id", "-g", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
@@ -26,7 +32,7 @@ gpuuser = {"*":"all"}
 if os.path.isfile("/etc/code-server-hub/util/gpuuser.json"):
     gpuuser = json.loads(open("/etc/code-server-hub/util/gpuuser.json").read())
 
-default_storageuser = {"*":
+base_storageuser = {"*":
                        {
                            "rw":["/data/local","__HOMEDIR__"],
                            "ro":["/data"],
@@ -83,7 +89,7 @@ def merge_storage_config(base_config, override_config):
 
 def getStorage(username):
     replace_vars = {"__HOMEDIR__": homedir , "__LOCALTIME__": str(Path("/etc/localtime").resolve()), "__ENVSPATH__": envs_path}
-    storagedata = {k: list(v) for k, v in default_storageuser["*"].items()}
+    storagedata = {k: list(v) for k, v in base_storageuser["*"].items()}
 
     if "*" in storageuser:
         storagedata = merge_storage_config(storagedata, storageuser["*"])
@@ -130,13 +136,13 @@ def get_docker_version():
     except FileNotFoundError:
         raise Exception("Error: Docker is not installed or not found in PATH")
 
-docker_version = get_docker_version()
+docker_version = get_docker_version() if engine == "docker" else None
 
 def getMountParam(username):
     rw_folders, ro_folders, rro_folders = getStorage(username)
     mount_options =  ["type=bind,source={s},target={d}".format(s=s,d=d) for s,d in rw_folders]
     mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in rro_folders]
-    if docker_version >= (25,0,0):
+    if engine == "docker" and docker_version >= (25,0,0):
         mount_options += ["type=bind,readonly,bind-recursive=writable,source={s},target={d}".format(s=s,d=d) for s,d in ro_folders]
     else:
         mount_options += ["type=bind,readonly,source={s},target={d}".format(s=s,d=d) for s,d in ro_folders]
@@ -146,9 +152,10 @@ def getMountParam(username):
     return param_ret
 
 def getGPUParam(username):
+    # gpuuser.json value: "all", or a list of GPU indices / UUIDs
     if username in gpuuser:
-        return gpuuser[username]
-    return gpuuser["*"]
+        return engine_util.gpu_args(gpuuser[username])
+    return engine_util.gpu_args(gpuuser["*"])
 
 with open(envs_path,"w") as envsF:
     envsF.write("SOCKPATH=" + sock_path + "\n")
@@ -174,7 +181,7 @@ image_name, errs = get_docker_image_name.communicate()
 image_name = image_name.replace(b"\n",b"").decode("utf8")
 
 if get_docker_image_name.returncode == 0:
-    has_gpu = ["--gpus", getGPUParam(username)]
+    has_gpu = getGPUParam(username)
 
 #print(has_gpu)
 
@@ -183,14 +190,20 @@ def run_command(command):
     subprocess.call(command, stderr=sys.stdout.buffer)
     print("", flush=True)
 
-stopc = ['docker', "stop" , "docker-"+username] 
+# rootful podman: constrain the container to a user namespace where only this
+# user's own uid/gids are identity mapped, see util/podman_idmap.py
+idmap_param = []
+if engine == "podman" and podman_idmap.enabled():
+    idmap_param = podman_idmap.idmap_args(useruid, usergid, usergroupids)
+
+stopc = engine_cmd + ["stop" , "docker-"+username]
 run_command(stopc)
 
 stopc2 = ['sudo', '/etc/code-server-hub/util/close_docker.sh' , username]
 run_command(stopc2)
 
-runc = ["docker", "run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getMountParam(username) +[image_name]
+runc = engine_cmd + ["run" ,"-it" ,"-d" , "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined","--shm-size=" + shm_size , "--name" , "docker-"+username , "--hostname" , "docker-"+username ] + idmap_param + has_gpu + [ "-v" , sock_fold+":"+sock_fold] + getMountParam(username) +[image_name]
 run_command(runc)
 
-startc = ['docker', "start" ,"docker-"+username ]
+startc = engine_cmd + ["start" ,"docker-"+username]
 run_command(startc)

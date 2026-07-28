@@ -16,6 +16,15 @@ fi
 
 CONTAINER_NAME="docker-$USER_NAME"
 
+CONFIG_FILE="/etc/code-server-hub/config.json"
+ENGINE="docker"
+if [[ -f "$CONFIG_FILE" ]]; then
+    ENGINE_CFG=$(jq -r '.engine // empty' "$CONFIG_FILE" 2>/dev/null)
+    if [[ -n "$ENGINE_CFG" && "$ENGINE_CFG" != "null" ]]; then
+        ENGINE="$ENGINE_CFG"
+    fi
+fi
+
 get_pstree() {
     local pid=$1
     local ppid
@@ -39,7 +48,7 @@ get_pstree() {
 }
 
 echo "Stopping container $CONTAINER_NAME"
-docker stop "$CONTAINER_NAME" &>/dev/null
+"$ENGINE" stop "$CONTAINER_NAME" &>/dev/null
 
 # Check if the container stopped successfully
 if [ $? -eq 0 ]; then
@@ -47,6 +56,14 @@ if [ $? -eq 0 ]; then
     exit 0
 else
     echo "Error stopping container. Cleaning uncleanable processes..."
+fi
+
+# The cleanup below is docker(moby/containerd) specific. For podman just
+# kill the container processes and stop it without removing user data.
+if [[ "$ENGINE" == "podman" ]]; then
+    podman kill "$CONTAINER_NAME"
+    podman stop -t 0 "$CONTAINER_NAME"
+    exit $?
 fi
 
 # Attempt to get process IDs using 'docker top'
