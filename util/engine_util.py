@@ -2,6 +2,7 @@
 # Resolve which container engine (docker or rootful podman) this host uses.
 # The engine is recorded in config.json by install.sh; default is docker.
 import os
+import re
 import json
 
 CONFIG_PATHS = [
@@ -29,6 +30,23 @@ def engine_cmd():
         # the sudoers entry installed by install.sh
         return ["sudo", "-n", "/usr/bin/podman"]
     return [engine]
+
+SOCK_ROOT = "/etc/code-server-hub/sock/"
+ENVS_ROOT = "/etc/code-server-hub/envs/"
+
+def validate_untrusted_args(username, sock_path, envs_path):
+    # create/close/delete_docker.py are sudo entrypoints for www-data, so
+    # argv is untrusted: whitelist the username and confine both paths
+    # (realpath also defeats symlink tricks inside the writable dirs)
+    if not re.fullmatch(r"[a-zA-Z][0-9a-zA-Z]*", username):
+        raise ValueError("invalid username: " + repr(username))
+    sock_path = os.path.realpath(sock_path)
+    envs_path = os.path.realpath(envs_path)
+    if not sock_path.startswith(SOCK_ROOT):
+        raise ValueError("sock path must be under " + SOCK_ROOT)
+    if not envs_path.startswith(ENVS_ROOT):
+        raise ValueError("envs path must be under " + ENVS_ROOT)
+    return username, sock_path, envs_path
 
 def normalize_gpu_value(value):
     # gpuuser.json value: "all", or a list of GPU indices / UUIDs

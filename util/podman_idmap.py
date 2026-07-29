@@ -73,9 +73,15 @@ def idmap_args(uid, gid, supplementary_gids):
     gid = int(gid)
     supplementary_gids = [int(g) for g in supplementary_gids]
     if not is_passthrough(uid):
-        raise ValueError("uid {} is not inside the passthrough uid ranges, refuse to start container".format(uid))
+        raise ValueError(
+            "uid {} is not inside the passthrough ranges {}, refuse to start container. "
+            "Recreate the user with a uid inside the ranges, or adjust idmap.passthrough_ranges "
+            "(or set idmap.enable=false) in /etc/code-server-hub/config.json".format(uid, PASSTHROUGH_RANGES))
     if not is_passthrough(gid):
-        raise ValueError("primary gid {} is not inside the passthrough gid ranges, refuse to start container".format(gid))
+        raise ValueError(
+            "primary gid {} is not inside the passthrough ranges {}, refuse to start container. "
+            "Adjust idmap.passthrough_ranges (or set idmap.enable=false) "
+            "in /etc/code-server-hub/config.json".format(gid, PASSTHROUGH_RANGES))
     # only GIDs the user actually holds are identity mapped; system groups
     # like sudo/docker/adm are host level permissions and must not leak in
     gids = [g for g in supplementary_gids + [gid] if is_passthrough(g)]

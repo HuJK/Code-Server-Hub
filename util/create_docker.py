@@ -18,15 +18,19 @@ if engine == "podman":
     import podman_idmap
 
 username  = sys.argv[1]
+sock_path = sys.argv[2]
+envs_path = sys.argv[3]
+password = sys.argv[4] if len(sys.argv) >=5 else input()
+# this script is a sudo entrypoint for www-data: validate argv before use
+username, sock_path, envs_path = engine_util.validate_untrusted_args(username, sock_path, envs_path)
+if "\n" in password or "\r" in password:
+    raise ValueError("invalid password string")
 useruid = subprocess.Popen(["id", "-u", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
 usergid = subprocess.Popen(["id", "-g", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
 usergroupids = subprocess.Popen(["id", "-G", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8").split()
 usergroupnames = subprocess.Popen(["id", "-Gn", username], stdout=subprocess.PIPE).communicate()[0].decode("utf8").split()
 usergroups = " ".join("{}:{}".format(gid, name) for gid, name in zip(usergroupids, usergroupnames))
 homedir =  subprocess.Popen(["bash", "-c", "echo ~" + username], stdout=subprocess.PIPE).communicate()[0].decode("utf8")[:-1]
-sock_path = sys.argv[2]
-envs_path = sys.argv[3]
-password = sys.argv[4] if len(sys.argv) >=5 else input()
 sock_fold = os.path.dirname(sock_path)
 gpuuser = {"*":"all"}
 if os.path.isfile("/etc/code-server-hub/util/gpuuser.json"):
@@ -113,8 +117,23 @@ def getStorage(username):
         storagedata_processed[k] = v_list_processed
     return storagedata_processed["rw"], storagedata_processed["ro"], storagedata_processed["rro"]
 
-os.makedirs(os.path.dirname(sock_path),mode=0o333,exist_ok=True)
-os.makedirs(os.path.dirname(envs_path),mode=0o333,exist_ok=True)
+def makedirs_chmod(path, mode):
+    # os.makedirs mode is masked by umask, chmod created dirs explicitly.
+    # dirs are wx only (no listing): sock file names contain a secret
+    missing = []
+    p = path
+    while p and not os.path.isdir(p):
+        missing.append(p)
+        parent = os.path.dirname(p)
+        if parent == p:
+            break
+        p = parent
+    os.makedirs(path, exist_ok=True)
+    for m in missing:
+        os.chmod(m, mode)
+
+makedirs_chmod(os.path.dirname(sock_path), 0o333)
+makedirs_chmod(os.path.dirname(envs_path), 0o333)
 
 mem_bytes = os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')
 shm_size = str(max(64,int( mem_bytes/(1024.**2)/2)))+"m"

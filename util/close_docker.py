@@ -8,6 +8,8 @@ import engine_util
 username  = sys.argv[1]
 sock_path = sys.argv[2]
 envs_path = sys.argv[3]
+# this script is a sudo entrypoint for www-data: validate argv before use
+username, sock_path, envs_path = engine_util.validate_untrusted_args(username, sock_path, envs_path)
 sock_fold = os.path.dirname(sock_path)
 
 try:

@@ -169,18 +169,8 @@ chgrp shadow /etc/code-server-hub/envs
 chgrp shadow /etc/code-server-hub/util/anime_pic
 ln -s /etc/code-server-hub/code            /etc/code-server-hub/util/openresty/conf/sites-enabled/code.conf
 
-SUDOERS_FILE="/etc/sudoers"
-LINE="www-data ALL=NOPASSWD: /etc/code-server-hub/util/close_docker.sh"
-
-install() {
-    if sudo grep -Fxq "$LINE" "$SUDOERS_FILE"; then
-        echo "Entry already exists in sudoers."
-    else
-        echo "$LINE" | sudo tee -a "$SUDOERS_FILE" > /dev/null
-        echo "Entry added to sudoers."
-    fi
-}
-install
+# www-data may only run the predefined entrypoints as root, see the script
+bash /etc/code-server-hub/util/install_sudoers.sh
 
 cd /etc/code-server-hub
 
@@ -335,17 +325,7 @@ if [[ $DOCKER =~ [yYpP].* ]]; then
         ENGINE="podman"
     fi
     echo "Container engine = ${ENGINE}"
-    cat > /etc/code-server-hub/config.json <<EOF
-{
-  "engine": "${ENGINE}",
-  "idmap": {
-    "enable": true,
-    "size": 1000000000,
-    "offset": 1000000000,
-    "passthrough_ranges": [[10000, 99999], [100000000, 999999999]]
-  }
-}
-EOF
+    cp /etc/code-server-hub/example.config.json /etc/code-server-hub/config.json
     chmod 644 /etc/code-server-hub/config.json
 
     mkdir -p /data/local
@@ -379,19 +359,16 @@ EOF
         done
     fi
     if [[ $ENGINE == "podman" ]]; then
-        # rootful podman has no daemon/group. www-data (openresty) reaches it
-        # through sudo, see util/engine.sh . podman.socket provides the
-        # docker-compatible API used by portainer.
-        systemctl enable --now podman.socket || true
-        LINE_PODMAN="www-data ALL=NOPASSWD: /usr/bin/podman"
-        if sudo grep -Fxq "$LINE_PODMAN" "$SUDOERS_FILE"; then
-            echo "Podman entry already exists in sudoers."
-        else
-            echo "$LINE_PODMAN" | sudo tee -a "$SUDOERS_FILE" > /dev/null
-            echo "Podman entry added to sudoers."
+        # resolve short image names (whojk/... , nvidia/cuda) to docker hub
+        # like docker does; podman ships with no unqualified-search registry
+        mkdir -p /etc/containers/registries.conf.d
+        if ! grep -RqsE "^[[:space:]]*unqualified-search-registries" /etc/containers/registries.conf /etc/containers/registries.conf.d/ 2>/dev/null; then
+            echo 'unqualified-search-registries = ["docker.io"]' > /etc/containers/registries.conf.d/10-docker-hub.conf
         fi
-    else
-        usermod -aG docker www-data
+        # podman.socket provides the docker-compatible API used by portainer.
+        # www-data does not need any group/sudo access to the engine itself:
+        # it can only run the entrypoints from util/install_sudoers.sh
+        systemctl enable --now podman.socket || true
     fi
 
     # Portainer ...

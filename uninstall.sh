@@ -8,6 +8,8 @@ rm -r /etc/systemd/system/jupyterhub.service || true
 rm -r /etc/systemd/system/serverstat.service || true
 rm -r /etc/systemd/system/initgpu.service    || true
 
+rm /etc/sudoers.d/code-server-hub || true
+
 SUDOERS_FILE="/etc/sudoers"
 LINE="www-data ALL=NOPASSWD: /etc/code-server-hub/util/close_docker.sh"
 LINE_PODMAN="www-data ALL=NOPASSWD: /usr/bin/podman"

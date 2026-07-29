@@ -5,20 +5,8 @@ export image_name=$(python3 util/get_docker_image_name.py)
 
 echo $image_name
 
-SUDOERS_FILE="/etc/sudoers"
-LINE="www-data ALL=NOPASSWD: /etc/code-server-hub/util/close_docker.sh"
-
-install() {
-    # Check if the line already exists in sudoers
-    if sudo grep -Fxq "$LINE" "$SUDOERS_FILE"; then
-        echo "Entry already exists in sudoers."
-    else
-        # Add the line to sudoers
-        echo "$LINE" | sudo tee -a "$SUDOERS_FILE" > /dev/null
-        echo "Entry added to sudoers."
-    fi
-}
-install
+# www-data may only run the predefined entrypoints as root, see the script
+bash /etc/code-server-hub/util/install_sudoers.sh
 
 function get_cpu_architecture()
 {
